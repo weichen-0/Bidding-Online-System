@@ -2,9 +2,9 @@
 require_once 'token.php';
 require_once 'common.php';
 
-$username = '';
+$userid = '';
 if  (isset($_SESSION['userid'])) {
-	$username = $_SESSION['userid'];
+	$userid = $_SESSION['userid'];
 	return;
 }
 
@@ -13,7 +13,7 @@ if  (isset($_SESSION['userid'])) {
 
 # add your code here 
 
-header("Location: login.php?error=Please login!");
+header("Location: ../login.php?error=Please login!");
 exit;
 
 ?>
