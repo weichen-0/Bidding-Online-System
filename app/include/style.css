@@ -1,0 +1,26 @@
+h1 {
+    font: 24px Serif;
+    border-bottom: 1px solid black;
+}
+
+th {
+    background-color: peachpuff;
+    color:black;
+    padding: 5px;
+}
+
+td {
+    background-color: palegoldenrod;
+    color: black;
+    padding: 5px;
+}
+
+/* @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'); */
+.error {
+    /* font-style: italic; */
+    color: #D8000C;
+    /* font-size:2em;
+    vertical-align:left;
+    background-color: #FFD2D2; */
+}
+
