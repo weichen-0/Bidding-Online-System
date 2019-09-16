@@ -6,7 +6,7 @@ class ConnectionManager {
         
         $host = "localhost";
         $username = "root";
-        $password = 'bK**9-2tKo6-JG\@OecVN_RChpp!j';  
+        $password = '';  
         $dbname = "bios";
         $port = 3306;    
 
