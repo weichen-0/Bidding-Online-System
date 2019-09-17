@@ -4,12 +4,15 @@ require_once 'include/token.php';
 
 $error = '';
 
-if ( isset($_GET['error']) ) {
+// To catch 'Please login!' errors from protect.php
+if (isset($_GET['error']) ) {
     $error = $_GET['error'];
-} elseif ( isset($_POST['userid']) && isset($_POST['password']) ) {
+
+} elseif (isset($_POST['userid']) && isset($_POST['password']) ) {
     $userid = $_POST['userid'];
     $password = $_POST['password'];
 
+    // if admin login is valid, direct to admin homepage
     if ($userid == 'admin' && $password == 'admin') {
         $_SESSION['userid'] = $userid;
         header("Location: admin/index.php");
@@ -19,15 +22,13 @@ if ( isset($_GET['error']) ) {
     $dao = new StudentDAO();
     $student = $dao->retrieve($userid);
 
+    // if student login is valid, direct to student homepage
     if ( $student != null && $student->authenticate($password) ) {
         $_SESSION['userid'] = $userid; 
         header("Location: student/index.php");
         exit;
 
     } 
-        
-    $error = 'Incorrect user ID or password!';
-
 }
 ?>
 
