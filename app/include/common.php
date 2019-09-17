@@ -68,3 +68,7 @@ function isEmpty($var) {
     if (empty($var))
         return TRUE;
 }
+
+
+
+?>
