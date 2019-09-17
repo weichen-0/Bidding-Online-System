@@ -13,7 +13,6 @@ class Bid {
         $this->code = $code;
         $this->section = $section;
     }
-
 }
 
 ?>
