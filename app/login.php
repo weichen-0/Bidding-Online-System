@@ -29,6 +29,8 @@ if (isset($_GET['error']) ) {
         exit;
 
     } 
+
+    $error = 'Incorrect username or password!';
 }
 ?>
 
