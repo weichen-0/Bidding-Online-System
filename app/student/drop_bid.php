@@ -51,7 +51,7 @@
         <?php
         if ( isset($_GET['msg']) ) {
         $msg = $_GET['msg'];
-        echo $msg;
+        echo "<div class='message'>{$msg}</div>";
     }
     else {
         printErrors();
