@@ -62,8 +62,8 @@ class BidDAO {
         return $isAddOK;
     }
 
-    public function remove($userid, $course, $section) {
-        $sql = "delete from bid where userid=:userid and course=:course and section=:section";     
+    public function remove($userid, $code, $section) {
+        $sql = "delete from bid where userid=:userid and code=:code and section=:section";     
         
         $connMgr = new ConnectionManager();           
         $conn = $connMgr->getConnection();
@@ -71,7 +71,7 @@ class BidDAO {
         
 
         $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
-        $stmt->bindParam(':course', $course, PDO::PARAM_STR);
+        $stmt->bindParam(':code', $code, PDO::PARAM_STR);
         $stmt->bindParam(':section', $section, PDO::PARAM_STR);
 
         $isRemoveOk = False;
