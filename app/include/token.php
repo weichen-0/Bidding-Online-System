@@ -9,10 +9,10 @@ const SECRET_KEY = "qwertyuiop";
  * 
  * @return string The token
  */
-function generate_token($username) {
+function generate_token($userid) {
 
     // The username obtained from login form
-    return JWT::generate_token($username, SECRET_KEY);
+    return JWT::generate_token($userid, SECRET_KEY);
 }
 
 /**
