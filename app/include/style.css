@@ -20,3 +20,7 @@ td {
     color: #D8000C;
 }
 
+.message {
+    font-style: italic;
+    color: #008000;
+}

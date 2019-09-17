@@ -14,7 +14,7 @@
         <link rel="stylesheet" type="text/css" href="../include/style.css">
     </head>
     <body>
-        <h1>Welcome <?=$student->name?>!</h1>
+        <h1>Welcome to BIOS, <?=$student->name?>!</h1>
         <p>
             <a href='bid_section.php'>Bid Section</a> |
             <a href='drop_bid.php'>Drop Bid</a> |
