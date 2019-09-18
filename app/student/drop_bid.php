@@ -4,9 +4,6 @@
 
     $dao = new StudentDAO();
     $student = $dao->retrieve($_SESSION['userid']);
-
-    $bid_dao = new BidDAO();
-    $bids = $bid_dao->retrieveByUser($student->userid);
 ?>
 
 <html>
@@ -43,9 +40,8 @@
                     <input name='Drop' type='submit' />
                 </td>
             </tr>
-        </form>
-        
         </table>
+        </form>
 
         <p>
 <?php

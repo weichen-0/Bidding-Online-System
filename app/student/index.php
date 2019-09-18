@@ -17,7 +17,7 @@
         
 <?php
         if (isset($_SESSION['login'])) {
-            echo "<h1>Welcome to BIOS, {$student->name}</h1>";
+            echo "<h1>Welcome to BIOS, {$student->name}!</h1>";
             unset($_SESSION['login']);
         } else {
             echo "<h1>BIOS [{$student->name}]</h1>";
