@@ -16,10 +16,11 @@
     <body>
         
 <?php
-        if (isset($_GET['login'])) {
+        if (isset($_SESSION['login'])) {
             echo "<h1>Welcome to BIOS, {$student->name}</h1>";
+            unset($_SESSION['login']);
         } else {
-            echo "<h1>BIOS Home [{$student->name}]</h1>";
+            echo "<h1>BIOS [{$student->name}]</h1>";
         }
 ?>
         <p>
@@ -45,7 +46,7 @@
                     <td>{$bid->code}</td>
                     <td>{$bid->section}</td>
                     <td>{$bid->amount}</td>
-                    <td>...</td>
+                    <td>Pending</td>
                 </tr>";
         }
 ?>

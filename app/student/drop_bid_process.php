@@ -12,12 +12,14 @@
     $errors = array();
 
     if (isset($_POST['course']) && isset($_POST['section'])) {
-        
-        if (empty($_POST['course'])) {
+        $course = $_POST['course'];
+        $section = $_POST['section'];
+
+        if (empty($course)) {
             $errors[] = "Course cannot be empty";
         }
 
-        if (empty($_POST['section'])) {
+        if (empty($section)) {
             $errors[] = "Section cannot be empty";
         }
 
@@ -27,9 +29,6 @@
             exit;
 
         } else {
-            $course = $_POST["course"];
-            $section = $_POST["section"];
-
             $student_dao = new StudentDAO();
             $student = $student_dao->retrieve($_SESSION['userid']);
 

@@ -12,7 +12,8 @@ if (isset($_SESSION['error']) && isset($_POST['userid']) && isset($_POST['passwo
     // if admin login is valid, direct to admin homepage
     if ($userid == 'admin' && $password == 'admin') {
         $_SESSION['userid'] = $userid;
-        header("Location: admin/index.php?login=true");
+        $_SESSION['login'] = true;
+        header("Location: admin/index.php");
         exit;
     }
 
@@ -22,7 +23,8 @@ if (isset($_SESSION['error']) && isset($_POST['userid']) && isset($_POST['passwo
     // if student login is valid, direct to student homepage
     if ( $student != null && $student->authenticate($password) ) {
         $_SESSION['userid'] = $userid; 
-        header("Location: student/index.php?login=true");
+        $_SESSION['login'] = true;
+        header("Location: student/index.php");
         exit;
 
     } 
