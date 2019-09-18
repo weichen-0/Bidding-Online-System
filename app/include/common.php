@@ -18,13 +18,13 @@ session_start();
 
 function printErrors() {
     if(isset($_SESSION['errors'])){
-        echo "<ul id='errors' style='color:red;'>";
+        echo "<div class='error'><ul>";
         
         foreach ($_SESSION['errors'] as $value) {
             echo "<li>" . $value . "</li>";
         }
         
-        echo "</ul>";   
+        echo "</ul></div>";   
         unset($_SESSION['errors']);
     }    
 }
