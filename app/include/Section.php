@@ -22,6 +22,13 @@ class Section {
         $this->size = $size;
     }
 
+    // converts date and time to iso_datetime for ease of comparison
+     function convertDateTime($date, $time) {
+        $datetime = $date . ' ' . $time;
+        $dateObj = DateTime::createFromFormat("Ymd H:i", $datetime);
+        return $dateObj->format(Datetime::ATOM);
+    }
+
     // checks if the class timetable for this section clashes with that of another section
     public function classClashWith($section) {
         
@@ -33,11 +40,11 @@ class Section {
         $dateToday = date('Ymd');
 
         // Since we only want to compare the time, it doesn't matter as long as we use same date throughout for consistent datetime
-        $current_start = convertDateTime($dateToday, $this->start);
-        $current_end = convertDateTime($dateToday, $this->end);
+        $current_start = $this->convertDateTime($dateToday, $this->start);
+        $current_end = $this->convertDateTime($dateToday, $this->end);
 
-        $other_start = convertDateTime($dateToday, $course->start);
-        $other_end = convertDateTime($dateToday, $course->end);
+        $other_start = $this->convertDateTime($dateToday, $section->start);
+        $other_end = $this->convertDateTime($dateToday, $section->end);
         
         // if the class for this section starts or ends during that of another section
         if (($current_start >= $other_start && $current_start <= $other_end) || ($current_end >= $other_start && $current_end <= $other_end)) {
@@ -46,14 +53,6 @@ class Section {
 
         return false;
     }
-
-    // converts date and time to iso_datetime for ease of comparison
-    private function convertDateTime($date, $time) {
-        $datetime = $date . ' ' . $time;
-        $dateObj = DateTime::createFromFormat("Ymd H:i", $datetime);
-        return $dateObj->format(Datetime::ATOM);
-    }
-
 }
 
 ?>

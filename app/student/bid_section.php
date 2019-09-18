@@ -45,8 +45,10 @@
                 <td colspan='2'>
                     <input name='submit' type='submit' />
                 </td>
-            </tr>
+            </tr>       
+        </table>
         </form>
+        
         <p>
 <?php
             if (isset($_SESSION['msg'])) {
@@ -56,7 +58,5 @@
             }
 ?>
         </p>
-        
-        </table>
     </body>
 </html>

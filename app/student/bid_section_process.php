@@ -55,7 +55,7 @@
 
     // checks if student has enough e$
     if ($amount > $student->edollar) {
-        $errors[] = "Insufficient e$";
+        $errors[] = "Insufficient e$ balance";
     }
 
     $bid_dao = new BidDAO();
@@ -68,7 +68,7 @@
 
     // checks if student has bidded for another section under the same course
     foreach ($bids as $bid) {
-        if ($course == $$bid->code) {
+        if ($course == $bid->code) {
             $errors[] = "Only 1 bid per course allowed";
             break;
         }
@@ -111,14 +111,16 @@
 
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
-    } else {
+
+    } else { 
+        // add the bid and update student e$ balance to the respective DAOs
         $bid_dao->add(new Bid($student->userid, $amount, $course, $section));
         
         $updatedBal = $student->edollar - $amount;
         $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
         $student_dao->update($studentNew);
 
-        $_SESSION['msg'] = "Bid successfully placed for {$course} {$section}!";
+        $_SESSION['msg'] = ["Bid successfully placed for {$course} {$section}!"];
     }
 
     header("Location: bid_section.php");

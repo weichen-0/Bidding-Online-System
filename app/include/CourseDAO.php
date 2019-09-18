@@ -4,7 +4,7 @@ class CourseDAO {
     
     // retrieve a list of courses under the school
     public function retrieveBySchool($school) {
-        $sql = 'select course, school, title, description, exam date, exam start, exam end from course where school=:school';
+        $sql = "select course, school, title, description, `exam date`, `exam start`, `exam end` from course where school=:school";
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
@@ -25,7 +25,7 @@ class CourseDAO {
 
     // retrieve a course by its code
     public function retrieve($course) {
-        $sql = 'select course, school, title, description, exam date, exam start, exam end from course where course=:course';
+        $sql = "select course, school, title, description, `exam date`, `exam start`, `exam end` from course where course=:course";
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
@@ -62,7 +62,7 @@ class CourseDAO {
     }
 
     public function add($course) {
-        $sql = "INSERT IGNORE INTO course (course, school, title, description, exam date, exam start, exam end) VALUES (:course, :school, :title, :description, :exam date, :exam start, :exam end)";
+        $sql = "INSERT IGNORE INTO course (course, school, title, description, `exam date`, `exam start`, `exam end`) VALUES (:course, :school, :title, :description, :exam date, :exam start, :exam end)";
 
         $connMgr = new ConnectionManager();      
         $conn = $connMgr->getConnection();

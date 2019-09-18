@@ -21,13 +21,22 @@ class Course {
         $this->exam_end = $exam_end;
     }
 
+    // converts date and time to iso_datetime for ease of comparison
+    private function convertDateTime($date, $time) {
+        $datetime = $date . ' ' . $time;
+        var_dump($datetime);
+        $dateObj = DateTime::createFromFormat("Ymd H:i", $datetime);
+        var_dump($dateObj);
+        return $dateObj->format(Datetime::ATOM);
+    }
+
     // checks if the exam timetable for this course clashes with that of another course
     public function examClashWith($course) {
-        $current_start = convertDateTime($this->exam_date, $this->exam_start);
-        $current_end = convertDateTime($this->exam_date, $this->exam_end);
+        $current_start = $this->convertDateTime($this->exam_date, $this->exam_start);
+        $current_end = $this->convertDateTime($this->exam_date, $this->exam_end);
 
-        $other_start = convertDateTime($course->exam_date, $course->exam_start);
-        $other_end = convertDateTime($course->exam_date, $course->exam_end);
+        $other_start = $this->convertDateTime($course->exam_date, $course->exam_start);
+        $other_end = $this->convertDateTime($course->exam_date, $course->exam_end);
         
         // if the exam for this course starts or ends during that of another course
         if (($current_start >= $other_start && $current_start <= $other_end) || ($current_end >= $other_start && $current_end <= $other_end)) {
@@ -35,13 +44,6 @@ class Course {
         }
 
         return false;
-    }
-
-    // converts date and time to iso_datetime for ease of comparison
-    private function convertDateTime($date, $time) {
-        $datetime = $date . ' ' . $time;
-        $dateObj = DateTime::createFromFormat("Ymd H:i", $datetime);
-        return $dateObj->format(Datetime::ATOM);
     }
 
 }
