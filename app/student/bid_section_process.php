@@ -113,7 +113,6 @@
         $_SESSION['errors'] = $errors;
 
     } else { 
-        // add the bid and update student e$ balance to the respective DAOs
         $bid_dao->add(new Bid($student->userid, $amount, $course, $section));
         
         $updatedBal = $student->edollar - $amount;
