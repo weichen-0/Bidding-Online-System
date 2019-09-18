@@ -5,4 +5,9 @@ require_once '../include/protect.php';
 
 doBootstrap();
 
+// $enrolled_dao = new EnrolledDAO();
+// $enrolled_dao->removeAll();
+
+// $round_dao = new RoundDAO();
+// $round_dao->set(1, "ACTIVE");
 ?>

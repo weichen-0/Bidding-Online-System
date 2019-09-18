@@ -2,24 +2,25 @@
 
 class StudentDAO {
     
-    public  function retrieve($userid) {
+    public function retrieve($userid) {
         $sql = 'select userid, password, name, school, edollar from student where userid=:userid';
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
         
-            
         $stmt = $conn->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
         $stmt->execute();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return new Student($row['userid'], $row['password'],$row['name'], $row['school'], $row['edollar']);
         }
+
+        return null;
     }
 
-    public  function retrieveAll() {
+    public function retrieveAll() {
         $sql = 'select * from student';
         
         $connMgr = new ConnectionManager();      
@@ -31,9 +32,10 @@ class StudentDAO {
 
         $result = array();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            return new Student($row['userid'], $row['password'],$row['name'], $row['school'], $row['edollar']);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new Student($row['userid'], $row['password'],$row['name'], $row['school'], $row['edollar']);
         }
+
         return $result;
     }
 
@@ -53,10 +55,7 @@ class StudentDAO {
         $stmt->bindParam(':school', $student->school, PDO::PARAM_STR);
         $stmt->bindParam(':edollar', $student->edollar, PDO::PARAM_INT);
 
-        $isAddOK = False;
-        if ($stmt->execute()) {
-            $isAddOK = True;
-        }
+        $isAddOK = $stmt->execute();
 
         return $isAddOK;
     }
@@ -77,10 +76,7 @@ class StudentDAO {
         $stmt->bindParam(':school', $student->school, PDO::PARAM_STR);
         $stmt->bindParam(':edollar', $student->edollar, PDO::PARAM_INT);
 
-        $isUpdateOk = False;
-        if ($stmt->execute()) {
-            $isUpdateOk = True;
-        }
+        $isUpdateOk = $stmt->execute();
 
         return $isUpdateOk;
     }
@@ -93,8 +89,9 @@ class StudentDAO {
         
         $stmt = $conn->prepare($sql);
         
-        $stmt->execute();
-        $count = $stmt->rowCount();
+        $isRemoveOk = $stmt->execute();
+
+        return $isRemoveOk;
     }    
 	
 }

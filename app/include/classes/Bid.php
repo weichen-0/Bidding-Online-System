@@ -13,6 +13,14 @@ class Bid {
         $this->code = $code;
         $this->section = $section;
     }
+
+    public function isSameAs($bid) {
+        $sameUser = $this->userid == $bid->userid;
+        $sameCode = $this->code == $bid->code;
+        $sameSection = $this->section == $bid->section;
+
+        return $sameUser && $sameCode && $sameSection;
+    }
 }
 
 ?>

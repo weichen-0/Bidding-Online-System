@@ -22,7 +22,7 @@
 		<form id='bootstrap-form' action="bootstrap-process.php" method="post" enctype="multipart/form-data">
 			<table>
 				<tr>
-					<th>ZIP File Upload</th>
+					<th style="font-weight:normal">Zip File Upload</th>
 					<th><input id='bootstrap-file' type="file" name="bootstrap-file"></th>
 				</tr>
 				<tr>

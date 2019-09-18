@@ -16,7 +16,7 @@ class BidDAO {
 
         $result = array();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Bid($row['userid'], $row['amount'],$row['code'], $row['section']);
         }
 
@@ -35,9 +35,10 @@ class BidDAO {
         $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
         $stmt->bindParam(':code', $code, PDO::PARAM_STR);
         $stmt->bindParam(':section', $section, PDO::PARAM_STR);
+        
         $stmt->execute();
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return new Bid($row['userid'], $row['amount'],$row['code'], $row['section']);
         }
 
@@ -56,7 +57,7 @@ class BidDAO {
 
         $result = array();
 
-        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Bid($row['userid'], $row['amount'],$row['code'], $row['section']);
         }
 

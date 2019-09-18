@@ -34,7 +34,7 @@
     $bid_dao = new BidDAO();
     $bid = $bid_dao->retrieve($student->userid, $course, $section);
 
-    // checks if such a bid actually exists under the student
+    // checks if the student placed such a bid before
     if ($bid != null) {
         $bid_dao->remove($bid);
 

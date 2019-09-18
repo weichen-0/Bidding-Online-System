@@ -76,10 +76,7 @@ class CourseDAO {
         $stmt->bindParam(':exam start', $course->exam_start, PDO::PARAM_STR);
         $stmt->bindParam(':exam end', $course->exam_end, PDO::PARAM_STR);
 
-        $isAddOK = False;
-        if ($stmt->execute()) {
-            $isAddOK = True;
-        }
+        $isAddOK = $stmt->execute();
 
         return $isAddOK;
     }
@@ -94,10 +91,7 @@ class CourseDAO {
 
         $stmt->bindParam(':course', $course, PDO::PARAM_STR);
 
-        $isRemoveOk = False;
-        if ($stmt->execute()) {
-            $isRemoveOk = True;
-        }
+        $isRemoveOk = $stmt->execute();
 
         return $isRemoveOk;
     }
@@ -110,8 +104,9 @@ class CourseDAO {
         
         $stmt = $conn->prepare($sql);
         
-        $stmt->execute();
-        $count = $stmt->rowCount();
+        $isRemoveOk = $stmt->execute();
+
+        return $isRemoveOk;
     }    
 	
 }

@@ -57,7 +57,6 @@ class SectionDAO {
 
         $result = array();
 
-
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Section($row['userid'], $row['password'],$row['name'], $row['school'], $row['edollar']);
         }
@@ -74,8 +73,9 @@ class SectionDAO {
         
         $stmt = $conn->prepare($sql);
         
-        $stmt->execute();
-        $count = $stmt->rowCount();
+        $isRemoveOk = $stmt->execute();
+
+        return $isRemoveOk;
     }    
 	
 }
