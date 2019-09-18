@@ -6,7 +6,7 @@
     $student = $dao->retrieve($_SESSION['userid']);
 
     $bid_dao = new BidDAO();
-    $bids = $bid_dao->retrieve($student->userid);
+    $bids = $bid_dao->retrieveByUser($student->userid);
 ?>
 
 <html>
@@ -14,7 +14,14 @@
         <link rel="stylesheet" type="text/css" href="../include/style.css">
     </head>
     <body>
-        <h1>Welcome to BIOS, <?=$student->name?>!</h1>
+        
+<?php
+        if (isset($_GET['login'])) {
+            echo "<h1>Welcome to BIOS, {$student->name}</h1>";
+        } else {
+            echo "<h1>BIOS Home [{$student->name}]</h1>";
+        }
+?>
         <p>
             <a href='bid_section.php'>Bid Section</a> |
             <a href='drop_bid.php'>Drop Bid</a> |
@@ -31,7 +38,7 @@
                 <th>Bid Amount</th>
                 <th>Status</th>
             </tr>
-
+            
 <?php
         foreach ($bids as $bid) {
             echo "<tr>
@@ -44,7 +51,5 @@
 ?>
         
         </table>
-
     </body>
-
 </html>

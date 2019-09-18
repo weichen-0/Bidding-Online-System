@@ -2,42 +2,55 @@
     require_once '../include/common.php';
     require_once '../include/protect.php';
 
-    $dao = new StudentDAO();
-    $student = $dao->retrieve($_SESSION['userid']);
+    // TODO
+    // if (not bidding round) {
+    //     $_SESSION['errors'] = ['Bidding round not active'];
+    //     header("Location: drop_bid.php");
+    //     exit;
+    // }
 
-    $bid_dao = new BidDAO();
-    $bids = $bid_dao->retrieve($student->userid);
-?>
-<html>
-    <body>
-    <?php
-        $courseid = $_POST["courseId"];
-        $section = $_POST["section"];
-        foreach ($bids as $bid) {
-            if ($bid->code == $courseid && $bid->section) {
-                $amt = $student->edollar + $bid->amount;
-                $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $amt);
-                $dao->update($studentNew);
-                $bid_dao->remove($student->userid, $courseid, $section);
-                header("Location: drop_bid.php?msg=Successfully dropped bid");
-                exit;
-            }
-            else {
-                $_SESSION['errors'][] = "Error! Bid has not yet been placed";
-                header("Location: drop_bid.php");
-                exit;
-            }
+    $errors = array();
+
+    if (isset($_POST['course']) && isset($_POST['section'])) {
+        
+        if (empty($_POST['course'])) {
+            $errors[] = "Course cannot be empty";
         }
-        
-        
+
+        if (empty($_POST['section'])) {
+            $errors[] = "Section cannot be empty";
+        }
+
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            header("Location: drop_bid.php");
+            exit;
+
+        } else {
+            $course = $_POST["course"];
+            $section = $_POST["section"];
+
+            $student_dao = new StudentDAO();
+            $student = $student_dao->retrieve($_SESSION['userid']);
+
+            $bid_dao = new BidDAO();
+            $bid = $bid_dao->retrieve($student->userid, $course, $section);
+
+            if ($bid != null) {
+                $bid_dao->remove($bid);
+
+                $updatedBal = $student->edollar + $bid->amount;
+                $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
+                $student_dao->update($studentNew);
+
+                $_SESSION['msg'] = ['Bid successfully dropped'];
+
+            } else {
+                $_SESSION['errors'] = ["Invalid course ID or section!"];
+            }
+
+            header("Location: drop_bid.php");
+            exit;
+        }
+    }       
 ?>
-        <!-- <p>
-            Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big>
-        </p> -->
-
-
-
-
-    </body>
-
-</html>

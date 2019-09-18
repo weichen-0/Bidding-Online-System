@@ -29,7 +29,18 @@ function printErrors() {
     }    
 }
 
-
+function printMessages() {
+    if(isset($_SESSION['msg'])){
+        echo "<div class='message'><ul>";
+        
+        foreach ($_SESSION['msg'] as $value) {
+            echo "<li>" . $value . "</li>";
+        }
+        
+        echo "</ul></div>";   
+        unset($_SESSION['msg']);
+    }    
+}
 
 function isMissingOrEmpty($name) {
     if (!isset($_REQUEST[$name])) {

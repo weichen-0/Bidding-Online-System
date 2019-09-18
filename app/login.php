@@ -4,18 +4,15 @@ require_once 'include/token.php';
 
 $error = '';
 
-// To catch 'Please login!' errors from protect.php
-if (isset($_GET['error']) ) {
-    $error = $_GET['error'];
-
-} elseif (isset($_POST['userid']) && isset($_POST['password']) ) {
+// first condition checks if there is any error message in SESSION
+if (isset($_SESSION['error']) && isset($_POST['userid']) && isset($_POST['password']) ) {
     $userid = $_POST['userid'];
     $password = $_POST['password'];
 
     // if admin login is valid, direct to admin homepage
     if ($userid == 'admin' && $password == 'admin') {
         $_SESSION['userid'] = $userid;
-        header("Location: admin/index.php");
+        header("Location: admin/index.php?login=true");
         exit;
     }
 
@@ -25,12 +22,12 @@ if (isset($_GET['error']) ) {
     // if student login is valid, direct to student homepage
     if ( $student != null && $student->authenticate($password) ) {
         $_SESSION['userid'] = $userid; 
-        header("Location: student/index.php");
+        header("Location: student/index.php?login=true");
         exit;
 
     } 
 
-    $error = 'Incorrect username or password!';
+    $_SESSION['errors'] = ['Invalid username or password!'];
 }
 ?>
 
@@ -62,10 +59,8 @@ if (isset($_GET['error']) ) {
             </table>             
         </form>
 
-        <div class='error'>
-            <p>
-                <?=$error?>
-            </p>
-        </span>
+<?php
+        printErrors();
+?>
     </body>
 </html>

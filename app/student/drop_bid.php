@@ -6,15 +6,15 @@
     $student = $dao->retrieve($_SESSION['userid']);
 
     $bid_dao = new BidDAO();
-    $bids = $bid_dao->retrieve($student->userid);
-    
+    $bids = $bid_dao->retrieveByUser($student->userid);
 ?>
+
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="../include/style.css">
     </head>
     <body>
-        <h1>Drop Bid</h1>
+        <h1>BIOS Drop Bid</h1>
         <p>
             <a href='index.php'>Home</a> |
             <a href='bid_section.php'>Bid Section</a> |
@@ -29,7 +29,7 @@
             <tr>
                 <td>Course ID</td>
                 <td>
-                    <input name='courseId'/>
+                    <input name='course'/>
                 </td>
             </tr>
             <tr>
@@ -48,16 +48,13 @@
         </table>
 
         <p>
-        <?php
-        if ( isset($_GET['msg']) ) {
-        $msg = $_GET['msg'];
-        echo "<div class='message'>{$msg}</div>";
-    }
-    else {
-        printErrors();
-    }
-    ?>
-            <!-- <?=$msg?> -->
+<?php
+        if (isset($_SESSION['msg'])) {
+            printMessages();
+        } else {
+            printErrors();
+        }
+?>
         </p>
         
     </body>

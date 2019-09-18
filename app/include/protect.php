@@ -13,7 +13,8 @@ if  (isset($_SESSION['userid'])) {
 
 # add your code here 
 
-header("Location: ../login.php?error=Please login!");
+$_SESSION['errors'] = ['Please login!'];
+header("Location: ../login.php");
 exit;
 
 ?>

@@ -3,7 +3,7 @@
 class BidDAO {
     
     // retrieve a list of bids based on user ID
-    public function retrieve($userid) {
+    public function retrieveByUser($userid) {
         $sql = 'select userid, amount, code, section from bid where userid=:userid';
         
         $connMgr = new ConnectionManager();
@@ -23,6 +23,26 @@ class BidDAO {
         return $result;
     }
 
+    public function retrieve($userid, $code, $section) {
+        $sql = 'select userid, amount, code, section from bid where userid=:userid and code=:code and section=:section';
+        
+        $connMgr = new ConnectionManager();
+        $conn = $connMgr->getConnection();
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+        $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+        $stmt->bindParam(':section', $section, PDO::PARAM_STR);
+        $stmt->execute();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            return new Bid($row['userid'], $row['amount'],$row['code'], $row['section']);
+        }
+
+        return null;
+    }
+
     public function retrieveAll() {
         $sql = 'select * from bid';
         
@@ -35,7 +55,7 @@ class BidDAO {
 
         $result = array();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Bid($row['userid'], $row['amount'],$row['code'], $row['section']);
         }
 
@@ -54,15 +74,12 @@ class BidDAO {
         $stmt->bindParam(':code', $bid->code, PDO::PARAM_STR);
         $stmt->bindParam(':section', $bid->section, PDO::PARAM_STR);
 
-        $isAddOK = False;
-        if ($stmt->execute()) {
-            $isAddOK = True;
-        }
+        $isAddOK = $stmt->execute();
 
         return $isAddOK;
     }
 
-    public function remove($userid, $code, $section) {
+    public function remove($bid) {
         $sql = "delete from bid where userid=:userid and code=:code and section=:section";     
         
         $connMgr = new ConnectionManager();           
@@ -70,14 +87,11 @@ class BidDAO {
         $stmt = $conn->prepare($sql);
         
 
-        $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
-        $stmt->bindParam(':code', $code, PDO::PARAM_STR);
-        $stmt->bindParam(':section', $section, PDO::PARAM_STR);
+        $stmt->bindParam(':userid', $bid->userid, PDO::PARAM_STR);
+        $stmt->bindParam(':code', $bid->code, PDO::PARAM_STR);
+        $stmt->bindParam(':section', $bid->section, PDO::PARAM_STR);
 
-        $isRemoveOk = False;
-        if ($stmt->execute()) {
-            $isRemoveOk = True;
-        }
+        $isRemoveOk = $stmt->execute();
 
         return $isRemoveOk;
     }
@@ -90,8 +104,9 @@ class BidDAO {
         
         $stmt = $conn->prepare($sql);
         
-        $stmt->execute();
-        $count = $stmt->rowCount();
+        $isRemoveOk = $stmt->execute();
+
+        return $isRemoveOk;
     }    
 	
 }
