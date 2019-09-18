@@ -2,7 +2,7 @@
 
 class BidDAO {
     
-    // retrieve a list of bids based on user ID
+    // retrieve a list of bids of the user
     public function retrieveByUser($userid) {
         $sql = 'select userid, amount, code, section from bid where userid=:userid';
         
@@ -23,6 +23,7 @@ class BidDAO {
         return $result;
     }
 
+    // retrieve a specific bid of the user based on course code and section
     public function retrieve($userid, $code, $section) {
         $sql = 'select userid, amount, code, section from bid where userid=:userid and code=:code and section=:section';
         

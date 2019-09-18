@@ -11,45 +11,44 @@
 
     $errors = array();
 
-    if (isset($_POST['course']) && isset($_POST['section'])) {
-        $course = $_POST['course'];
-        $section = $_POST['section'];
+    $course = $_POST['course'];
+    $section = $_POST['section'];
 
-        if (empty($course)) {
-            $errors[] = "Course cannot be empty";
-        }
+    if (empty($course)) {
+        $errors[] = "Course cannot be empty";
+    }
 
-        if (empty($section)) {
-            $errors[] = "Section cannot be empty";
-        }
+    if (empty($section)) {
+        $errors[] = "Section cannot be empty";
+    }
 
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            header("Location: drop_bid.php");
-            exit;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        header("Location: drop_bid.php");
+        exit;
+    } 
 
-        } else {
-            $student_dao = new StudentDAO();
-            $student = $student_dao->retrieve($_SESSION['userid']);
+    $student_dao = new StudentDAO();
+    $student = $student_dao->retrieve($_SESSION['userid']);
 
-            $bid_dao = new BidDAO();
-            $bid = $bid_dao->retrieve($student->userid, $course, $section);
+    $bid_dao = new BidDAO();
+    $bid = $bid_dao->retrieve($student->userid, $course, $section);
 
-            if ($bid != null) {
-                $bid_dao->remove($bid);
+    // checks if the bid actually exists
+    if ($bid != null) {
+        $bid_dao->remove($bid);
 
-                $updatedBal = $student->edollar + $bid->amount;
-                $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
-                $student_dao->update($studentNew);
+        $updatedBal = $student->edollar + $bid->amount;
+        $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
+        $student_dao->update($studentNew);
 
-                $_SESSION['msg'] = ['Bid successfully dropped'];
+        $_SESSION['msg'] = ["Bid successfully dropped for {$course} {$section}!"];
 
-            } else {
-                $_SESSION['errors'] = ["Invalid course ID or section!"];
-            }
+    } else {
+        $_SESSION['errors'] = ["Invalid course ID and section!"];
+    }
 
-            header("Location: drop_bid.php");
-            exit;
-        }
-    }       
+    header("Location: drop_bid.php");
+    exit;
+
 ?>

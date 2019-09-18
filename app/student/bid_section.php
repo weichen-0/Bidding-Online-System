@@ -4,14 +4,6 @@
 
     $student_dao = new StudentDAO();
     $student = $student_dao->retrieve($_SESSION['userid']);
-
-    $msg = '';
-    $errors = array();
-    if (isset($_GET['msg'])) {
-        $msg = $_GET['msg'];
-    } else if (isset($_GET['errors'])) {
-        $errors = $_GET['errors'];
-    }
 ?>
 
 <html>
@@ -55,18 +47,15 @@
                 </td>
             </tr>
         </form>
-
+        <p>
 <?php
-        if (isset($msg)) {
-            echo "<div class='message'>{$msg}</div>";
-        } else if (count($errors) > 0) {
-            echo "<div class='error>";
-            foreach ($errors as $error) {
-                echo "{$error}<br/>";
+            if (isset($_SESSION['msg'])) {
+                printMessages();
+            } else {
+                printErrors();
             }
-            echo "</div>";
-        }
 ?>
+        </p>
         
         </table>
     </body>

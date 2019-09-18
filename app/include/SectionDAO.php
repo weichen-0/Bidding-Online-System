@@ -2,7 +2,7 @@
 
 class SectionDAO {
     
-    // retrieve 1 section based on section number and course code
+    // retrieve 1 section based on course code and section
     public function retrieve($course, $section) {
         $sql = 'select course, section, day, start, end, instructor, venue, size from section where course=:course and section=:section';
 
