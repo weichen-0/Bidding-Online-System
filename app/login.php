@@ -6,6 +6,7 @@ $error = '';
 
 // first condition checks if there is any error message in SESSION
 if (isset($_SESSION['error']) && isset($_POST['userid']) && isset($_POST['password']) ) {
+if (!isset($_SESSION['error']) &&isset($_POST['userid']) && isset($_POST['password']) ) {
     $userid = $_POST['userid'];
     $password = $_POST['password'];
 
