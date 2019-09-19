@@ -2,12 +2,14 @@
     require_once '../include/common.php';
     require_once '../include/protect.php';
 
-    // TODO
-    // if (not bidding round) {
-    //     $_SESSION['errors'] = ['Bidding round not active'];
-    //     header("Location: drop_bid.php");
-    //     exit;
-    // }
+    $round_dao = new RoundDAO();
+
+    // if bidding round is inactive, students are not allowed to drop any bids
+    if ($round_dao->retrieveStatus() == 'INACTIVE') {
+        $_SESSION['errors'] = ['Bidding round not active'];
+        header("Location: drop_bid.php");
+        exit;
+    }
 
     $errors = array();
 

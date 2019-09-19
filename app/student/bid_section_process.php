@@ -2,12 +2,14 @@
     require_once '../include/common.php';
     require_once '../include/protect.php';
 
-    // TODO
-    // if (not bidding round) {
-    //     $_SESSION['errors'] = ['Bidding round not active'];
-    //     header("Location: bid_section.php");
-    //     exit;
-    // }
+    $round_dao = new RoundDAO();
+
+    // if bidding round is inactive, students are not allowed to bid for sections
+    if ($round_dao->retrieveStatus() == 'INACTIVE') {
+        $_SESSION['errors'] = ['Bidding round not active'];
+        header("Location: bid_section.php");
+        exit;
+    }
 
     $errors = array();
 
@@ -43,12 +45,12 @@
         exit;
     }
 
-    // TODO: checks the current bidding round
-    // if (bidding round 1 && $student->school != $courseObj->school) {
-    //     $_SESSION['errors'] = ["Only courses offered by {$student->school} are biddable in Round 1!"];
-    //     header("Location: bid_section.php");
-    //     exit;
-    // }
+    // checks if it is bidding round 1, if yes then students only allowed to bid for courses under their own school
+    if ($round_dao->retrieveRound == 1 && $student->school != $courseObj->school) {
+        $_SESSION['errors'] = ["Only courses under your school ({$student->school}) are biddable in Round 1!"];
+        header("Location: bid_section.php");
+        exit;
+    }
 
     $student_dao = new StudentDAO();
     $student = $student_dao->retrieve($_SESSION['userid']);

@@ -7,6 +7,8 @@
 
     $bid_dao = new BidDAO();
     $bids = $bid_dao->retrieveByUser($student->userid);
+
+    $round_dao = new RoundDAO();
 ?>
 
 <html>
@@ -30,7 +32,8 @@
             <a href='../logout.php'>Logout</a>
         </p>
         <p>
-            Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big>
+            Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big><br/>
+            Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
         </p>
         <table>
             <tr>

@@ -4,6 +4,8 @@
 
     $dao = new StudentDAO();
     $student = $dao->retrieve($_SESSION['userid']);
+
+    $round_dao = new RoundDAO();
 ?>
 
 <html>
@@ -19,7 +21,8 @@
             <a href='../logout.php'>Logout</a>
         </p>
         <p>
-            Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big>
+            Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big><br/>
+            Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
         </p>
         <form method='POST' action='drop_bid_process.php'>
         <table>

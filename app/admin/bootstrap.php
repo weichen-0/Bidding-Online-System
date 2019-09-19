@@ -1,6 +1,8 @@
 <?php
     require_once '../include/common.php';
     require_once '../include/protect.php';
+
+    $round_dao = new RoundDAO();
 ?>
 
 <html>
@@ -16,17 +18,17 @@
             <a href='../logout.php'>Logout</a>
         </p>
         <p>
-            Bidding Round: <big><b><u>0</u></b></big>
+            Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
 		</p>
 
 		<form id='bootstrap-form' action="bootstrap-process.php" method="post" enctype="multipart/form-data">
 			<table>
 				<tr>
-					<th style="font-weight:normal">Zip File Upload</th>
-					<th><input id='bootstrap-file' type="file" name="bootstrap-file"></th>
+					<td>Zip File Upload</td>
+					<td><input id='bootstrap-file' type="file" name="bootstrap-file"></td>
 				</tr>
 				<tr>
-					<th colspan='2' style="text-align:left"><input name='Import' type='submit' /></th>
+					<td colspan='2' style="text-align:left"><input name='Import' type='submit' /></td>
             	</tr>
 		</form>
 

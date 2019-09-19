@@ -5,7 +5,7 @@ require_once 'include/token.php';
 $error = '';
 
 // first condition checks if there is any error message in SESSION
-if (!isset($_SESSION['error']) &&isset($_POST['userid']) && isset($_POST['password']) ) {
+if (!isset($_SESSION['errors']) && isset($_POST['userid']) && isset($_POST['password']) ) {
     $userid = $_POST['userid'];
     $password = $_POST['password'];
 
@@ -30,6 +30,8 @@ if (!isset($_SESSION['error']) &&isset($_POST['userid']) && isset($_POST['passwo
     } 
 
     $_SESSION['errors'] = ['Invalid username or password!'];
+
+    
 }
 ?>
 

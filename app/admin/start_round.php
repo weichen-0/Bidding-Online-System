@@ -1,6 +1,8 @@
 <?php
     require_once '../include/common.php';
     require_once '../include/protect.php';
+
+    $round_dao = new RoundDAO();
 ?>
 
 <html>
@@ -16,7 +18,7 @@
             <a href='../logout.php'>Logout</a>
         </p>
         <p>
-            Bidding Round: <big><b><u>0</u></b></big>
+            Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
 		</p>
 
 	</body>
