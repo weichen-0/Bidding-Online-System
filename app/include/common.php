@@ -1,13 +1,8 @@
 <?php
 
-// this will autoload the class that we need in our code
-spl_autoload_register(function($class) {
- 
-    // we are assuming that it is in the same directory as common.php
-    // otherwise we have to do
-    // $path = 'path/to/' . $class . ".php"    
-    require_once "$class.php"; 
-  
+// autoload the classes required
+spl_autoload_register(function($class) {  
+    require_once "classes/$class.php"; 
 });
 
 
@@ -18,18 +13,29 @@ session_start();
 
 function printErrors() {
     if(isset($_SESSION['errors'])){
-        echo "<ul id='errors' style='color:red;'>";
+        echo "<div class='error'><ul>";
         
         foreach ($_SESSION['errors'] as $value) {
             echo "<li>" . $value . "</li>";
         }
         
-        echo "</ul>";   
+        echo "</ul></div>";   
         unset($_SESSION['errors']);
     }    
 }
 
-
+function printMessages() {
+    if(isset($_SESSION['msg'])){
+        echo "<div class='message'><ul>";
+        
+        foreach ($_SESSION['msg'] as $value) {
+            echo "<li>" . $value . "</li>";
+        }
+        
+        echo "</ul></div>";   
+        unset($_SESSION['msg']);
+    }    
+}
 
 function isMissingOrEmpty($name) {
     if (!isset($_REQUEST[$name])) {
@@ -68,3 +74,7 @@ function isEmpty($var) {
     if (empty($var))
         return TRUE;
 }
+
+
+
+?>

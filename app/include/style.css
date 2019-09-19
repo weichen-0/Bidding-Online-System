@@ -15,12 +15,12 @@ td {
     padding: 5px;
 }
 
-/* @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'); */
 .error {
-    /* font-style: italic; */
+    font-style: italic;
     color: #D8000C;
-    /* font-size:2em;
-    vertical-align:left;
-    background-color: #FFD2D2; */
 }
 
+.message {
+    font-style: italic;
+    color: #008000;
+}

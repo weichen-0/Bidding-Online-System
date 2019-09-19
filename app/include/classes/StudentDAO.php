@@ -2,25 +2,25 @@
 
 class StudentDAO {
     
-    public  function retrieve($userid) {
+    public function retrieve($userid) {
         $sql = 'select userid, password, name, school, edollar from student where userid=:userid';
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
         
-            
         $stmt = $conn->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
         $stmt->execute();
 
-
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return new Student($row['userid'], $row['password'],$row['name'], $row['school'], $row['edollar']);
         }
+
+        return null;
     }
 
-    public  function retrieveAll() {
+    public function retrieveAll() {
         $sql = 'select * from student';
         
         $connMgr = new ConnectionManager();      
@@ -32,20 +32,21 @@ class StudentDAO {
 
         $result = array();
 
-
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            return new Student($row['userid'], $row['password'],$row['name'], $row['school'], $row['edollar']);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new Student($row['userid'], $row['password'],$row['name'], $row['school'], $row['edollar']);
         }
+
         return $result;
     }
 
     public function add($student) {
-        $sql = "INSERT IGNORE INTO user (userid, password, name, school, edollar) VALUES (:userid, :password, :name, :school, :edollar)";
+        $sql = "INSERT IGNORE INTO student (userid, password, name, school, edollar) VALUES (:userid, :password, :name, :school, :edollar)";
 
         $connMgr = new ConnectionManager();      
         $conn = $connMgr->getConnection();
         $stmt = $conn->prepare($sql);
         
+        // depends on whether password in database needs to be encrypted
         // $user->password = password_hash($user->password,PASSWORD_DEFAULT);
 
         $stmt->bindParam(':userid', $student->userid, PDO::PARAM_STR);
@@ -54,21 +55,19 @@ class StudentDAO {
         $stmt->bindParam(':school', $student->school, PDO::PARAM_STR);
         $stmt->bindParam(':edollar', $student->edollar, PDO::PARAM_INT);
 
-        $isAddOK = False;
-        if ($stmt->execute()) {
-            $isAddOK = True;
-        }
+        $isAddOK = $stmt->execute();
 
         return $isAddOK;
     }
 
-     public function update($user) {
-        $sql = 'UPDATE user SET password=:password, name=:name, school=:school, edollar=:edollar WHERE userid=:userid';      
+    public function update($student) {
+        $sql = 'UPDATE student SET password=:password, name=:name, school=:school, edollar=:edollar WHERE userid=:userid';      
         
         $connMgr = new ConnectionManager();           
         $conn = $connMgr->getConnection();
         $stmt = $conn->prepare($sql);
         
+        // depends on whether password in database needs to be encrypted
         // $user->password = password_hash($user->password,PASSWORD_DEFAULT);
 
         $stmt->bindParam(':userid', $student->userid, PDO::PARAM_STR);
@@ -77,24 +76,22 @@ class StudentDAO {
         $stmt->bindParam(':school', $student->school, PDO::PARAM_STR);
         $stmt->bindParam(':edollar', $student->edollar, PDO::PARAM_INT);
 
-        $isUpdateOk = False;
-        if ($stmt->execute()) {
-            $isUpdateOk = True;
-        }
+        $isUpdateOk = $stmt->execute();
 
         return $isUpdateOk;
     }
 	
-	 public function removeAll() {
-        $sql = 'TRUNCATE TABLE user';
+	public function removeAll() {
+        $sql = 'TRUNCATE TABLE student';
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
         
         $stmt = $conn->prepare($sql);
         
-        $stmt->execute();
-        $count = $stmt->rowCount();
+        $isRemoveOk = $stmt->execute();
+
+        return $isRemoveOk;
     }    
 	
 }

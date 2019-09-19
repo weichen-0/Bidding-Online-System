@@ -32,8 +32,8 @@ USE `bios`;
 
 DROP TABLE IF EXISTS `bid`;
 CREATE TABLE IF NOT EXISTS `bid` (
-  `userid` varchar(30) NOT NULL,
-  `amount` int(3) NOT NULL,
+  `userid` varchar(128) NOT NULL,
+  `amount` int(5) NOT NULL,
   `code` varchar(10) NOT NULL,
   `section` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -48,8 +48,8 @@ DROP TABLE IF EXISTS `course`;
 CREATE TABLE IF NOT EXISTS `course` (
   `course` varchar(10) NOT NULL,
   `school` varchar(3) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `description` varchar(5000) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `description` varchar(1000) NOT NULL,
   `exam date` int(8) NOT NULL,
   `exam start` varchar(5) NOT NULL,
   `exam end` varchar(5) NOT NULL
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `course` (
 
 DROP TABLE IF EXISTS `course_completed`;
 CREATE TABLE IF NOT EXISTS `course_completed` (
-  `userid` varchar(30) NOT NULL,
+  `userid` varchar(128) NOT NULL,
   `code` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -92,8 +92,8 @@ CREATE TABLE IF NOT EXISTS `section` (
   `day` int(1) NOT NULL,
   `start` varchar(5) NOT NULL,
   `end` varchar(5) NOT NULL,
-  `instructor` varchar(30) NOT NULL,
-  `venue` varchar(50) NOT NULL,
+  `instructor` varchar(100) NOT NULL,
+  `venue` varchar(100) NOT NULL,
   `size` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -105,11 +105,36 @@ CREATE TABLE IF NOT EXISTS `section` (
 
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE IF NOT EXISTS `student` (
-  `userid` varchar(30) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `name` varchar(30) NOT NULL,
+  `userid` varchar(128) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `school` varchar(3) NOT NULL,
-  `edollar` int(4) NOT NULL
+  `edollar` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `round`
+--
+
+DROP TABLE IF EXISTS `round`;
+CREATE TABLE IF NOT EXISTS `round` (
+  `round` int(1) NOT NULL,
+  `status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `enrolled`
+--
+
+DROP TABLE IF EXISTS `enrolled`;
+CREATE TABLE IF NOT EXISTS `enrolled` (
+  `userid` varchar(128) NOT NULL,
+  `course` varchar(10) NOT NULL,
+  `section` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 

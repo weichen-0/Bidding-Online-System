@@ -2,6 +2,7 @@
 minutes/internal/.DS_Store
 app/.DS_Store
 app/sql/.DS_Store
-.DS_Store
-app/.DS_Store
-.DS_Store
+testing/.DS_Store
+testing/json_checker/test_cases/.DS_Store
+testing/json_checker/.DS_Store
+app/include/.DS_Store
