@@ -10,7 +10,7 @@ if (!isset($_SESSION['error']) &&isset($_POST['userid']) && isset($_POST['passwo
     $password = $_POST['password'];
 
     // if admin login is valid, direct to admin homepage
-    if ($userid == 'admin' && $password == 'ADmin@2019') {
+    if ($userid == 'admin' && $password == 'admin') {
         $_SESSION['userid'] = $userid;
         $_SESSION['login'] = true;
         header("Location: admin/index.php");
