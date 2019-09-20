@@ -2,9 +2,9 @@
 
 class BidDAO {
     
-    // retrieve a list of bids of the user
+    // retrieve a list of bids under the user
     public function retrieveByUser($userid) {
-        $sql = 'select userid, amount, code, section from bid where userid=:userid';
+        $sql = 'select * from bid where userid=:userid';
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
@@ -25,7 +25,7 @@ class BidDAO {
 
     // retrieve a specific bid of the user based on course code and section
     public function retrieve($userid, $code, $section) {
-        $sql = 'select userid, amount, code, section from bid where userid=:userid and code=:code and section=:section';
+        $sql = 'select * from bid where userid=:userid and code=:code and section=:section';
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
@@ -99,7 +99,7 @@ class BidDAO {
     }
 	
 	public function removeAll() {
-        $sql = 'TRUNCATE TABLE student';
+        $sql = 'TRUNCATE TABLE bid';
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
