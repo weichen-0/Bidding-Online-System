@@ -14,6 +14,8 @@ class Bid {
         $this->section = $section;
     }
 
+    ##Not uploaded
+
     public function isSameAs($bid) {
         $sameUser = $this->userid == $bid->userid;
         $sameCode = $this->code == $bid->code;

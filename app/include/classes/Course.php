@@ -21,6 +21,8 @@ class Course {
         $this->exam_end = $exam_end;
     }
 
+    ##NOT UPLOADED
+
     // converts date and time to iso_datetime for ease of comparison
     private function convertDateTime($date, $time) {
         $datetime = $date . ' ' . $time;
