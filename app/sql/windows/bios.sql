@@ -127,13 +127,14 @@ CREATE TABLE IF NOT EXISTS `round` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `enrolled`
+-- Table structure for table `enrolment`
 --
 
-DROP TABLE IF EXISTS `enrolled`;
-CREATE TABLE IF NOT EXISTS `enrolled` (
+DROP TABLE IF EXISTS `enrolment`;
+CREATE TABLE IF NOT EXISTS `enrolment` (
   `userid` varchar(128) NOT NULL,
-  `course` varchar(10) NOT NULL,
+  `amount` int(5) NOT NULL,
+  `code` varchar(10) NOT NULL,
   `section` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
