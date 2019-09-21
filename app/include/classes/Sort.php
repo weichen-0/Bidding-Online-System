@@ -1,22 +1,19 @@
 <?php
 class Sort {
-	function title($a, $b)
-	{
-	    return strcmp($a->title,$b->title);
+
+	function error($a, $b) {
+		$file_cmp = strcmp($a['file'], $b['file']);
+		if ($file_cmp == 0) {
+			return $a['line'] - $b['line'];
+		}
+		return $file_cmp;
 	}
 
-
-	function bootstrap($a, $b)
-	{
-		return strcmp(end($a),end($b));
-	}
-	
-
-	function sort_it($list,$sorttype)
-	{
-		usort($list,array($this,$sorttype));
+	function sort_errors($list) {
+		usort($list, array($this, 'error'));
 		return $list;
 	}
+	
 }
 
 ?>

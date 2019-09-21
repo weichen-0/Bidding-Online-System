@@ -11,15 +11,13 @@ function doBootstrap() {
 	$temp_dir = sys_get_temp_dir();
 
 	# keep track of number of lines successfully processed for each file
-	$pokemon_processed=0;
-	$pokemon_type_processed=0;
-	$User_processed=0;
-
 	# check file size
 	if ($_FILES["bootstrap-file"]["size"] <= 0)
+	if ($_FILES["bootstrap-file"]["size"] <= 0) {
 		$errors[] = "input files not found";
 
 	else {
+	} else {
 		
 		$zip = new ZipArchive;
 		$res = $zip->open($zip_file);
@@ -29,44 +27,52 @@ function doBootstrap() {
 			$zip->close();
 		
 			$pokemon_path = "$temp_dir/pokemon.csv";
-			$pokemon_type_path = "$temp_dir/pokemon_type.csv";
-			$User_path = "$temp_dir/User.csv";
-			
-			$pokemon_type = @fopen($pokemon_type_path, "r");
-			$pokemon = @fopen($pokemon_path, "r");
-			$User = @fopen($User_path, "r");
-			
-			if (empty($pokemon) || empty($pokemon_type) || empty($User)){
-				$errors[] = "input files not found";
-				if (!empty($pokemon)){
-					fclose($pokemon);
-					@unlink($pokemon_path);
-				} 
-				
-				if (!empty($pokemon_type)) {
-					fclose($pokemon_type);
-					@unlink($pokemon_type_path);
+			// include all csv files in the bootstrap zip
+			$file_names = ["student.csv", "course.csv", "section.csv", "prerequisite.csv", "course_completed.csv", "bid.csv"];
+
+			// loop through file_names to generate a list of file paths
+			$file_paths = array();
+			foreach ($file_names as $file_name) {
+				$type = explode(".", $file_name)[0];
+				$file_paths[$type] = "$temp_dir/$file_name"; 
+			}
+
+			// loop through file_paths to generate a list of opened files
+			$files = array();
+			foreach ($file_paths as $type => $file_path) {
+				$files[$type] = @fopen($file_path, "r");
+			}
+
+			// check for empty csv files
+			$fileEmpty = false;
+			foreach ($files as $type => $file) {
+				if (empty($file)) {
+					$errors[] = "$type.csv is empty";
+					$fileEmpty = true;
 				}
-				
-				if (!empty($User)) {
-					fclose($User);
-					@unlink($User_path);
-				}
-				
 				
 			}
 			else {
+			
+			// close and unlink all files and its paths if any csv file is empty
+			if ($fileEmpty){
+				foreach ($files as $type => $file) {
+					fclose($file);
+					@unlink($file_paths[$type]);
+				}
+
+			} else {
 				$connMgr = new ConnectionManager();
 				$conn = $connMgr->getConnection();
 
 				# start processing
-				
-				# truncate current SQL tables
+				// ============================ STUDENT VALIDATION ===============================
+				$student_dao = new StudentDAO();
+				$student_dao->removeAll();
 
 				# then read each csv file line by line (remember to skip the header)
-				# $data = fgetcsv($file) gets you the next line of the CSV file which will be stored 
-				# in the array $data
-				# $data[0] is the first element in the csv row, $data[1] is the 2nd, ....
+				$row_num = 2;
+				$student_processed = 0;
 
 				# process each line and check for errors
 				

@@ -46,7 +46,7 @@
     }
 
     // checks if it is bidding round 1, if yes then students only allowed to bid for courses under their own school
-    if ($round_dao->retrieveRound == 1 && $student->school != $courseObj->school) {
+    if ($round_dao->retrieveRound() == 1 && $student->school != $courseObj->school) {
         $_SESSION['errors'] = ["Only courses under your school ({$student->school}) are biddable in Round 1!"];
         header("Location: bid_section.php");
         exit;
