@@ -1,5 +1,5 @@
 <?php
-require_once 'common.php';
+require_once 'csv_validation.php';
 
 function doBootstrap() {
 
@@ -10,13 +10,10 @@ function doBootstrap() {
 	# Get temp dir on system for uploading
 	$temp_dir = sys_get_temp_dir();
 
-	# keep track of number of lines successfully processed for each file
 	# check file size
-	if ($_FILES["bootstrap-file"]["size"] <= 0)
 	if ($_FILES["bootstrap-file"]["size"] <= 0) {
 		$errors[] = "input files not found";
 
-	else {
 	} else {
 		
 		$zip = new ZipArchive;
@@ -26,7 +23,6 @@ function doBootstrap() {
 			$zip->extractTo($temp_dir);
 			$zip->close();
 		
-			$pokemon_path = "$temp_dir/pokemon.csv";
 			// include all csv files in the bootstrap zip
 			$file_names = ["student.csv", "course.csv", "section.csv", "prerequisite.csv", "course_completed.csv", "bid.csv"];
 
@@ -50,9 +46,7 @@ function doBootstrap() {
 					$errors[] = "$type.csv is empty";
 					$fileEmpty = true;
 				}
-				
 			}
-			else {
 			
 			// close and unlink all files and its paths if any csv file is empty
 			if ($fileEmpty){
@@ -65,95 +59,237 @@ function doBootstrap() {
 				$connMgr = new ConnectionManager();
 				$conn = $connMgr->getConnection();
 
-				# start processing
 				// ============================ STUDENT VALIDATION ===============================
 				$student_dao = new StudentDAO();
 				$student_dao->removeAll();
 
-				# then read each csv file line by line (remember to skip the header)
 				$row_num = 2;
 				$student_processed = 0;
-
-				# process each line and check for errors
-				
-				# for this lab, assume the only error you should check for is that each CSV field 
-				# must not be blank 
-
-
-				
-				# for the project, the full error list is listed in the wiki
-
-				// Pokemon Type
-				$pokemonTypeDAO = new PokemonTypeDAO();
-				$pokemonTypeDAO->removeAll();
 		
 				// process each line, check for errors, then insert if no errors
-				$data = fgetcsv($pokemon_type);
-				while (($data = fgetcsv($pokemon_type)) != false) {
-					$pokemonTypeDAO->add($data[0]);
-					$pokemon_type_processed++;
+				$header = fgetcsv($files["student"]);
+				while (($data = fgetcsv($files["student"])) != false) {
+					$row = trim_row($data);
+					$row_errors = common_validate_row($header, $row);
+
+					// if pass common validations, do file-specific validations
+					if (empty($row_errors)) {
+						$row_errors = student_validate_row($row);
+					} 
+
+					// if pass file-specific validations, add to database, else record error
+					if (empty($row_errors)) {
+						$student_dao->add(new Student($row[0], $row[1], $row[2], $row[3], $row[4]));
+						$student_processed++;
+					} else {
+						$errors[] = ["file" => "student.csv", "line" => $row_num, "message" => $row_errors];
+					}
+
+					$row_num++;
 				}
 				
-				// clean up
-				fclose($pokemon_type);
-				@unlink($pokemon_type_path);
+				fclose($files["student"]);
+				@unlink($file_paths["student"]);
 				
-				// Pokemon 
-				$pokemonDAO = new PokemonDAO();
-				$pokemonDAO->removeAll();
+
+				// ============================= COURSE VALIDATION ===============================
+				$course_dao = new CourseDAO();
+				$course_dao->removeAll();
+
+				$row_num = 2;
+				$course_processed = 0;
 
 				// process each line, check for errors, then insert if no errors
-				$data = fgetcsv($pokemon);
-				while (($data = fgetcsv($pokemon)) != false) {
-					$pokemonDAO->add(new Pokemon($data[0], $data[1]));
-					$pokemon_processed++;
+				$header = fgetcsv($files["course"]);
+				while (($data = fgetcsv($files["course"])) != false) {
+					$row = trim_row($data);
+					$row_errors = common_validate_row($header, $row);
+
+					// if pass common validations, do file-specific validations
+					if (empty($row_errors)) {
+						$row_errors = course_validate_row($row);
+					} 
+
+					// if pass file-specific validations, add to database, else record error
+					if (empty($row_errors)) {
+						$course_dao->add(new Course($row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6]));
+						$course_processed++;
+					} else {
+						$errors[] = ["file" => "course.csv", "line" => $row_num, "message" => $row_errors];
+					}
+
+					$row_num++;
 				}
 
-				// clean up
-				fclose($pokemon);
-				@unlink($pokemon_path);
+				fclose($files["course"]);
+				@unlink($file_paths["course"]);
 
-				// User 
-				$userDAO = new UserDAO();
-				$userDAO->removeAll();
+				// ============================= SECTION VALIDATION ==============================
+				$section_dao = new SectionDAO();
+				$section_dao->removeAll();
+
+				$row_num = 2;
+				$section_processed = 0;
 
 				// process each line, check for errors, then insert if no errors
-				$data = fgetcsv($User); // skip header
-				while (($data = fgetcsv($User)) != false) {
-					$userDAO->add(new User($data[0], $data[1], $data[2], $data[3]));
-					$User_processed++;
+				$header = fgetcsv($files["section"]);
+				while (($data = fgetcsv($files["section"])) != false) {
+					$row = trim_row($data);
+					$row_errors = common_validate_row($header, $row);
+
+					// if pass common validations, do file-specific validations
+					if (empty($row_errors)) {
+						$row_errors = section_validate_row($row);
+					} 
+
+					// if pass file-specific validations, add to database, else record error
+					if (empty($row_errors)) {
+						$section_dao->add(new Section($row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7]));
+						$section_processed++;
+					} else {
+						$errors[] = ["file" => "section.csv", "line" => $row_num, "message" => $row_errors];
+					}
+
+					$row_num++;
 				}
 
-				// clean up
-				fclose($User);
-				@unlink($User_path);
+				fclose($files["section"]);
+				@unlink($file_paths["section"]);
+
+
+				// ============================= PREREQUISITE VALIDATION ==============================
+				$prereq_dao = new PrereqDAO();
+				$prereq_dao->removeAll();
+
+				$row_num = 2;
+				$prereq_processed = 0;
+
+				// process each line, check for errors, then insert if no errors
+				$header = fgetcsv($files["prerequisite"]);
+				while (($data = fgetcsv($files["prerequisite"])) != false) {
+					$row = trim_row($data);
+					$row_errors = common_validate_row($header, $row);
+
+					// if pass common validations, do file-specific validations
+					if (empty($row_errors)) {
+						$row_errors = prereq_validate_row($row);
+					} 
+
+					// if pass file-specific validations, add to database, else record error
+					if (empty($row_errors)) {
+						$prereq_dao->add($row[0], $row[1]);
+						$prereq_processed++;
+					} else {
+						$errors[] = ["file" => "prerequisite.csv", "line" => $row_num, "message" => $row_errors];
+					}
+
+					$row_num++;
+				}
+
+				fclose($files["prerequisite"]);
+				@unlink($file_paths["prerequisite"]);
+
+
+				// ============================= COURSE COMPLETED VALIDATION ==============================
+				$course_completed_dao = new CourseCompletedDAO();
+				$course_completed_dao->removeAll();
+
+				$row_num = 2;
+				$course_completed_processed = 0;
+
+				// process each line, check for errors, then insert if no errors
+				$header = fgetcsv($files["course_completed"]);
+				while (($data = fgetcsv($files["course_completed"])) != false) {
+					$row = trim_row($data);
+					$row_errors = common_validate_row($header, $row);
+
+					// if pass common validations, do file-specific validations
+					if (empty($row_errors)) {
+						$row_errors = course_completed_validate_row($row);
+					} 
+
+					// if pass file-specific validations, add to database, else record error
+					if (empty($row_errors)) {
+						$course_completed_dao->add($row[0], $row[1]);
+						$course_completed_processed++;
+					} else {
+						$errors[] = ["file" => "course_completed.csv", "line" => $row_num, "message" => $row_errors];
+					}
+
+					$row_num++;
+				}
+
+				fclose($files["course_completed"]);
+				@unlink($file_paths["course_completed"]);
+
+
+				// ============================= BID VALIDATION ==============================
+				$bid_dao = new BidDAO();
+				$bid_dao->removeAll();
+
+				$row_num = 2;
+				$bid_processed = 0;
+
+				// process each line, check for errors, then insert if no errors
+				$header = fgetcsv($files["bid"]);
+				while (($data = fgetcsv($files["bid"])) != false) {
+					$row = trim_row($data);
+					$row_errors = common_validate_row($header, $row);
+
+					// if pass common validations, do file-specific validations
+					if (empty($row_errors)) {
+						$row_errors = bid_validate_row($row);
+					} 
+
+					// if pass file-specific validations, add to database, else record error
+					if (empty($row_errors)) {
+						$student = $student_dao->retrieve($row[0]);
+						$updatedBal = $student->edollar - $row[1];
+						$student_dao->update(new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal));
+
+						$bid_dao->add(new Bid($row[0], $row[1], $row[2], $row[3]));
+						$bid_processed++;
+					} else {
+						$errors[] = ["file" => "bid.csv", "line" => $row_num, "message" => $row_errors];
+					}
+
+					$row_num++;
+				}
+
+				fclose($files["bid"]);
+				@unlink($file_paths["bid"]);
+
+				// remove all records in enrolment DAO
+				$enrolment_dao = new EnrolmentDAO();
+				$enrolment_dao->removeAll();
+
+				// start the round after bootstrapping
+				$round_dao = new RoundDAO();
+				$round_dao->set(1, "ACTIVE");
 			}
 		}
 	}
 
-	# Sample code for returning JSON format errors. remember this is only for the JSON API. Humans should not get JSON errors.
 
-	if (!isEmpty($errors))
-	{	
+	$result = [ 
+		"status" => "success",
+		"num-record-loaded" => [
+			["bid.csv" => $bid_processed],
+			["course.csv" => $course_processed],
+			["course_completed.csv" => $course_completed_processed], 
+			["prerequisite.csv" => $prereq_processed],
+			["section.csv" => $section_processed],
+			["student.csv" => $student_processed]
+		]
+	];
+
+	if (!empty($errors)) {
 		$sortclass = new Sort();
-		$errors = $sortclass->sort_it($errors,"bootstrap");
-		$result = [ 
-			"status" => "error",
-			"messages" => $errors
-		];
+		$errors = $sortclass->sort_errors($errors);
+		$result["status"] = "error";
+		$result["error"] = $errors;
 	}
 
-	else
-	{	
-		$result = [ 
-			"status" => "success",
-			"num-record-loaded" => [
-				"pokemon.csv" => $pokemon_processed,
-				"pokemon_type.csv" => $pokemon_type_processed,
-				"user.csv" => $User_processed
-			]
-		];
-	}
 	header('Content-Type: application/json');
 	echo json_encode($result, JSON_PRETTY_PRINT);
 
