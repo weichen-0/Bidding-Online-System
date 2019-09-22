@@ -4,18 +4,27 @@ require_once 'csv_validation.php';
 function doBootstrap() {
 
 	$errors = array();
-	# need tmp_name -a temporary name create for the file and stored inside apache temporary folder- for proper read address
-	$zip_file = $_FILES["bootstrap-file"]["tmp_name"];
 
 	# Get temp dir on system for uploading
 	$temp_dir = sys_get_temp_dir();
 
+	# tracks number of rows processed for each csv
+	$student_processed = 0;
+	$course_processed = 0;
+	$section_processed = 0;
+	$prereq_processed = 0;
+	$course_completed_processed = 0;
+	$bid_processed = 0;
+
 	# check file size
-	if ($_FILES["bootstrap-file"]["size"] <= 0) {
+	if (empty($_FILES["bootstrap-file"]["size"])) {
 		$errors[] = "input files not found";
 
 	} else {
 		
+		# need tmp_name -a temporary name create for the file and stored inside apache temporary folder- for proper read address
+		$zip_file = $_FILES["bootstrap-file"]["tmp_name"];
+
 		$zip = new ZipArchive;
 		$res = $zip->open($zip_file);
 
@@ -43,16 +52,19 @@ function doBootstrap() {
 			$fileEmpty = false;
 			foreach ($files as $type => $file) {
 				if (empty($file)) {
-					$errors[] = "$type.csv is empty";
 					$fileEmpty = true;
+					break;
 				}
 			}
 			
 			// close and unlink all files and its paths if any csv file is empty
 			if ($fileEmpty){
-				foreach ($files as $type => $file) {
-					fclose($file);
-					@unlink($file_paths[$type]);
+				$errors[] = "input files not found";
+				foreach($files as $type => $file) {
+					if (!empty($file)) {
+						fclose($file); 
+						@unlink($file_paths[$type]);
+					}
 				}
 
 			} else {
@@ -64,7 +76,6 @@ function doBootstrap() {
 				$student_dao->removeAll();
 
 				$row_num = 2;
-				$student_processed = 0;
 		
 				// process each line, check for errors, then insert if no errors
 				$header = fgetcsv($files["student"]);
@@ -97,7 +108,6 @@ function doBootstrap() {
 				$course_dao->removeAll();
 
 				$row_num = 2;
-				$course_processed = 0;
 
 				// process each line, check for errors, then insert if no errors
 				$header = fgetcsv($files["course"]);
@@ -129,7 +139,6 @@ function doBootstrap() {
 				$section_dao->removeAll();
 
 				$row_num = 2;
-				$section_processed = 0;
 
 				// process each line, check for errors, then insert if no errors
 				$header = fgetcsv($files["section"]);
@@ -162,7 +171,6 @@ function doBootstrap() {
 				$prereq_dao->removeAll();
 
 				$row_num = 2;
-				$prereq_processed = 0;
 
 				// process each line, check for errors, then insert if no errors
 				$header = fgetcsv($files["prerequisite"]);
@@ -195,7 +203,6 @@ function doBootstrap() {
 				$course_completed_dao->removeAll();
 
 				$row_num = 2;
-				$course_completed_processed = 0;
 
 				// process each line, check for errors, then insert if no errors
 				$header = fgetcsv($files["course_completed"]);
@@ -228,7 +235,6 @@ function doBootstrap() {
 				$bid_dao->removeAll();
 
 				$row_num = 2;
-				$bid_processed = 0;
 
 				// process each line, check for errors, then insert if no errors
 				$header = fgetcsv($files["bid"]);
@@ -285,7 +291,12 @@ function doBootstrap() {
 
 	if (!empty($errors)) {
 		$sortclass = new Sort();
-		$errors = $sortclass->sort_errors($errors);
+		if (is_array($errors[0])) {
+			$errors = $sortclass->sort_it($errors, "array");
+		} else {
+			$errors = $sortclass->sort_it($errors, "not_array");
+		}
+		
 		$result["status"] = "error";
 		$result["error"] = $errors;
 	}

@@ -1,7 +1,7 @@
 <?php
 class Sort {
 
-	function error($a, $b) {
+	function array($a, $b) {
 		$file_cmp = strcmp($a['file'], $b['file']);
 		if ($file_cmp == 0) {
 			return $a['line'] - $b['line'];
@@ -9,8 +9,12 @@ class Sort {
 		return $file_cmp;
 	}
 
-	function sort_errors($list) {
-		usort($list, array($this, 'error'));
+	function not_array($a, $b) {
+		return strcmp($a, $b);
+	}
+
+	function sort_it($list, $type) {
+		usort($list, array($this, $type));
 		return $list;
 	}
 	
