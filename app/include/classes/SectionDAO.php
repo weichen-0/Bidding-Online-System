@@ -63,6 +63,27 @@ class SectionDAO {
 
         return $result;
     }    
+
+    public function add($section) {
+        $sql = "INSERT IGNORE INTO section (course, section, day, start, end, instructor, venue, size) VALUES (:course, :section, :day, :start, :end, :instructor, :venue, :size)";
+
+        $connMgr = new ConnectionManager();      
+        $conn = $connMgr->getConnection();
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindParam(':course', $section->course, PDO::PARAM_STR);
+        $stmt->bindParam(':section', $section->section, PDO::PARAM_STR);
+        $stmt->bindParam(':day', $section->day, PDO::PARAM_INT);
+        $stmt->bindParam(':start', $section->start, PDO::PARAM_STR);
+        $stmt->bindParam(':end', $section->end, PDO::PARAM_STR);
+        $stmt->bindParam(':instructor', $section->instructor, PDO::PARAM_STR);
+        $stmt->bindParam(':venue', $section->venue, PDO::PARAM_STR);
+        $stmt->bindParam(':size', $section->size, PDO::PARAM_INT);
+
+        $isAddOK = $stmt->execute();
+
+        return $isAddOK;
+    }
     
     // remove all sections
 	public function removeAll() {
