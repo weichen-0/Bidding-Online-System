@@ -24,6 +24,7 @@ function printErrors() {
     }    
 }
 
+## NOT INCLUDED 
 function printMessages() {
     if(isset($_SESSION['msg'])){
         echo "<div class='message'><ul>";
