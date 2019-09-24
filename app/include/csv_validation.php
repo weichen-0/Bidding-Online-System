@@ -102,8 +102,6 @@ function course_validate_row($row) {
 }
 
 
-##NOT UPLOADED
-
 function section_validate_row($row) {
 
 	$row_errors = array();
