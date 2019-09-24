@@ -294,7 +294,7 @@ function doBootstrap() {
 		if (is_array($errors[0])) {
 			$errors = $sortclass->sort_it($errors, "array");
 		} else {
-			$errors = $sortclass->sort_it($errors, "not_array");
+			$errors = $sortclass->sort_it($errors, "string");
 		}
 		
 		$result["status"] = "error";

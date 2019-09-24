@@ -38,15 +38,16 @@ function printMessages() {
     }    
 }
 
+## NEED TO UPDATE ON REPO
 function isMissingOrEmpty($name) {
     if (!isset($_REQUEST[$name])) {
-        return "$name cannot be empty";
+        return "missing $name";
     }
 
     // client did send the value over
     $value = $_REQUEST[$name];
     if (empty($value)) {
-        return "$name cannot be empty";
+        return "blank $name";
     }
 }
 
