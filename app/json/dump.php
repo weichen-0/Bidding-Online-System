@@ -91,6 +91,7 @@ if (!isEmpty($errors)) {
                                           "course" => $ele];
         }
     }
+    $course_completed_result = $sort_class->sort_it($course_completed_resultm, "course_completed");
 
     $enrolment_result = array();
     $enrolments = $enrolment_dao->retrieveAll();
@@ -100,6 +101,7 @@ if (!isEmpty($errors)) {
                                "section" => $enrolment->section, 
                                "amount" => $enrolment->amount];
     }
+    $enrolment_result = $sort_class->sort_it($enrolment_result, "enrolment");
 
     $result = ["status" => "success", 
                "course" => $course_result,

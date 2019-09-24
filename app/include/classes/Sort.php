@@ -24,6 +24,17 @@ class Sort {
 		return $letter_cmp;
 	}
 
+	function prereq_course ($a, $b) {
+		$a_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$a['prerequisite']);  
+		$b_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$b['prerequisite']);
+		
+		$letter_cmp = strcmp($a_arr[0], $b_arr[0]);
+		if ($letter_cmp == 0) {
+			return $a_arr[1] - $b_arr[1];
+		}
+		return $letter_cmp;
+	}
+
 	function section($a, $b) {
 		$course_cmp = $this->course($a, $b);
 		if ($course_cmp == 0) {
@@ -39,17 +50,33 @@ class Sort {
 	function prereq($a, $b) {
 		$course_cmp = $this->course($a, $b);
 		if ($course_cmp == 0) {
-			return $this->course($a['prerequisite'], $b['prerequisite']);
+			return $this->prereq_course($a, $b);
 		}
 		return $course_cmp;
 	}
 
 	function bid($a, $b) {
-		$course_cmp = $this->course($a['course'], $b['course']);
+		$course_section_cmp = $this->section($a, $b);
+		if ($course_section_cmp != 0) {
+			return $course_section_cmp;
+		}
+		$bid_cmp = $a['amount'] - $b['amount'];
+		if ($bid_cmp != 0) {
+			return $bid_cmp;
+		}
+		return $this->student($a, $b);
+	}
+
+	function course_completed($a, $b) {
+		$course_cmp = $this->course($a, $b);
 		if ($course_cmp != 0) {
 			return $course_cmp;
 		}
-		$section_cmp = $this->section($a)
+		return $this->student($a, $b);
+	}
+
+	function enrolment ($a, $b) {
+		return $this->course_completed($a, $b);
 	}
 
 	function sort_it($list, $type) {
