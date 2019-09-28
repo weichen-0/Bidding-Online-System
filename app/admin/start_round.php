@@ -3,6 +3,8 @@
     require_once '../include/protect.php';
 
     $round_dao = new RoundDAO();
+    $round_num = $round_dao->retrieveRound();
+    $round_status = $round_dao->retrieveStatus()
 ?>
 
 <html>
@@ -20,7 +22,28 @@
         <p>
             Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
 		</p>
+        <table>
+            <form action='start_round.php' method='post'>
+                <td><input name='submit' value='Click here to start round!' type='submit' style="width:250px"/></td>
+            </form>
+        </table>
+<?php
+    if (isset($_POST['submit'])) {
+        if ($round_num == 1 && $round_status == 'INACTIVE') {
+            $_SESSION['msg'] = ["Round 2 started successfully"];
+            $round_dao->set(2, 'ACTIVE');
+            printMessages();
+            return;
+        }
 
+        if ($round_status == 'ACTIVE') {
+            $_SESSION['errors'] = ["Round $round_num has already started!"];
+        } else if ($round_num == 2) {
+            $_SESSION['errors'] = ["Round 2 has already ended!"];
+        }
+        printErrors();
+    }
+?>
 	</body>
 </html>
 
