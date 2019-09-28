@@ -1,6 +1,6 @@
 <?php
     require_once '../include/common.php';
-    require_once '../include/protect.php';
+    require_once '../include/protect_student.php';
 
     $dao = new StudentDAO();
     $student = $dao->retrieve($_SESSION['userid']);
