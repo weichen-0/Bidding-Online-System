@@ -9,9 +9,16 @@ $errors = [ isMissingOrEmpty ('token') ];
 $errors = array_filter($errors);
 
 if (!isEmpty($errors)) {
+    $errors = array_values($errors);
+
+} else if (!verify_token($_REQUEST['token'])) {
+    $errors[] = "invalid token";
+}
+
+if (!isEmpty($errors)) {
     $result = [
         "status" => "error",
-        "messages" => array_values($errors)
+        "messages" => $errors
         ];
 
     header('Content-Type: application/json');
