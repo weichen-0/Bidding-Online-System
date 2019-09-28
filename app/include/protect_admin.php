@@ -1,9 +1,9 @@
 <?php
-require_once 'token.php';
+// require_once 'token.php';
 require_once 'common.php';
 
 $userid = '';
-if  (isset($_SESSION['userid'])) {
+if  (isset($_SESSION['userid']) && $_SESSION['userid'] == 'admin') {
 	$userid = $_SESSION['userid'];
 	return;
 }
