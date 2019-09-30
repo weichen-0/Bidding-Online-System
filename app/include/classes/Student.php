@@ -8,7 +8,7 @@ class Student {
     public $school;
     public $edollar;
     
-    public function __construct($userid='', $password='', $name='', $school='', $edollar = 0) {
+    public function __construct($userid, $password, $name, $school, $edollar) {
         $this->userid = $userid;
         $this->password = $password;
         $this->name = $name;
