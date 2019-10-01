@@ -23,23 +23,18 @@ else{
     $student_dao = new StudentDAO();
     $student = $student_dao->retrieve($userid);
 
-    if ($student == null) {
-        $errors[] = "invalid username";
-    } else if (!$student->authenticate($password)) {
-        $errors[] = "invalid password";
-    }
-
-    if (isEmpty($errors)) {
+    if ($student != null && $student->authenticate($password)) {
         $result = [
             "status" => "success",
             "token" => generate_token($userid)
         ];
+
     } else {
-        // $errors[] = "invalid username/password";
+        $errors[] = "invalid username/password";
         $result = [
             "status" => "error",
             "messages" => $errors
-            ];
+        ];
     }
 }
 header('Content-Type: application/json');
