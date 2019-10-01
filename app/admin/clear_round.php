@@ -3,6 +3,8 @@
     require_once '../include/protect_admin.php';
     
     $round_dao = new RoundDAO();
+    $round_num = $round_dao->retrieveRound();
+    $round_status = $round_dao->retrieveStatus()
 ?>
 
 <html>
