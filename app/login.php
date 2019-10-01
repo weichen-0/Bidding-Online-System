@@ -10,7 +10,7 @@ if (!isset($_SESSION['errors']) && isset($_POST['userid']) && isset($_POST['pass
     $password = $_POST['password'];
 
     // if admin login is valid, direct to admin homepage
-    if ($userid == 'admin' && $password == 'admin') {
+    if ($userid == 'admin' && $password == 'skulked4154]campsite') {
         $_SESSION['userid'] = $userid;
         $_SESSION['login'] = true;
         header("Location: admin/index.php");
@@ -26,7 +26,6 @@ if (!isset($_SESSION['errors']) && isset($_POST['userid']) && isset($_POST['pass
         $_SESSION['login'] = true;
         header("Location: student/index.php");
         exit;
-
     } 
 
     $_SESSION['errors'] = ['Invalid username or password!'];
