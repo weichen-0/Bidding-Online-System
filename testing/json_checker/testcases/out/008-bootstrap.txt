@@ -1,0 +1,41 @@
+{
+    "status": "error",
+    "num-record-loaded": [
+        {
+            "bid.csv": 10
+        },
+        {
+            "course.csv": 24
+        },
+        {
+            "course_completed.csv": 3
+        },
+        {
+            "prerequisite.csv": 8
+        },
+        {
+            "section.csv": 35
+        },
+        {
+            "student.csv": 13
+        }
+    ],
+    "error": [
+        {
+            "file": "student.csv",
+            "line": 8,
+            "message": [
+                "blank userid",
+                "blank password"
+            ]
+        },
+        {
+            "file": "student.csv",
+            "line": 9,
+            "message": [
+                "blank name",
+                "blank school"
+            ]
+        }
+    ]
+}

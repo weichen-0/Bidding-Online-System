@@ -84,6 +84,11 @@ function listFiles($directory) {
     array_shift($filenames_arr);
     array_shift($filenames_arr);
 
+    //remove .DS_Store
+    if (in_array('.DS_Store', $filenames_arr)) {
+        array_shift($filenames_arr);
+    }
+
     sort($filenames_arr);
     return $filenames_arr;    
 }

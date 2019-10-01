@@ -11,3 +11,7 @@ app/.DS_Store
 app/resources/.DS_Store
 app/resources/.DS_Store
 app/resources/.DS_Store
+testing/json_checker/testcases/out/.DS_Store
+testing/json_checker/testcases/yours/.DS_Store
+testing/json_checker/testcases/in/.DS_Store
+testing/json_checker/testcases/.DS_Store

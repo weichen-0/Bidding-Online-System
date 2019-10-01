@@ -1,2 +1,0 @@
-userid=ben.ng.2009
-password=qwerty130

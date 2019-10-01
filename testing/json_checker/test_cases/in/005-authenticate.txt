@@ -1,2 +1,0 @@
-userid=edward.tan.2009
-password=qwerty100

@@ -24,9 +24,7 @@ class Course {
     // converts date and time to iso_datetime for ease of comparison
     private function convertDateTime($date, $time) {
         $datetime = $date . ' ' . $time;
-        var_dump($datetime);
         $dateObj = DateTime::createFromFormat("Ymd H:i", $datetime);
-        var_dump($dateObj);
         return $dateObj->format(Datetime::ATOM);
     }
 
