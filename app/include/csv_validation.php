@@ -17,7 +17,7 @@ function common_validate_row($header, $row) {
 	$row_errors = array();
 	// safe to assume each row has same num of fields as header row according to wiki
 	for ($i = 0; $i < count($header); $i++) {
-		if (empty($row[$i])) {
+		if ($row[$i] === '') {
 			$field = $header[$i];
 			$row_errors[] = "blank $field";
 		}
