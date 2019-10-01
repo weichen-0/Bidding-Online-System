@@ -21,6 +21,33 @@
             Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
 		</p>
 
+        <table>
+            <form action='clear_round.php' method='post'>
+                <td><input name='submit' value='Click here to end round!' type='submit' style="width:250px"/></td>
+            </form>
+        </table>
+<?php
+    if (isset($_POST['submit'])) {
+        if ($round_num == 1 && $round_status == 'ACTIVE') {
+            $_SESSION['msg'] = ["Round 1 ended successfully"];
+            $round_dao->set(2, 'INACTIVE');
+            printMessages();
+            return;
+        }
+        elseif ($round_num == 2 && $round_status == 'ACTIVE') {
+            $_SESSION['msg'] = ["Round 2 ended successfully"];
+            $round_dao->set(2, 'INACTIVE');
+            printMessages();
+            return;
+        }
+
+        if ($round_status == 'INACTIVE') {
+            $_SESSION['errors'] = ["Round $round_num has already ended!"];
+            printErrors();
+        } 
+        
+    }
+?>
 	</body>
 </html>
 
