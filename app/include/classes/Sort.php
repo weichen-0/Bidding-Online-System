@@ -1,17 +1,17 @@
 <?php
 class Sort {
 
-	function array($a, $b) {
-		$file_cmp = strcmp($a['file'], $b['file']);
-		if ($file_cmp == 0) {
-			return $a['line'] - $b['line'];
-		}
-		return $file_cmp;
-	}
+	// function array($a, $b) {
+	// 	$file_cmp = strcmp($a['file'], $b['file']);
+	// 	if ($file_cmp == 0) {
+	// 		return $a['line'] - $b['line'];
+	// 	}
+	// 	return $file_cmp;
+	// }
 
-	function string($a, $b) {
-		return strcmp($a, $b);
-	}
+	// function string($a, $b) {
+	// 	return strcmp($a, $b);
+	// }
 
 	function course($a, $b) {
 		$a_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$a['course']);  
@@ -44,7 +44,7 @@ class Sort {
 	}
 
 	function student($a, $b) {
-		return $this->string($a['userid'], $b['userid']);
+		return strcmp($a['userid'], $b['userid']);
 	}
 
 	function prereq($a, $b) {
