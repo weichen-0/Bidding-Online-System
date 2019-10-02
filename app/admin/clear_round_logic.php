@@ -19,6 +19,8 @@
     // to refund e$
     $student_dao = new StudentDAO();
 
+
+    
     // round 1
     if ($round_num == 1) {
 
@@ -63,11 +65,17 @@
                     }
                 }
                 
-                // find clearing price: sort all bids in descending order
-                //then choose the nth bid amount, where n is the number of vacancies
+                // find clearing price
+                //sort all bids in descending order
                 rsort($allBidAmts);
-                $clearingprice = $allBidAmts[$size - 1];
                 
+                //find the nth bid amount, with n being the number of vacancies
+                if (count($allBidAmts) > $size) {
+                    $clearingprice = $allBidAmts[$size - 1];
+                }
+                else {
+                    $clearingprice = min($allBidAmts);
+                }
 
                 // applying round 1 logic
                 $clearingpriceBids = array();
