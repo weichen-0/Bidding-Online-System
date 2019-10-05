@@ -1,6 +1,9 @@
 <?php
-    require_once '../include/common.php';
-    require_once '../include/protect_admin.php';
+    // require_once '../include/common.php';
+    // require_once '../include/protect_admin.php';
+
+    // already requires common.php and protect_admin.php
+    require_once 'clear_round_logic.php';
     
     $round_dao = new RoundDAO();
     $round_num = $round_dao->retrieveRound();
@@ -30,24 +33,19 @@
         </table>
 <?php
     if (isset($_POST['submit'])) {
-        if ($round_num == 1 && $round_status == 'ACTIVE') {
-            $_SESSION['msg'] = ["Round 1 ended successfully"];
-            $round_dao->set(2, 'INACTIVE');
-            printMessages();
-            return;
-        }
-        elseif ($round_num == 2 && $round_status == 'ACTIVE') {
-            $_SESSION['msg'] = ["Round 2 ended successfully"];
-            $round_dao->set(2, 'INACTIVE');
-            printMessages();
-            return;
-        }
 
-        if ($round_status == 'INACTIVE') {
+        if ($round_status == 'ACTIVE') {
+            $_SESSION['msg'] = ["Round $round_num ended successfully"];
+            clear_round($round_num);
+            $round_dao->set($round_num, 'INACTIVE');
+
+        } else { // if round is inactive
             $_SESSION['errors'] = ["Round $round_num has already ended!"];
-            printErrors();
-        } 
+        }
         
+        // can just call both since each function checks whether errors and msg is set or not
+        printMessages();
+        printErrors();
     }
 ?>
 	</body>

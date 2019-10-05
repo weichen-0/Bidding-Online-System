@@ -29,18 +29,20 @@
         </table>
 <?php
     if (isset($_POST['submit'])) {
-        if ($round_num == 1 && $round_status == 'INACTIVE') {
-            $_SESSION['msg'] = ["Round 2 started successfully"];
-            $round_dao->set(2, 'ACTIVE');
-            printMessages();
-            return;
-        }
 
         if ($round_status == 'ACTIVE') {
             $_SESSION['errors'] = ["Round $round_num has already started!"];
-        } else if ($round_num == 2) {
+        
+        } else if ($round_num == 1) { // if round 1 is inactive
+            $_SESSION['msg'] = ["Round 2 started successfully"];
+            $round_dao->set(2, 'ACTIVE');
+
+        } else { // if round 2 is inactive
             $_SESSION['errors'] = ["Round 2 has already ended!"];
         }
+
+        // can just call both since each function checks whether errors and msg is set or not
+        printMessages();
         printErrors();
     }
 ?>
