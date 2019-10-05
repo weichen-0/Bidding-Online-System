@@ -24,7 +24,6 @@ function printErrors() {
     }    
 }
 
-## NOT INCLUDED 
 function printMessages() {
     if(isset($_SESSION['msg'])){
         echo "<div class='message'><ul>";
@@ -38,7 +37,6 @@ function printMessages() {
     }    
 }
 
-## NEED TO UPDATE ON REPO
 function isMissingOrEmpty($name) {
     if (!isset($_REQUEST[$name])) {
         return "missing $name";
