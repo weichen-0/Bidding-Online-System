@@ -12,7 +12,7 @@ function clear_round($round_num) {
     $student_dao = new StudentDAO();
     $sort_class = new Sort();
 
-    // process bids and group the ones for the same section together: key <code section>, value <list of bids>
+    // group bids of the same course and section together in a dictionary: key <code section>, value <list of bids>
     $bid_dict = array();
     foreach ($bids as $bid) {
         $key = $bid->code . ' ' . $bid->section;
@@ -68,7 +68,6 @@ function clear_round($round_num) {
             }
         }
     } 
-
 }
     
     // $round_dao = new RoundDAO();
