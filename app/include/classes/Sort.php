@@ -67,6 +67,10 @@ class Sort {
 		return $this->student($a, $b);
 	}
 
+	function desc_bid_obj_amt($a, $b) {
+		return $a->amount - $b->amount;
+	}
+
 	function course_completed($a, $b) {
 		$course_cmp = $this->course($a, $b);
 		if ($course_cmp != 0) {
