@@ -299,23 +299,29 @@ function bid_validate_row($row) {
             $row_errors[] = "section limit reached";
         }
 
-		// check if student has a previous bid for the same course
-		// if yes and updated e$ balance is more than bid amount, remove and refund previous bid
-        foreach($bids as $bid) {
-			$updatedBal = $student->edollar + $bid->amount;
-            if ($bid->code == $code && $updatedBal >= $amt) {
-                $student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $updatedBal));
-                $bid_dao->remove($bid);
-                break;
-            }
-        }
+		// TO UPDATE
+		// check if student has a previous bid for the same course (whether update is required)
+		$prev_bid = null;
+		foreach ($bids as $bid) {
+			if ($bid->code == $code) {
+				$prev_bid = $bid;
+				break;
+			}
+		}
 
-        // check if student has enough edollars
-        // retrieve student again in case of e$ balance changes above
-        $student = $student_dao->retrieve($userid); 
-        if ($amt > $student->edollar) {
-            $row_errors[] = "not enough e-dollar";
-        }
+		// TO UPDATE
+		// check if student has enough edollars whether updating bid or not
+		$insuff_edollar_with_refund = (!is_null($prev_bid) && ($prev_bid->amount + $student->edollar) < $amt);
+		if ($insuff_edollar_with_refund || $amt > $student->edollar) {
+			$row_errors[] = "not enough e-dollar";
+		}
+
+		// TO UPDATE
+		// if all validations passed and prev bid found, remove and refund it
+		if (!is_null($prev_bid) && empty($row_errors)) {
+			$student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $student->edollar + $prev_bid->amount));
+			$bid_dao->remove($prev_bid);
+		}
 	}
 	
 	return $row_errors;
