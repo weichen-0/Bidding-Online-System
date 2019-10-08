@@ -83,6 +83,10 @@ class Sort {
 		return $this->course_completed($a, $b);
 	}
 
+	function string ($a, $b) {
+		return strcmp($a, $b);
+	}
+
 	function sort_it($list, $type) {
 		usort($list, array($this, $type));
 		return $list;

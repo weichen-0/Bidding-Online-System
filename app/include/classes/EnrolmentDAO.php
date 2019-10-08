@@ -25,7 +25,32 @@ class EnrolmentDAO {
         return null;
     }
 
-    // retrieves a retrieve a list of enrolment under the user
+    // NOT INCLUDED YET
+    // retrieve a list of enrolment for a specific section
+    public function retrieveBySection($code, $section) {
+        $sql = 'select * from enrolment where code=:code and section=:section';
+        
+        $connMgr = new ConnectionManager();
+        $conn = $connMgr->getConnection();
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+        $stmt->bindParam(':section', $section, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new Enrolment($row['userid'], $row['amount'],$row['code'], $row['section']);
+        }
+
+        return $result;
+    }
+
+    // retrieves a list of enrolment under the user
     public function retrieveByUser($userid) {
         $sql = 'select * from enrolment where userid=:userid';
         
