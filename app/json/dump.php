@@ -1,21 +1,19 @@
 <?php
-require_once '../include/bootstrap.php';
 require_once '../include/common.php';
 require_once '../include/token.php';
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
 $errors = [ isMissingOrEmpty ('token') ];
+
+if (!empty($_REQUEST('token')) && !verify_token($_REQUEST['token'])) {
+    $errors[] = "invalid token";
+}
+
 $errors = array_filter($errors);
 
 if (!isEmpty($errors)) {
     $errors = array_values($errors);
-
-} else if (!verify_token($_REQUEST['token'])) {
-    $errors[] = "invalid token";
-}
-
-if (!isEmpty($errors)) {
     $result = [
         "status" => "error",
         "messages" => $errors
@@ -43,22 +41,23 @@ foreach ($courses as $course) {
                         "title" => $course->title,
                         "description" => $course->description, 
                         "exam date" => $course->exam_date, 
-                        "exam start" => $course->exam_start, 
-                        "exam end" => $course->exam_end];
+                        "exam start" => str_replace(':', '', $course->exam_start), 
+                        "exam end" => str_replace(':', '', $course->exam_end)];
 }
 $course_result = $sort_class->sort_it($course_result, "course");
 
 $section_result = array();
 $sections = $section_dao->retrieveAll();
+$days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 foreach ($sections as $section) {
     $section_result[] = ["course" => $section->course, 
                             "section" => $section->section, 
-                            "day" => $section->day, 
-                            "start" => $section->start, 
-                            "end" => $section->end, 
+                            "day" => $days[$section->day - 1], 
+                            "start" => str_replace(':', '', $section->start), 
+                            "end" => str_replace(':', '', $section->end), 
                             "instructor" => $section->instructor, 
                             "venue" => $section->venue, 
-                            "size" => $section->size];
+                            "size" => intval($section->size)];
 }
 $section_result = $sort_class->sort_it($section_result, "section");
 
@@ -69,7 +68,7 @@ foreach ($students as $student) {
                             "password" => $student->password, 
                             "name" => $student->name, 
                             "school" => $student->school, 
-                            "edollar" => $student->edollar];
+                            "edollar" => (float) number_format($student->edollar, 1)]; // STILL NOT WORKING
 }
 $student_result = $sort_class->sort_it($student_result, "student");
 
@@ -87,7 +86,7 @@ $bid_result = array();
 $bids = $bid_dao->retrieveAll();
 foreach ($bids as $bid) {
     $bid_result[] = ["userid" => $bid->userid,
-                        "amount" => $bid->amount, 
+                        "amount" => (float) number_format($bid->amount, 1), // STILL NOT WORKING
                         "course" => $bid->code, 
                         "section" => $bid->section];
 }
