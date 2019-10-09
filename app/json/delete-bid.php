@@ -7,12 +7,14 @@ require_once '../include/token.php';
 $errors = [ isMissingOrEmpty ('userid'),
             isMissingOrEmpty ('course'),
             isMissingOrEmpty ('section')];
-$errors = array_filter($errors);
 
-// // to ensure error messages are in alphabetical field order 
-// if (!empty($_REQUEST['token']) && !verify_token($_REQUEST['token'])) {
-//     $errors[] = "invalid token";
-// }
+
+// to ensure error messages are in alphabetical field order 
+if (!empty($_REQUEST['token']) && !verify_token($_REQUEST['token'])) {
+    $errors[] = "invalid token";
+}
+
+$errors = array_filter($errors);
 
 
 if (!isEmpty($errors)) {
