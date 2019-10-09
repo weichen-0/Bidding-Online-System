@@ -79,6 +79,22 @@ if (!isEmpty($errors)) {
 }
 
 // ================== LOGICAL VALIDATION ===================
+$bids = $bid_dao->retrieveByUser($userid);
+// check if student has a previous bid for the same course (whether update is required)
+$prev_bid = null;
+foreach ($bids as $bid) {
+    if ($bid->code == $code) {
+        $prev_bid = $bid;
+        break;
+    }
+}
+
+if (!is_null($prev_bid)) {
+    $student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $student->edollar + $prev_bid->amount));
+    $bid_dao->remove($prev_bid);
+    $bids = $bid_dao->retrieveByUser($userid);
+}
+
 // check if there is an active round
 $round_status = $round_dao->retrieveStatus();
 $round_num = $round_dao->retrieveRound();
@@ -111,7 +127,6 @@ foreach ($section_enrolments as $enrolment) {
 }
 
 // check if class timing clashes with all previously bidded sections
-$bids = $bid_dao->retrieveByUser($userid);
 foreach ($bids as $bid) {
     $prev_section = $section_dao->retrieve($bid->code, $bid->section);
     if ($section->classClashWith($prev_section)) {
@@ -144,15 +159,6 @@ if (in_array($code, $courses_completed)) {
     $errors[] = "course completed";
 }
 
-// check if student has a previous bid for the same course (whether update is required)
-$prev_bid = null;
-foreach ($bids as $bid) {
-    if ($bid->code == $code) {
-        $prev_bid = $bid;
-        break;
-    }
-}
-
 // check if student has enough edollars whether updating bid or not
 $insuff_edollar_with_refund = (!is_null($prev_bid) && ($prev_bid->amount + $student->edollar) < $amt);
 if ($insuff_edollar_with_refund || $amt > $student->edollar) {
@@ -166,11 +172,6 @@ if ((!is_null($prev_bid) && count($bids) > 5) || count($bids) >= 5) {
 
 if (isEmpty($errors)) {
     $result = ["status" => "success"];
-
-    if (!is_null($prev_bid)) {
-        $student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $student->edollar + $prev_bid->amount));
-        $bid_dao->remove($prev_bid);
-    }
 
     $bid_dao->add(new Bid($userid, $amt, $code, $section->section));
     $student = $student_dao->retrieve($userid);
