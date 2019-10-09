@@ -27,7 +27,7 @@
                 <tr>
                     <td>Token</td>
                     <td>
-                        <input name='token' type='text'/>
+                        <input name='token' value='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZGF0ZXRpbWUiOiIyMDE5LTEwLTA5IDAzOjE4OjM2In0.5lQBoMJcxCezkcvjTkHfiN2ZvYi1tIY4HhXTtB2FV-Q'/>
                     </td>
                 </tr>
                 <tr>
