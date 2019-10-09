@@ -4,24 +4,23 @@ require_once '../include/token.php';
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
-$errors = [ isMissingOrEmpty ('course'),
-            isMissingOrEmpty ('section'),
-            isMissingOrEmpty ('token')];
-
-// to ensure error messages are in alphabetical field order 
-if (!empty($_REQUEST('token')) && !verify_token($_REQUEST['token'])) {
-    $errors[] = "invalid token";
-}
-
-$errors[] = isMissingOrEmpty ('userid');
+$errors = [ isMissingOrEmpty ('userid'),
+            isMissingOrEmpty ('course'),
+            isMissingOrEmpty ('section')];
 $errors = array_filter($errors);
 
+// // to ensure error messages are in alphabetical field order 
+// if (!empty($_REQUEST['token']) && !verify_token($_REQUEST['token'])) {
+//     $errors[] = "invalid token";
+// }
+
+
 if (!isEmpty($errors)) {
-    $errors = array_values($errors);
     $result = [
         "status" => "error",
         "messages" => $errors
         ];
+    $errors = array_values($errors);
 
     header('Content-Type: application/json');
     echo json_encode($result, JSON_PRETTY_PRINT);
