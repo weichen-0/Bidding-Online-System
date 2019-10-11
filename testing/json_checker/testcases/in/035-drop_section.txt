@@ -1,4 +1,4 @@
-userid=amy.tan.2009
+userid=amy.ng.2009
 
 course=MGMT001
 
