@@ -4,4 +4,4 @@
 --
 
 INSERT INTO `bios`.`enrolment`  (`userid`, `code`, `section`) VALUES
-('amy.ng.2009', 'IS110', 'S9');
+('amy.ng.2009', 'IS100', 'S1');
