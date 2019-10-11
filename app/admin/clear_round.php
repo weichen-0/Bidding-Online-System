@@ -28,7 +28,7 @@
 
         <table>
             <form action='clear_round.php' method='post'>
-                <td><input name='submit' value='Click here to end round!' type='submit' style="width:250px"/></td>
+                <th><input name='submit' value='Click here to end round!' type='submit' style="width:250px"/></th>
             </form>
         </table>
 <?php

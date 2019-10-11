@@ -21,7 +21,7 @@ if (!isEmpty($errors)) {
     $errors = array_values($errors);
     $result = [
         "status" => "error",
-        "messages" => $errors
+        "message" => $errors
         ];
 
     header('Content-Type: application/json');

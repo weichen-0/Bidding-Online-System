@@ -24,11 +24,11 @@
 		<form id='bootstrap-form' action="bootstrap-process.php" method="post" enctype="multipart/form-data">
 			<table>
 				<tr>
-					<td>Zip File Upload</td>
-					<td><input id='bootstrap-file' type="file" name="bootstrap-file"></td>
+					<th>Zip File Upload</th>
+					<th><input id='bootstrap-file' type="file" name="bootstrap-file"></th>
 				</tr>
 				<tr>
-					<td colspan='2' style="text-align:left"><input name='Import' type='submit' /></td>
+					<th colspan='2' style="text-align:left"><input name='Import' type='submit' /></th>
             	</tr>
 		</form>
 
