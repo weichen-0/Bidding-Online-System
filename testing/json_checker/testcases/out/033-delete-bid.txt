@@ -1,0 +1,9 @@
+{
+
+    "status": "error",
+    
+    "message": [ 
+        "no such bid" 
+    ]
+
+}
