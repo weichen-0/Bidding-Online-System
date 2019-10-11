@@ -1,0 +1,5 @@
+userid=amy.tan.2009
+
+course=MGMT001
+
+section=S1
