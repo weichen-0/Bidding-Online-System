@@ -9,19 +9,19 @@
                 <tr>
                     <td>User ID</td>
                     <td>
-                        <input name='userid' type='text'/>
+                        <input name='userid'/>
                     </td>
                 </tr>
                 <tr>
                     <td>Course</td>
                     <td>
-                        <input name='course' type='text'/>
+                        <input name='course'/>
                     </td>
                 </tr>
                 <tr>
                     <td>Section</td>
                     <td>
-                        <input name='section' type='text'/>
+                        <input name='section'/>
                     </td>
                 </tr>
                 <tr>

@@ -36,8 +36,7 @@
 
         if ($round_status == 'ACTIVE') {
             $_SESSION['msg'] = ["Round $round_num ended successfully"];
-            clear_round($round_num);
-            $round_dao->set($round_num, 'INACTIVE');
+            clear_round();
 
         } else { // if round is inactive
             $_SESSION['errors'] = ["Round $round_num has already ended!"];

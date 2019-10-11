@@ -7,6 +7,9 @@ function clear_round($round_num) {
     $bid_dao = new BidDAO();
     $bids = $bid_dao->retrieveAll();
 
+    $round_dao = new RoundDAO();
+    $round_num = $round_dao->retrieveRound();
+
     $section_dao = new SectionDAO();
     $enrolment_dao = new EnrolmentDAO();
     $student_dao = new StudentDAO();
@@ -68,6 +71,7 @@ function clear_round($round_num) {
             }
         }
     } 
+    $round_dao->set($round_num, 'INACTIVE');
 }
     
     // $round_dao = new RoundDAO();
