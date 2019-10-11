@@ -24,34 +24,78 @@
             Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big><br/>
             Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
         </p>
+
+        <div style="overflow-y:auto; max-height:300px;">
+        <table>
+                <tr>
+                    <th>Course ID</td>
+                    <th>Section</td>
+                    <th>Day</td>
+                    <th>Start</td>
+                    <th>End</td>
+                    <th>Instructor</td>
+                    <th>Venue</td>
+                    <th>Size</td>
+                </tr>
+<?php
+        $section_dao = new SectionDAO();
+        $section_dict = array();
+
+        foreach ($section_dao->retrieveAll() as $section) {
+            if (isset($section_dict[$section->course])) {
+                $section_dict[$section->course][] = $section;
+            } else {
+                $section_dict[$section->course] = [$section];
+            }
+        }
+
+        foreach ($section_dict as $key => $list) {
+            $num_of_sections = count($list);
+            echo "<tr>
+                    <td rowspan='$num_of_sections'>$key</td>";
+            foreach ($list as $section) {
+                echo "<td>{$section->section}</td>
+                    <td>{$section->day}</td>
+                    <td>{$section->start}</td>
+                    <td>{$section->end}</td>
+                    <td>{$section->instructor}</td>
+                    <td>{$section->venue}</td>
+                    <td>{$section->size}</td></tr>";
+            }                    
+        }
+?>
+        </table>        
+        </div>
+        <br/>
+        
         <form method='POST' action='bid_section_process.php'>
         <table>
             <tr>
-                <td>Course ID</td>
-                <td>
+                <th>Course ID</th>
+                <th>
                     <input name='course'/>
-                </td>
+                </th>
             </tr>
             <tr>
-                <td>Section</td>
-                <td>
+                <th>Section</th>
+                <th>
                     <input name='section'/>
-                </td>
+                </th>
             </tr>
             <tr>
-                <td>Bid (e$)</td>
-                <td>
+                <th>Bid (e$)</th>
+                <th>
                     <input name='amount'/>
-                </td>
+                </th>
             </tr>
             <tr>
-                <td colspan='2'>
+                <th colspan='2'>
                     <input name='submit' type='submit' />
                 </td>
             </tr>       
         </table>
         </form>
-        
+
         <p>
 <?php
             if (isset($_SESSION['msg'])) {
@@ -61,5 +105,6 @@
             }
 ?>
         </p>
+
     </body>
 </html>

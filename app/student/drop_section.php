@@ -24,24 +24,51 @@
             Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big><br/>
             Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
         </p>
+
+        <div style="overflow-y:auto; max-height:300px;">
+        <table width=248px>
+                <tr>
+                    <th>Course ID</td>
+                    <th>Section</td>
+                    <th>Amount</td>
+                </tr>
+<?php
+        $enrolment_dao = new EnrolmentDAO();
+        $enrolments = $enrolment_dao->retrieveByUser($student->userid);
+
+        if (empty($enrolments)) {
+            echo "<tr><td colspan=3 style='text-align:center;'>No existing enrolments!</td></tr>";
+        } else {
+            foreach ($enrolments as $enrolment) {
+                echo "<tr>
+                        <td>{$enrolment->code}</td>
+                        <td>{$enrolment->section}</td>
+                        <td>{$enrolment->amount}</td>";
+            }     
+        }               
+?>
+        </table>        
+        </div>
+        <br/>
+
         <form method='POST' action='drop_bid_process.php'>
         <table>
             <tr>
-                <td>Course ID</td>
-                <td>
+                <th>Course ID</th>
+                <th>
                     <input name='course'/>
-                </td>
+                </th>
             </tr>
             <tr>
-                <td>Section</td>
-                <td>
+                <th>Section</th>
+                <th>
                     <input name='section'/>
-                </td>
+                </th>
             </tr>
             <tr>
-                <td colspan='2'>
+                <th colspan='2'>
                     <input name='Drop' type='submit' />
-                </td>
+                </th>
             </tr>
         </table>
         </form>
