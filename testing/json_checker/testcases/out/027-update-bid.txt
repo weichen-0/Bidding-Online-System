@@ -1,9 +1,10 @@
 {
-
+    
 	"status": "error",
 
 	"messages": [
-		"invalid course"
+		"not own school course"
 	]
 
 }
+

@@ -1,0 +1,6 @@
+{
+    "status": "error",
+    "messages": [
+        "round ended"
+    ]
+}
