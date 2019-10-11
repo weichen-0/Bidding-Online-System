@@ -2,7 +2,7 @@
     
 	"status": "error",
 
-	"messages": [
+	"message": [
 		"not own school course"
 	]
 
