@@ -4,8 +4,8 @@ require_once '../include/common.php';
 require_once '../include/token.php';
 
 // isMissingOrEmpty(...) is in common.php
-$errors = [ isMissingOrEmpty ('username'), 
-            isMissingOrEmpty ('password')];
+$errors = [ isMissingOrEmpty ('password'), 
+            isMissingOrEmpty ('username')];
 $errors = array_filter($errors);
 
 // common json validation

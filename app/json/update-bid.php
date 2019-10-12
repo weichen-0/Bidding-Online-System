@@ -4,16 +4,17 @@ require_once '../include/token.php';
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
-$errors = [ isMissingOrEmpty ('userid'),
-            isMissingOrEmpty ('amount'),
+$errors = [ isMissingOrEmpty ('amount'),
             isMissingOrEmpty ('course'),
-            isMissingOrEmpty ('section')];
+            isMissingOrEmpty ('section'),
+            isMissingOrEmpty ('token')];
 
 // to ensure error messages are in alphabetical field order 
 if (!empty($_REQUEST['token']) && !verify_token($_REQUEST['token'])) {
     $errors[] = "invalid token";
 }
 
+$errors[] = isMissingOrEmpty ('userid');
 $errors = array_filter($errors);
 
 if (!isEmpty($errors)) {
@@ -80,6 +81,7 @@ if (!isEmpty($errors)) {
 
 // ================== LOGICAL VALIDATION ===================
 $bids = $bid_dao->retrieveByUser($userid);
+
 // check if student has a previous bid for the same course (whether update is required)
 $prev_bid = null;
 foreach ($bids as $bid) {
@@ -181,6 +183,11 @@ if (isEmpty($errors)) {
     $errors = $sort_class->sort_it($errors, "string");
     $result = ["status" => "error",
                "message" => $errors];
+    
+    // add back previous bid if any error encountered since it was removed at the start
+    if (!is_null($prev_bid)) {
+        $bid_dao->add($prev_bid);
+    }
 }
 
 header('Content-Type: application/json');

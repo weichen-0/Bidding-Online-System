@@ -4,8 +4,7 @@ require_once '../include/token.php';
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
-$errors = [ isMissingOrEmpty ('username'),
-            isMissingOrEmpty ('course'),
+$errors = [ isMissingOrEmpty ('course'),
             isMissingOrEmpty ('section'),
             isMissingOrEmpty ('token')];
 
@@ -14,7 +13,7 @@ if (!empty($_REQUEST['token']) && !verify_token($_REQUEST['token'])) {
     $errors[] = "invalid token";
 }
 
-$errors[] = isMissingOrEmpty ('username');
+$errors[] = isMissingOrEmpty ('userid');
 $errors = array_filter($errors);
 
 if (!isEmpty($errors)) {
@@ -51,7 +50,7 @@ if ($course == null) {
 }
 
 // check if userid is in record
-$userid = $_REQUEST['username'];
+$userid = $_REQUEST['userid'];
 $student = $student_dao->retrieve($userid);
 if ($student == null) {
     $errors[] = "invalid userid";

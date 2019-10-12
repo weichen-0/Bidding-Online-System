@@ -1,0 +1,7 @@
+{
+    "status": "error",
+    "message": [
+        "missing password",
+        "missing username"
+    ]
+}

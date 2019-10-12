@@ -1,6 +1,6 @@
 {
     "status": "error",
     "message": [
-        "invalid username\/password"
+        "no such enrollment record"
     ]
 }
