@@ -2,7 +2,7 @@
 require_once '../include/common.php';
 require_once '../include/protect_admin.php';
 
-function clear_round() {
+function clear_round($round_num) {
     
     $bid_dao = new BidDAO();
     $bids = $bid_dao->retrieveAll();
