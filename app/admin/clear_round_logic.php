@@ -49,6 +49,7 @@ function clear_round($round_num) {
                 $successful = array();
                 for ($i = 0; $i < $size; $i++) {
                     $bid_amount = $bid_list[$i]->amount;
+                    $bid = $bid_list[$i];
 
                     // stop adding bids to successful bid list if amount is equal to clearing price but bid is not the nth bid
                     if ($bid_amount == $clearingprice && $i != $size - 1) {
