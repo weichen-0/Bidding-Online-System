@@ -40,6 +40,7 @@
 <?php
         $section_dao = new SectionDAO();
         $section_dict = array();
+        $days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
         foreach ($section_dao->retrieveAll() as $section) {
             if (isset($section_dict[$section->course])) {
@@ -55,7 +56,7 @@
                     <td rowspan='$num_of_sections'>$key</td>";
             foreach ($list as $section) {
                 echo "<td>{$section->section}</td>
-                    <td>{$section->day}</td>
+                    <td>{$days[$section->day - 1]}</td>
                     <td>{$section->start}</td>
                     <td>{$section->end}</td>
                     <td>{$section->instructor}</td>

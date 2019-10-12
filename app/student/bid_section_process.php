@@ -55,9 +55,23 @@
     $student_dao = new StudentDAO();
     $student = $student_dao->retrieve($_SESSION['userid']);
 
-    // checks if student has enough e$
-    if ($amount > $student->edollar) {
-        $errors[] = "Insufficient e$ balance";
+    if (is_numeric($amount)) {
+        // checks if bid amount is more than e$10
+        if ($amount < 10) {
+            $errors[] = "Minimum bid is e$10";
+        }
+
+        // check if amount is not more than 2dp
+        if (preg_match('/\.\d{3,}/', $amount)) {
+            $errors[] = "Bid should have no more than 2 decimal places";
+        }
+
+        // checks if student has enough e$
+        if ($amount > $student->edollar) {
+            $errors[] = "Insufficient e$ balance";
+        }
+    } else {
+        $errors[] = "Bid must be a numeric value";
     }
 
     $bid_dao = new BidDAO();
