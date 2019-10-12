@@ -163,7 +163,8 @@ if (in_array($code, $courses_completed)) {
 
 // check if student has enough edollars whether updating bid or not
 $insuff_edollar_with_refund = (!is_null($prev_bid) && ($prev_bid->amount + $student->edollar) < $amt);
-if ($insuff_edollar_with_refund || $amt > $student->edollar) {
+$insuff_edollar_without_refund = (is_null($prev_bid) && $amt > $student->edollar);
+if ($insuff_edollar_with_refund || $insuff_edollar_without_refund) {
     $errors[] = "not enough e-dollar";
 }
 

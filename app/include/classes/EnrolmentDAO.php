@@ -25,7 +25,6 @@ class EnrolmentDAO {
         return null;
     }
 
-    // NOT INCLUDED YET
     // retrieve a list of enrolment for a specific section
     public function retrieveBySection($code, $section) {
         $sql = 'select * from enrolment where code=:code and section=:section';

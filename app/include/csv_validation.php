@@ -299,7 +299,6 @@ function bid_validate_row($row) {
             $row_errors[] = "section limit reached";
         }
 
-		// TO UPDATE
 		// check if student has a previous bid for the same course (whether update is required)
 		$prev_bid = null;
 		foreach ($bids as $bid) {
@@ -309,7 +308,6 @@ function bid_validate_row($row) {
 			}
 		}
 
-		// TO UPDATE
 		// check if student has enough edollars whether updating bid or not
 		$insuff_edollar_with_refund = (!is_null($prev_bid) && ($prev_bid->amount + $student->edollar) < $amt);
 		$insuff_edollar_without_refund = (is_null($prev_bid) && $amt > $student->edollar);
@@ -317,7 +315,6 @@ function bid_validate_row($row) {
 			$row_errors[] = "not enough e-dollar";
 		}
 
-		// TO UPDATE
 		// if all validations passed and prev bid found, remove and refund it
 		if (!is_null($prev_bid) && empty($row_errors)) {
 			$student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $student->edollar + $prev_bid->amount));
