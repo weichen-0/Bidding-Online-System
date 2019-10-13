@@ -1,8 +1,11 @@
 <?php
     require_once '../include/common.php';
     require_once '../include/protect_student.php';
+    require_once './round_2_logic.php';
+    
 
     $round_dao = new RoundDAO();
+    $round_num = $round_dao->retrieveRound();
 
     // if bidding round is inactive, students are not allowed to bid for sections
     if ($round_dao->retrieveStatus() == 'INACTIVE') {
@@ -46,18 +49,28 @@
     }
 
     // checks if it is bidding round 1, if yes then students only allowed to bid for courses under their own school
-    if ($round_dao->retrieveRound() == 1 && $student->school != $courseObj->school) {
+    if ($round_num == 1 && $student->school != $courseObj->school) {
         $_SESSION['errors'] = ["Only courses under your school ({$student->school}) are biddable in Round 1!"];
         header("Location: bid_section.php");
         exit;
     }
 
+    
+
     $student_dao = new StudentDAO();
     $student = $student_dao->retrieve($_SESSION['userid']);
+    $minbid_dao = new MinBidDAO();
 
     if (is_numeric($amount)) {
+        // checks if it is round 2 and if there is a minimum bid
+        if ($round_num == 2 && $minbid_dao->retrieve($course, $section) != null) {
+            $minbid = $minbid_dao->retrieve($course, $section);
+            if ($amount < $minbid) {
+                $errors[] = "Minimum bid is e$" . $minbid;
+            }
+    
         // checks if bid amount is more than e$10
-        if ($amount < 10) {
+        } elseif ($amount < 10) {
             $errors[] = "Minimum bid is e$10";
         }
 
@@ -125,6 +138,8 @@
         }
     }
 
+    
+
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
 
@@ -136,6 +151,10 @@
         $student_dao->update($studentNew);
 
         $_SESSION['msg'] = ["Bid successfully placed for {$course} {$section}!"];
+        
+        if ($round_num == 2) {
+            clearing_logic();
+        }
     }
 
     header("Location: bid_section.php");

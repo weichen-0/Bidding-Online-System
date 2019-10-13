@@ -1,6 +1,7 @@
 <?php
     require_once '../include/common.php';
     require_once '../include/protect_student.php';
+    require_once './round_2_logic.php';
 
     $student_dao = new StudentDAO();
     $student = $student_dao->retrieve($_SESSION['userid']);
@@ -64,6 +65,8 @@
                     <td>{$section->size}</td></tr>";
             }                    
         }
+
+        clearing_logic();
 ?>
         </table>        
         </div>
