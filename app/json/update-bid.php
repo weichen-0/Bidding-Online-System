@@ -29,6 +29,7 @@ if (!isEmpty($errors)) {
     exit;
 }
 
+$request = json_decode($_REQUEST['r'], true);
 $course_dao = new CourseDAO();
 $section_dao = new SectionDAO();
 $student_dao = new StudentDAO();
@@ -41,28 +42,28 @@ $sort_class = new Sort();
 
 // ================== INPUT VALIDATION ===================
 // check if amount is a positive number (>= 10) and not more than 2dp
-$amt = $_REQUEST['amount'];
+$amt = $request['amount'];
 $more_than_2dp = preg_match('/\.\d{3,}/', $amt);
 if (!is_numeric($amt) || $amt < 10 || $more_than_2dp) {
     $errors[] = "invalid amount";
 }
 
 // check if course code is in record
-$code = $_REQUEST['course'];
+$code = $request['course'];
 $course = $course_dao->retrieve($code);
 if ($course == null) {
     $errors[] = "invalid course";
 
 // IF COURSE VALID, check if section is in record
 } else {
-    $section = $section_dao->retrieve($code, $_REQUEST['section']);
+    $section = $section_dao->retrieve($code, $request['section']);
     if ($section == null) {
         $errors[] = "invalid section";
     }
 }
 
 // check if userid is in record
-$userid = $_REQUEST['userid'];
+$userid = $request['userid'];
 $student = $student_dao->retrieve($userid);
 if ($student == null) {
     $errors[] = "invalid userid";
@@ -108,6 +109,8 @@ if ($round_status == 'INACTIVE') {
     $errors[] = 'not own school course';
 
 } 
+
+// NOT DONE
 // if round 2, check if amount is more than minimum bid
 // else if ($round_num == 2 && ...) {
 //     $errors[] = 'bid too low';
@@ -115,7 +118,7 @@ if ($round_status == 'INACTIVE') {
 
 // check if there is vacancy left in the bidded section
 $vacancy = $section->size;
-$section_enrolments = $enrolment_dao->retrieveBySection($code, $_REQUEST['section']);
+$section_enrolments = $enrolment_dao->retrieveBySection($code, $request['section']);
 if (($vacancy - count($section_enrolments)) <= 0) {
     $errors[] = 'no vacancy';
 }

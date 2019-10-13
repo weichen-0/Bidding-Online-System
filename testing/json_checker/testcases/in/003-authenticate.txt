@@ -1,2 +1,1 @@
-username=admin
-password=qwerty
+r={"username":"admin","password":"qwerty"}

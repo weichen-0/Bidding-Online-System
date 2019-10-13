@@ -17,19 +17,19 @@ if (!empty($_REQUEST['token']) && !verify_token($_REQUEST['token'])) {
 $errors[] = isMissingOrEmpty ('userid');
 $errors = array_filter($errors);
 
-
 if (!isEmpty($errors)) {
+    $errors = array_values($errors);
     $result = [
         "status" => "error",
         "message" => $errors
-        ];
-    $errors = array_values($errors);
+    ];
 
     header('Content-Type: application/json');
     echo json_encode($result, JSON_PRETTY_PRINT);
     exit;
 }
 
+$request = json_decode($_REQUEST['r'], true);
 $course_dao = new CourseDAO();
 $student_dao = new StudentDAO();
 $section_dao = new SectionDAO();
@@ -38,21 +38,21 @@ $bid_dao = new BidDAO();
 $sort_class = new Sort();
 
 // check if course code is in record
-$code = $_REQUEST['course'];
+$code = $request['course'];
 $course = $course_dao->retrieve($code);
 if ($course == null) {
     $errors[] = "invalid course";
 
 // IF COURSE VALID, check if section is in record
 } else {
-    $section = $section_dao->retrieve($code, $_REQUEST['section']);
+    $section = $section_dao->retrieve($code, $request['section']);
     if ($section == null) {
         $errors[] = "invalid section";
     }
 }
 
 // check if userid is in record
-$userid = $_REQUEST['userid'];
+$userid = $request['userid'];
 $student = $student_dao->retrieve($userid);
 if ($student == null) {
     $errors[] = "invalid userid";

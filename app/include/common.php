@@ -38,12 +38,17 @@ function printMessages() {
 }
 
 function isMissingOrEmpty($name) {
-    if (!isset($_REQUEST[$name])) {
+    $request = $_REQUEST;
+    if ($name != 'token') {
+        $request = json_decode($_REQUEST['r'], true);
+    }
+    
+    if (!isset($request[$name])) {
         return "missing $name";
     }
 
     // client did send the value over
-    $value = $_REQUEST[$name];
+    $value = $request[$name];
     if (empty($value)) {
         return "blank $name";
     }

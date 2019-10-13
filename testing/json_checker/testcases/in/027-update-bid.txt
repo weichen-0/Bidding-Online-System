@@ -1,9 +1,1 @@
-userid=olivia.ng.2009
-
-amount=11
-
-course=MGMT001
-
-section=S1
-
-
+r={"userid":"olivia.ng.2009","amount":11,"course":"MGMT001","section":"S1"}

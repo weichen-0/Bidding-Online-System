@@ -1,4 +1,1 @@
-userid=neilson.ng.2009
-amount=21
-course=IS100
-section=S1
+r={"userid":"neilson.ng.2009","amount":"21","course":"IS100","section":"S1"}
