@@ -51,7 +51,7 @@
         </div>
         <br/>
 
-        <form method='POST' action='drop_bid_process.php'>
+        <form method='POST' action='drop_section_process.php'>
         <table>
             <tr>
                 <th>Course ID</th>
