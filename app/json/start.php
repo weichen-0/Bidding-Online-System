@@ -4,7 +4,7 @@ require_once '../include/token.php';
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
-$errors = [ isMissingOrEmpty ('token', true) ];
+$errors = [ isMissingOrEmpty ('token') ];
 
 if (!empty($_REQUEST['token']) && !verify_token($_REQUEST['token'])) {
     $errors[] = "invalid token";
