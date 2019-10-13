@@ -137,6 +137,19 @@ CREATE TABLE IF NOT EXISTS `enrolment` (
   `code` varchar(10) NOT NULL,
   `section` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `minbid`
+--
+
+DROP TABLE IF EXISTS `minbid`;
+CREATE TABLE IF NOT EXISTS `section` (
+  `course` varchar(10) NOT NULL,
+  `section` varchar(3) NOT NULL,
+  `amount` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

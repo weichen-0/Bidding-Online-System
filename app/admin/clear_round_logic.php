@@ -27,22 +27,26 @@ function clear_round() {
         }
     }
 
-    if ($round_num == 1) {
-        foreach ($bid_dict as $key => $bid_list) {
-            $course_section = explode(' ', $key);
-            $size = $section_dao->retrieve($course_section[0], $course_section[1])->size;
+    foreach ($bid_dict as $key => $bid_list) {
+        $course_section = explode(' ', $key);
+        $size = $section_dao->retrieve($course_section[0], $course_section[1])->size;
 
-            $num_bids = count($bid_list);
+        $num_bids = count($bid_list);
+
+        // sort all bids in descending order to find clearing price
+        $bid_list = $sort_class->sort_it($bid_list, "desc_bid_obj_amt");
+
+
+
+
+        if ($round_num == 1) {
 
             // Scenario 1: no clearing price, number of bids are less than size
             if ($num_bids < $size) {
                 $successful = $bid_list;
             
             // Scenario 2: clearing price, number of bids are >= size
-            } else {
-                // sort all bids in descending order to find clearing price
-                $bid_list = $sort_class->sort_it($bid_list, "desc_bid_obj_amt");
-                
+            } else {                
                 // find the nth bid amount, with n being the number of vacancies
                 $clearingprice = $bid_list[$size - 1]->amount;
 
@@ -59,19 +63,81 @@ function clear_round() {
                 }
             }
 
-            // enrol the students. No need to deduct anything because already deducted when bidding
-            foreach ($successful as $enrolment) {
-                $enrolment_dao->add($enrolment);
-            }
+            // // enrol the students. No need to deduct anything because already deducted when bidding
+            // foreach ($successful as $enrolment) {
+            //     $enrolment_dao->add($enrolment);
+            // }
 
-            // refund e$ for failed bids, continues from the last bid not added into the successful bid list
-            for ($i = count($successful); $i < num_bids; $i++) {
-                $updatedBal = $student->edollar + $bid_list[$i]->amount;
-                $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
-                $student_dao->update($studentNew);
+            // // refund e$ for failed bids, continues from the last bid not added into the successful bid list
+            // for ($i = count($successful); $i < num_bids; $i++) {
+            //     $updatedBal = $student->edollar + $bid_list[$i]->amount;
+            //     $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
+            //     $student_dao->update($studentNew);
+            // }
+        }
+
+
+        if ($round_num == 2) {
+            // find total available seats
+            $enrolled = count($enrolment_dao->retrieveBySection($course_section[0], $course_section[1]));
+            $vacancies = $size - $enrolled;
+
+            // get minimum bid
+            $min_bid = $minbid_dao->retrieve($course_section[0], $course_section[1]);
+
+
+
+            // Scenario 1: number of bids are less than available seats
+            if ($num_bids < $vacancies) {
+                $successful = $bid_list;
+
+            // Scenario 2: number of bids are >= size
+            } else {
+
+                //STILL NEED THIS?????????? UNSURE
+                $min_bid = $min_bid + 1;
+
+                $clearingprice = $bid_list[$vacancies - 1]->amount;
+
+                $successful = array();
+                $clearingpriceBids = array();
+                for ($i = 0; $i < $size; $i++) {
+                    $bid_amount = $bid_list[$i]->amount;
+                    $bid = $bid_list[$i];
+
+                    // stop adding bids to successful bid list if amount is equal to clearing price but bid is not the nth bid
+                    if ($bid_amount == $clearingprice) {
+                        $clearingpriceBids[] = $bid;
+                    } elseif ($bid_amount < $clearingprice) {
+                        break;
+                    }
+                    else {
+                        $successful[] = $bid;
+                    }
+                }
+
+                $available = $vacancies - count($successful);
+                if (count($clearingpriceBids) <= $available) {
+                    $successful = array_merge($successful, $clearingpriceBids);
+                }
             }
         }
-    } 
+    }
+    
+
+    // enrol the students. No need to deduct anything because already deducted when bidding
+    foreach ($successful as $enrolment) {
+        $enrolment_dao->add($enrolment);
+    }
+
+    // refund e$ for failed bids, continues from the last bid not added into the successful bid list
+    for ($i = count($successful); $i < num_bids; $i++) {
+        $updatedBal = $student->edollar + $bid_list[$i]->amount;
+        $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
+        $student_dao->update($studentNew);
+    }
+
+
     $round_dao->set($round_num, 'INACTIVE');
 }
     
