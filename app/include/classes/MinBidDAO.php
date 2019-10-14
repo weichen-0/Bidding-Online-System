@@ -25,7 +25,7 @@ class MinBidDAO {
     }
 
     public function set($code, $section, $amount) {
-        $sql = 'UPDATE `minbid` SET code=:code and section=:section and amount=:amount';
+        $sql = 'UPDATE `minbid` SET amount=:amount WHERE code=:code and section=:section';
         
         $connMgr = new ConnectionManager();
         $conn = $connMgr->getConnection();
