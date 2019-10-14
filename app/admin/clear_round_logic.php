@@ -131,7 +131,7 @@ function clear_round() {
     }
 
     // refund e$ for failed bids, continues from the last bid not added into the successful bid list
-    for ($i = count($successful); $i < num_bids; $i++) {
+    for ($i = count($successful); $i < $num_bids; $i++) {
         $updatedBal = $student->edollar + $bid_list[$i]->amount;
         $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
         $student_dao->update($studentNew);
