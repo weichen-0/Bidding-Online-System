@@ -91,7 +91,7 @@ class EnrolmentDAO {
     }
 
     public function add($enrolment) {
-        $sql = "INSERT IGNORE INTO student (userid, amount, code, section) VALUES (:userid, :amount, :code, :section)";
+        $sql = "INSERT IGNORE INTO enrolment (userid, amount, code, section) VALUES (:userid, :amount, :code, :section)";
   
 
         $connMgr = new ConnectionManager();      
