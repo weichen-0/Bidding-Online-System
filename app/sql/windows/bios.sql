@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `enrolment` (
 
 DROP TABLE IF EXISTS `minbid`;
 CREATE TABLE IF NOT EXISTS `section` (
-  `course` varchar(10) NOT NULL,
+  `code` varchar(10) NOT NULL,
   `section` varchar(3) NOT NULL,
   `amount` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
