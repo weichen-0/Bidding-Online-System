@@ -38,6 +38,7 @@ $bid_dao = new BidDAO();
 $prereq_dao = new PrereqDAO();
 $course_completed_dao = new CourseCompletedDAO();
 $enrolment_dao = new EnrolmentDAO();
+$minbid_dao = new MinBidDAO();
 $sort_class = new Sort();
 
 // ================== INPUT VALIDATION ===================
@@ -98,9 +99,11 @@ if (!is_null($prev_bid)) {
     $bids = $bid_dao->retrieveByUser($userid);
 }
 
-// check if there is an active round
 $round_status = $round_dao->retrieveStatus();
 $round_num = $round_dao->retrieveRound();
+$min_bid = $minbid_dao->retrieve($section->course, $section->section);
+
+// check if there is an active round
 if ($round_status == 'INACTIVE') {
     $errors[] = 'round ended';
 
@@ -108,13 +111,15 @@ if ($round_status == 'INACTIVE') {
 } else if ($round_num == 1 && $student->school != $course->school) {
     $errors[] = 'not own school course';
 
-} 
-
-// NOT DONE
-// if round 2, check if amount is more than minimum bid
-// else if ($round_num == 2 && ...) {
-//     $errors[] = 'bid too low';
-// }
+/* 
+IMPT! R2 clearing logic says students who attempt to bid below min bid value should be validated against
+BUT wiki update-bid says amount must be 'more than' min bid in round 2 which doesn't make sense imo
+Since round 2 min bid is the lowest successful bid that will secure u a seat in the section, there should only be error when amt < min_bid, not amt <= min_bid
+*/
+// if round 2, check if bid amount is less than minimum bid
+} else if ($round_num == 2 && $amt < $min_bid) {
+    $errors[] = 'bid too low';
+}
 
 // check if there is vacancy left in the bidded section
 $vacancy = $section->size;

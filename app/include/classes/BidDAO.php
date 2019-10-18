@@ -23,6 +23,28 @@ class BidDAO {
         return $result;
     }
 
+    // retrieve a list of bids under the section
+    public function retrieveBySection($code, $section) {
+        $sql = 'select * from bid where code=:code and section=:section';
+        
+        $connMgr = new ConnectionManager();
+        $conn = $connMgr->getConnection();
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+        $stmt->bindParam(':section', $section, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new Bid($row['userid'], $row['amount'],$row['code'], $row['section']);
+        }
+
+        return $result;
+    }
+
     // retrieve a specific bid of the user based on course code and section
     public function retrieve($userid, $code, $section) {
         $sql = 'select * from bid where userid=:userid and code=:code and section=:section';

@@ -71,6 +71,15 @@ function doBootstrap() {
 				$connMgr = new ConnectionManager();
 				$conn = $connMgr->getConnection();
 
+				// remove all records in enrolment DAO
+				$enrolment_dao = new EnrolmentDAO();
+				$enrolment_dao->removeAll();
+
+				// start the round 
+				$round_dao = new RoundDAO();
+				$round_dao->removeAll();
+				$round_dao->add(1, "ACTIVE");
+
 				// ============================ STUDENT VALIDATION ===============================
 				$student_dao = new StudentDAO();
 				$student_dao->removeAll();
@@ -138,8 +147,11 @@ function doBootstrap() {
 				$section_dao = new SectionDAO();
 				$section_dao->removeAll();
 
+				// re-initialise MinBidDAO as well
+				$minbid_dao = new MinBidDAO();
+				$minbid_dao->removeAll();
+				
 				$row_num = 2;
-
 				// process each line, check for errors, then insert if no errors
 				$header = fgetcsv($files["section"]);
 				while (($data = fgetcsv($files["section"])) != false) {
@@ -155,6 +167,9 @@ function doBootstrap() {
 					if (empty($row_errors)) {
 						$section_dao->add(new Section($row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7]));
 						$section_processed++;
+						
+						// set min bid for each section as 10
+						$minbid_dao->add($row[0], $row[1], 10);
 					} else {
 						$errors[] = ["file" => "section.csv", "line" => $row_num, "message" => $row_errors];
 					}
@@ -261,17 +276,8 @@ function doBootstrap() {
 
 					$row_num++;
 				}
-
 				fclose($files["bid"]);
 				@unlink($file_paths["bid"]);
-
-				// remove all records in enrolment DAO
-				$enrolment_dao = new EnrolmentDAO();
-				$enrolment_dao->removeAll();
-
-				// start the round after bootstrapping
-				$round_dao = new RoundDAO();
-				$round_dao->set(1, "ACTIVE");
 			}
 		}
 	}

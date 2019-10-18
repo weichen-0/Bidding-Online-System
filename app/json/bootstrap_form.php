@@ -16,7 +16,7 @@
                     <!-- substitute the above value with a valid token -->
                 </tr>
                 <tr>
-					<td colspan='2' style="text-align:left"><input name='Import' type='submit' /></td>
+					<td colspan='2' style="text-align:left"><input name='import' type='submit' /></td>
             	</tr>
             </table>
         </form>

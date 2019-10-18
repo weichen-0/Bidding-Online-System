@@ -67,8 +67,23 @@ class Sort {
 		return $this->student($a, $b);
 	}
 
-	function desc_bid_obj_amt($a, $b) {
-		return $a->amount - $b->amount;
+	// sort bid objects by amount (highest to lowest)
+	function clear_round($a, $b) {
+		return $b->amount - $a->amount;
+	}
+
+	// sort bid objects by userid (a to z)
+	function section_dump ($a, $b) {
+		return $this->string($a->userid, $b->userid);
+	}
+
+	// sort bid objects by amount (highest to lowest), followed by userid (a to z)
+	function bid_dump ($a, $b) {
+		$amt_cmp = $this->clear_round($a, $b);
+		if ($amt_cmp != 0) {
+			return $amt_cmp;
+		}
+		return $this->section_dump($a, $b);
 	}
 
 	function course_completed($a, $b) {

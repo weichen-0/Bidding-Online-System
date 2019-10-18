@@ -55,23 +55,19 @@
         exit;
     }
 
-    
-
     $student_dao = new StudentDAO();
     $student = $student_dao->retrieve($_SESSION['userid']);
     $minbid_dao = new MinBidDAO();
 
     if (is_numeric($amount)) {
-        // checks if it is round 2 and if there is a minimum bid
-        if ($round_num == 2 && $minbid_dao->retrieve($course, $section) != null) {
-            $minbid = $minbid_dao->retrieve($course, $section);
-            if ($amount < $minbid) {
-                $errors[] = "Minimum bid is e$" . $minbid;
-            }
+        // if it is round 2, check if bid amount is less than section min bid
+        $minbid = $minbid_dao->retrieve($course, $section);
+        if ($round_num == 2 && $amount < $minbid) {
+            $errors[] = "Round 2 minimum bid is e$" . $minbid . " for $course $section";
     
-        // checks if bid amount is more than e$10
-        } elseif ($amount < 10) {
-            $errors[] = "Minimum bid is e$10";
+        // if it is round 1, check if bid amount is more than e$10
+        } else if ($round_num == 1 && $amount < 10) {
+            $errors[] = "Round 1 minimum bid is e$10";
         }
 
         // check if amount is not more than 2dp
@@ -79,7 +75,7 @@
             $errors[] = "Bid should have no more than 2 decimal places";
         }
 
-        // checks if student has enough e$
+        // check if student has enough e$
         if ($amount > $student->edollar) {
             $errors[] = "Insufficient e$ balance";
         }

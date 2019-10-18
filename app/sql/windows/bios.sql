@@ -33,7 +33,7 @@ USE `bios`;
 DROP TABLE IF EXISTS `bid`;
 CREATE TABLE IF NOT EXISTS `bid` (
   `userid` varchar(128) NOT NULL,
-  `amount` int(5) NOT NULL,
+  `amount` decimal(5, 2) NOT NULL,
   `code` varchar(10) NOT NULL,
   `section` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   `password` varchar(128) NOT NULL,
   `name` varchar(100) NOT NULL,
   `school` varchar(3) NOT NULL,
-  `edollar` int(5) NOT NULL
+  `edollar` decimal(5, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `round` (
 DROP TABLE IF EXISTS `enrolment`;
 CREATE TABLE IF NOT EXISTS `enrolment` (
   `userid` varchar(128) NOT NULL,
-  `amount` int(5) NOT NULL,
+  `amount` decimal(5, 2) NOT NULL,
   `code` varchar(10) NOT NULL,
   `section` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -145,10 +145,10 @@ CREATE TABLE IF NOT EXISTS `enrolment` (
 --
 
 DROP TABLE IF EXISTS `minbid`;
-CREATE TABLE IF NOT EXISTS `section` (
+CREATE TABLE IF NOT EXISTS `minbid` (
   `code` varchar(10) NOT NULL,
   `section` varchar(3) NOT NULL,
-  `amount` int(5) NOT NULL
+  `amount` decimal(5, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
