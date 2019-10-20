@@ -1,6 +1,16 @@
 <?php
 require_once '../include/common.php';
 require_once '../include/token.php';
+require_once '../include/process_round_logic.php';
+
+function in_bid_arr($bid, $successful_bids) {
+    foreach ($successful_bids as $successful_bid) {
+        if ($bid->userid == $successful_bid->userid) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
@@ -54,7 +64,6 @@ if ($course == null) {
         $round_num = $round_dao->retrieveRound();
 
         $enrolment_dao = new EnrolmentDAO();
-        $minbid_dao = new MinBidDAO();
 
         $bid_result = array();
         for ($i = 0; $i < count($bids); $i++) {
@@ -71,12 +80,9 @@ if ($course == null) {
 
             // for round 2, bids should only have 'in' and 'out' status due to the real-time bids
             } else {
-                $minbid = $minbid_dao->retrieve($bid->code, $bid->section);
-                // since minimum bid value is $1 more than the Nth bid if there are N or more bids for the section
-                if ($minbid > 10) {
-                    $minbid--;
-                }
-                $bid_status = ($bid->amount >= $minbid) ? 'in' : 'out';
+                $course_section_str = $bid->code . ' ' . $bid->section;
+                $successful_bids = process_r2_bids()[$course_section_str][0];
+                $bid_status = (in_bid_arr($bid, $successful_bids)) ? "in" : "out";
             }
 
             $bid_result[] = ["row" => $i + 1,

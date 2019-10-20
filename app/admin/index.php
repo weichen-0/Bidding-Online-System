@@ -26,7 +26,7 @@ $round_dao = new RoundDAO();
             Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
         </p>
 
-		<form id='bootstrap-form' action="bootstrap-process.php" method="post" enctype="multipart/form-data">
+		<form id='bootstrap-form' action="bootstrap_process.php" method="post" enctype="multipart/form-data">
 			<table>
 				<tr>
 					<th>Bootstrap Data</th>
@@ -40,10 +40,10 @@ $round_dao = new RoundDAO();
 
         <table>
             <tr>
-                <form action='start_round.php' method='post'>
+                <form action='start_process.php' method='post'>
                     <td><input name='submit' value='Start Round!' type='submit' style="width:173px"/></td>
                 </form>
-                <form action='clear_round.php' method='post'>
+                <form action='clear_process.php' method='post'>
                     <td><input name='submit' value='End Round!' type='submit' style="width:173px"/></td>
                 </form>
             </tr>
