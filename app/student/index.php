@@ -1,6 +1,7 @@
 <?php
 require_once '../include/common.php';
 require_once '../include/protect_student.php';
+require_once '../include/process_round_logic.php';
 
 $dao = new StudentDAO();
 $student = $dao->retrieve($_SESSION['userid']);
@@ -21,6 +22,16 @@ function in_enrolments($bid) {
     global $enrolments;
     foreach ($enrolments as $enrolment) {
         if ($enrolment->code == $bid->code && $enrolment->section == $bid->section) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function in_bid_arr($bid_arr) {
+    global $student;
+    foreach ($bid_arr as $bid) {
+        if ($student->userid == $bid->userid) {
             return true;
         }
     }
@@ -85,7 +96,9 @@ function in_enrolments($bid) {
                 if ($round_num == 2) {
                     $minbid = $minbid_dao->retrieve($bid->code, $bid->section);
                     echo "<td>$minbid</td>";
-                    $status = ($bid->amount >= $minbid) ? "Successful" : "Unsuccessful";
+                    $course_section_str = $bid->code . ' ' . $bid->section;
+                    $successful_bids = process_r2_bids()[$course_section_str][0];
+                    $status = (in_bid_arr($successful_bids)) ? "Successful" : "Unsuccessful";
                 }
 
             } else {

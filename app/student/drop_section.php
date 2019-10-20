@@ -1,11 +1,11 @@
 <?php
-    require_once '../include/common.php';
-    require_once '../include/protect_student.php';
+require_once '../include/common.php';
+require_once '../include/protect_student.php';
 
-    $dao = new StudentDAO();
-    $student = $dao->retrieve($_SESSION['userid']);
+$dao = new StudentDAO();
+$student = $dao->retrieve($_SESSION['userid']);
 
-    $round_dao = new RoundDAO();
+$round_dao = new RoundDAO();
 ?>
 
 <html>

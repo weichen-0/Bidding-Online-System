@@ -24,9 +24,10 @@ function getAllPlacedBids() {
 
 // returns an array of successful bids, unsuccessful bids and clearing price for each section in round 1
 // clearing price is based on nth highest bid
-function process_r1_bids($placed_bids) {
+function process_r1_bids() {
     $section_dao = new SectionDAO();
     $result = array();
+    $placed_bids = getAllPlacedBids();
 
     foreach ($placed_bids as $course_section_str => $bid_list) {
         $course_section_arr = explode(' ', $course_section_str);
@@ -73,11 +74,12 @@ function process_r1_bids($placed_bids) {
 
 // returns an array of successful bids, unsuccessful bids and clearing price for each section in round 2
 // clearing price is the lowest successful bid in order to secure a spot
-function process_r2_bids($placed_bids) {
+function process_r2_bids() {
     $enrolment_dao = new EnrolmentDAO();
     $minbid_dao = new MinBidDAO();
     $section_dao = new SectionDAO();
     $result = array();
+    $placed_bids = getAllPlacedBids();
 
     foreach ($placed_bids as $course_section_str => $bid_list) {
         $course_section_arr = explode(' ', $course_section_str);
@@ -139,9 +141,7 @@ function process_round($isEndOfRound) {
     $student_dao = new StudentDAO();
     $round_dao = new RoundDAO();
     $round_num = $round_dao->retrieveRound();
-    
-    $placed_bids = getAllPlacedBids();
-    $processed_bids = ($round_num == 1) ? process_r1_bids($placed_bids) : process_r2_bids($placed_bids);
+    $processed_bids = ($round_num == 1) ? process_r1_bids() : process_r2_bids();
 
     foreach ($processed_bids as $course_section_str => $arr) {
         $successful_bids = $arr[0];
