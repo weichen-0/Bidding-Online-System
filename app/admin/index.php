@@ -1,8 +1,8 @@
 <?php
-    require_once '../include/common.php';
-    require_once '../include/protect_admin.php';
+require_once '../include/common.php';
+require_once '../include/protect_admin.php';
 
-    $round_dao = new RoundDAO();
+$round_dao = new RoundDAO();
 ?>
 
 <html>
@@ -20,33 +20,38 @@
         }
 ?>
         <p>
-            <a href='bootstrap.php'>Bootstrap</a> |
-            <a href='start_round.php'>Start Round</a> |
-            <a href='clear_round.php'>Clear Round</a> |   
             <a href='../logout.php'>Logout</a>
         </p>
         <p>
             Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
         </p>
-        <!-- <table>
+
+		<form id='bootstrap-form' action="bootstrap-process.php" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<th>Bootstrap Data</th>
+					<th><input id='bootstrap-file' type="file" name="bootstrap-file"></th>
+				</tr>
+				<tr>
+					<th colspan='2' style="text-align:center"><input name='import' type='submit'/></th>
+            	</tr>
+            </table>
+		</form>
+
+        <table>
             <tr>
-                <th>Course ID</th>
-                <th>Section</th>
-                <th>Bid Amount</th>
-                <th>Status</th>
+                <form action='start_round.php' method='post'>
+                    <td><input name='submit' value='Start Round!' type='submit' style="width:173px"/></td>
+                </form>
+                <form action='clear_round.php' method='post'>
+                    <td><input name='submit' value='End Round!' type='submit' style="width:173px"/></td>
+                </form>
             </tr>
-            
+        </table>
 <?php
-        // foreach ($bids as $bid) {
-        //     echo "<tr>
-        //             <td>{$bid->code}</td>
-        //             <td>{$bid->section}</td>
-        //             <td>{$bid->amount}</td>
-        //             <td>Pending</td>
-        //         </tr>";
-        // }
-?> 
-        
-        </table> -->
+        // can just call both since each function checks whether errors and msg is set or not
+        printMessages();
+        printErrors();
+?>
     </body>
 </html>

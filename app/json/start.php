@@ -34,7 +34,13 @@ $result = ["status" => "success",
 if ($round_status == "INACTIVE") {
     if ($round_num == 1) {
         $round_dao->set(2, "ACTIVE");
-        $result["round"] += 1;
+        $result["round"] = 2;
+
+        $bid_dao = new BidDAO();
+        $bid_dao->removeAll();            
+        
+        $minbid_dao = new MinBidDAO();
+        $minbid_dao->resetAll(10);
     } else {
         unset($result["round"]);
         $result["message"] = ["round 2 ended"];

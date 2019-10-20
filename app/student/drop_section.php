@@ -67,7 +67,7 @@
             </tr>
             <tr>
                 <th colspan='2'>
-                    <input name='Drop' type='submit' />
+                    <input name='drop' type='submit'/>
                 </th>
             </tr>
         </table>

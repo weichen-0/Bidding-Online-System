@@ -20,12 +20,12 @@ if (!isEmpty($errors)) {
         "message" => $errors
         ];
 
-    header('Content-Type: application/json');
-    echo json_encode($result, JSON_PRETTY_PRINT);
-    exit;
+} else {
+    # complete bootstrap
+    $result = doBootstrap();
 }
 
-# complete bootstrap
-doBootstrap();
-
+header('Content-Type: application/json');
+echo json_encode($result, JSON_PRETTY_PRINT);
+exit;
 ?>

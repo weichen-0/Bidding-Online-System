@@ -51,8 +51,10 @@ if ($course == null) {
 
         $round_dao = new RoundDAO();
         $round_status = $round_dao->retrieveStatus();
+        $round_num = $round_dao->retrieveRound();
 
         $enrolment_dao = new EnrolmentDAO();
+        $minbid_dao = new MinBidDAO();
 
         $bid_result = array();
         for ($i = 0; $i < count($bids); $i++) {
@@ -60,15 +62,26 @@ if ($course == null) {
             $enrolment = $enrolment_dao->retrieve($bid->userid, $bid->code, $bid->section);
             
             // determining the bid status for 'result' key below
-            if ($round_status == "ACTIVE") {
-                $bid_status = '-';
+            if ($round_num == 1) {
+                if ($round_status == "ACTIVE") {
+                    $bid_status = '-';
+                } else {
+                    $bid_status = ($enrolment == null) ? 'out' : 'in';
+                }
+
+            // for round 2, bids should only have 'in' and 'out' status due to the real-time bids
             } else {
-                $bid_status = ($enrolment == null) ? 'out' : 'in';
+                $minbid = $minbid_dao->retrieve($bid->code, $bid->section);
+                // since minimum bid value is $1 more than the Nth bid if there are N or more bids for the section
+                if ($minbid > 10) {
+                    $minbid--;
+                }
+                $bid_status = ($bid->amount >= $minbid) ? 'in' : 'out';
             }
 
             $bid_result[] = ["row" => $i + 1,
                              "userid" => $bid->userid,
-                             "amount" => (float) number_format($bid->amount, 1), // STILL NOT WORKING
+                             "amount" => (float) $bid->amount, 
                              "result" => $bid_status]; 
         }
     }
@@ -83,7 +96,7 @@ if (empty($err_msg)) {
 }
 
 header('Content-Type: application/json');
-echo json_encode($result, JSON_PRETTY_PRINT);
+echo json_encode($result, JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION);
 exit;
 
 ?>

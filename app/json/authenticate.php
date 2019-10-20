@@ -28,7 +28,12 @@ else{
         ];
 
     } else {
-        $errors[] = "invalid username/password";
+        if ($userid != 'admin') {
+            $errors[] = "invalid username";
+        }
+        if ($password != 'skulked4154]campsite') {
+            $errors[] = "invalid password";
+        }
         $result = [
             "status" => "error",
             "message" => $errors

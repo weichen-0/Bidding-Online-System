@@ -68,7 +68,7 @@ foreach ($students as $student) {
                             "password" => $student->password, 
                             "name" => $student->name, 
                             "school" => $student->school, 
-                            "edollar" => (float) number_format($student->edollar, 1)]; // STILL NOT WORKING
+                            "edollar" => (float) $student->edollar];
 }
 $student_result = $sort_class->sort_it($student_result, "student");
 
@@ -86,7 +86,7 @@ $bid_result = array();
 $bids = $bid_dao->retrieveAll();
 foreach ($bids as $bid) {
     $bid_result[] = ["userid" => $bid->userid,
-                        "amount" => (float) number_format($bid->amount, 1), // STILL NOT WORKING
+                        "amount" => (float) $bid->amount, 
                         "course" => $bid->code, 
                         "section" => $bid->section];
 }
@@ -122,7 +122,7 @@ $result = ["status" => "success",
             "section-student" => $enrolment_result];
 
 header('Content-Type: application/json');
-echo json_encode($result, JSON_PRETTY_PRINT);
+echo json_encode($result, JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION);
 exit;
 
 ?>

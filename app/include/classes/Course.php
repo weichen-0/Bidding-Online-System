@@ -37,7 +37,7 @@ class Course {
         $other_end = $this->convertDateTime($course->exam_date, $course->exam_end);
         
         // if the exam for this course starts or ends during that of another course
-        if (($current_start >= $other_start && $current_start <= $other_end) || ($current_end >= $other_start && $current_end <= $other_end)) {
+        if (($current_start >= $other_start && $current_start < $other_end) || ($current_end > $other_start && $current_end <= $other_end)) {
             return true;
         }
 

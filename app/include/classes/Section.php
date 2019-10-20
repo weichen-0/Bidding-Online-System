@@ -47,7 +47,7 @@ class Section {
         $other_end = $this->convertDateTime($dateToday, $section->end);
         
         // if the class for this section starts or ends during that of another section
-        if (($current_start >= $other_start && $current_start <= $other_end) || ($current_end >= $other_start && $current_end <= $other_end)) {
+        if (($current_start >= $other_start && $current_start < $other_end) || ($current_end > $other_start && $current_end <= $other_end)) {
             return true;
         }
 

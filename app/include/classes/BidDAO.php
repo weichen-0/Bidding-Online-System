@@ -94,7 +94,7 @@ class BidDAO {
         $stmt = $conn->prepare($sql);
 
         $stmt->bindParam(':userid', $bid->userid, PDO::PARAM_STR);
-        $stmt->bindParam(':amount', $bid->amount, PDO::PARAM_INT);
+        $stmt->bindParam(':amount', $bid->amount, PDO::PARAM_STR);
         $stmt->bindParam(':code', $bid->code, PDO::PARAM_STR);
         $stmt->bindParam(':section', $bid->section, PDO::PARAM_STR);
 

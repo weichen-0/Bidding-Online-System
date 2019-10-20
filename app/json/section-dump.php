@@ -54,7 +54,7 @@ if ($course == null) {
             $enrolment = $enrolments[$i];
 
             $enrolment_result[] = ["userid" => $enrolment->userid,
-                                   "amount" => (float) number_format($enrolment->amount, 1)]; // STILL NOT WORKING
+                                   "amount" => (float) $enrolment->amount]; 
         }
     }
 }
@@ -68,7 +68,7 @@ if (empty($err_msg)) {
 }
 
 header('Content-Type: application/json');
-echo json_encode($result, JSON_PRETTY_PRINT);
+echo json_encode($result, JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION);
 exit;
 
 ?>

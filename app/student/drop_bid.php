@@ -17,7 +17,7 @@
         <p>
             <a href='index.php'>Home</a> |
             <a href='bid_section.php'>Bid Section</a> |
-            <a href='drop_section.php'>Drop Section</a> |   
+            <a href='drop_section.php'>Drop Section</a> |  
             <a href='../logout.php'>Logout</a>
         </p>
         <p>

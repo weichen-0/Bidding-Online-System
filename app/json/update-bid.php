@@ -1,6 +1,7 @@
 <?php
 require_once '../include/common.php';
 require_once '../include/token.php';
+require_once '../include/process_round_logic.php';
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
@@ -145,12 +146,35 @@ foreach ($bids as $bid) {
     }
 }
 
+$enrolments = $enrolment_dao->retrieveByUser($student->userid);
+// check if class timing clashes with all previously enrolled sections
+if (!in_array("class timetable clash", $errors)) {
+    foreach ($enrolments as $enrolment) {
+        $enrolled_section = $section_dao->retrieve($enrolment->code, $enrolment->section);
+        if ($section->classClashWith($enrolled_section)) {
+            $errors[] = "class timetable clash";
+            break;
+        }
+    }
+}
+
 // check if exam timing clashes with all previously bidded courses
 foreach ($bids as $bid) {
     $prev_course = $course_dao->retrieve($bid->code);
     if ($course->examClashWith($prev_course)) {
         $errors[] = "exam timetable clash";
         break;
+    }
+}
+
+// check if exam timing clashes with all previously enrolled courses
+if (!in_array("exam timetable clash", $errors)) {
+    foreach ($enrolments as $enrolment) {
+        $enrolled_course = $course_dao->retrieve($enrolment->code);
+        if ($course->examClashWith($enrolled_course)) {
+            $errors[] = "exam timetable clash";
+            break;
+        }
     }
 }
 
@@ -176,8 +200,9 @@ if ($insuff_edollar_with_refund || $insuff_edollar_without_refund) {
     $errors[] = "not enough e-dollar";
 }
 
-// check if student has already bidded for 5 sections
-if ((!is_null($prev_bid) && count($bids) > 5) || count($bids) >= 5) {
+// check if student has already bidded/enrolled for 5 sections
+$section_total = count($enrolments) + count($bids);
+if ((!is_null($prev_bid) && $section_total > 5) || $section_total >= 5) {
     $errors[] = "section limit reached";
 }
 
@@ -187,6 +212,11 @@ if (isEmpty($errors)) {
     $bid_dao->add(new Bid($userid, $amt, $code, $section->section));
     $student = $student_dao->retrieve($userid);
     $student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $student->edollar - $amt));
+
+    // for real-time status of round 2
+    if ($round_num == 2) {
+        process_round(false);
+    }
 
 } else {
     $errors = $sort_class->sort_it($errors, "string");

@@ -31,7 +31,7 @@ class MinBidDAO {
 
         $stmt->bindParam(':code', $code, PDO::PARAM_STR);
         $stmt->bindParam(':section', $section, PDO::PARAM_STR);
-        $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+        $stmt->bindParam(':amount', $amount, PDO::PARAM_STR);
 
         $isAddOK = $stmt->execute();
 
@@ -47,7 +47,7 @@ class MinBidDAO {
 
         $stmt->bindParam(':code', $code, PDO::PARAM_STR);
         $stmt->bindParam(':section', $section, PDO::PARAM_STR);
-        $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+        $stmt->bindParam(':amount', $amount, PDO::PARAM_STR);
 
         $isSetOk = $stmt->execute();
 
@@ -62,7 +62,7 @@ class MinBidDAO {
         $conn = $connMgr->getConnection();
         $stmt = $conn->prepare($sql);
 
-        $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+        $stmt->bindParam(':amount', $amount, PDO::PARAM_STR);
 
         $isResetOk = $stmt->execute();
 
