@@ -28,12 +28,8 @@ else{
         ];
 
     } else {
-        if ($userid != 'admin') {
-            $errors[] = "invalid username";
-        }
-        if ($password != 'skulked4154]campsite') {
-            $errors[] = "invalid password";
-        }
+        // Only return EITHER 'invalid username' OR 'invalid password', username has precedence if both fields are wrong
+        $errors[] = ($userid != 'admin') ? "invalid username" : "invalid password";
         $result = [
             "status" => "error",
             "message" => $errors
