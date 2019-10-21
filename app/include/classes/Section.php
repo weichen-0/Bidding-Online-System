@@ -23,7 +23,7 @@ class Section {
     }
 
     // converts date and time to iso_datetime for ease of comparison
-     function convertDateTime($date, $time) {
+    function convertDateTime($date, $time) {
         $datetime = $date . ' ' . $time;
         $dateObj = DateTime::createFromFormat("Ymd H:i", $datetime);
         return $dateObj->format(Datetime::ATOM);
