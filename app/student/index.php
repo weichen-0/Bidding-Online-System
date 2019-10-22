@@ -17,15 +17,36 @@ $round_num = $round_dao->retrieveRound();
 $round_status = $round_dao->retrieveStatus();
 
 $minbid_dao = new MinBidDAO();
+$section_dao = new SectionDAO();
 
-function in_bid_arr($bid_arr) {
+function in_arr($bids, $needle) {
     global $student;
-    foreach ($bid_arr as $bid) {
-        if ($student->userid == $bid->userid) {
+    foreach ($bids as $bid) {
+        $studentHasSuccessfulBid = ($needle == null && $student->userid == $bid->userid);
+        $enrolmentInBid = ($needle != null && $needle->code == $bid->code && $needle->section == $bid->section);
+        if ($studentHasSuccessfulBid || $enrolmentInBid) {
             return true;
         }
     }
     return false;
+}
+
+// compares all student enrolments with processed round 2 bids to determine which enrolments were from Round 1
+function get_r1_enrolments() {
+    global $enrolments, $bids;
+    $result = array();
+    foreach ($enrolments as $enrolment) {
+        if (!in_arr($bids, $enrolment)) {
+            $result[] = $enrolment;
+        }
+    }
+    return $result;
+}
+
+function convertToMinutes($time) {
+    $arr = explode(':', $time);
+    $min = (int) $arr[0] * 60 + (int) $arr[1];
+    return (int) $min;
 }
 ?>
 
@@ -56,15 +77,17 @@ function in_bid_arr($bid_arr) {
     <p style='margin-top:5px; margin-bottom:5px; text-align:center;'><b>Bidding Results</b></p>
     <table>
         <tr>
+            <th>Round</th>
             <th>Course ID</th>
             <th>Section</th>
             <th>Bid Amt</th>
 <?php
-    $colspan_num = 4;
+    $colspan_num = 5;
     // add min bid column if active round 2
     if ($round_num == 2 & $round_status == "ACTIVE") {
         echo "<th>Min Bid</th>";
         $colspan_num++;
+        process_round(false);
     } 
 ?>
             <th>Status</th>
@@ -72,53 +95,160 @@ function in_bid_arr($bid_arr) {
 
 <?php
     if (empty($bids) && empty($enrolments)) {
-        echo "<tr><td colspan=$colspan_num style='text-align:center;'>No existing bids/enrolments!</td></tr>";
+        echo "<tr><td colspan='$colspan_num' style='text-align:center;'>No existing bids/enrolments!</td></tr>";
 
     } else {
-        // display round 1 successful enrolments if active round 2
-        if ($round_num == 2 & $round_status == "ACTIVE") {
-            foreach ($enrolments as $enrolment) {
-                echo "<tr>
-                        <td>{$enrolment->code}</td>
-                        <td>{$enrolment->section}</td>
-                        <td>{$enrolment->amount}</td>
-                        <td>-</td>
-                        <td>Success</td>
-                    </tr>";
+        $all_sections = ["1"=>[], "2"=>[], "3"=>[], "4"=>[], "5"=>[]]; // for timetable
+        
+        if ($round_status == "INACTIVE") {
+            // if inactive round 2, display round 1 successful enrolments 
+            if ($round_num == 2) {
+                $r1_enrolments = get_r1_enrolments();
+                $rowspan_num = count($r1_enrolments);
+
+                if ($rowspan_num > 0) {
+                    echo "<tr><td rowspan='$rowspan_num'>1</td>";
+                    foreach ($r1_enrolments as $r1_enrolment) {
+                        echo "<td>{$r1_enrolment->code}</td>
+                                <td>{$r1_enrolment->section}</td>
+                                <td>{$r1_enrolment->amount}</td>
+                                <td>Success</td>";
+                    }
+                }
+            }
+              
+            $rowspan_num = count($bids);
+            if ($rowspan_num > 0) {
+                // display bid status for most recently concluded round
+                echo "<tr><td rowspan='$rowspan_num'>$round_num</td>";
+                foreach ($bids as $bid) {
+                    echo "<td>{$bid->code}</td>
+                            <td>{$bid->section}</td>
+                            <td>{$bid->amount}</td>";
+
+                    $enrolment = $enrolment_dao->retrieve($bid->userid, $bid->code, $bid->section);
+                    $status = !is_null($enrolment) ? "Success" : "Fail";
+                    echo "<td>$status</td></tr>";
+                }
+            }
+        } else { 
+            // if active round 2, display round 1 successful enrolments
+            if ($round_num == 2) { 
+                $rowspan_num = count($enrolments);
+
+                if ($rowspan_num > 0) {
+                    echo "<tr><td rowspan='$rowspan_num'>1</td>";
+                    foreach ($enrolments as $enrolment) {
+                        echo "  <td>{$enrolment->code}</td>
+                                <td>{$enrolment->section}</td>
+                                <td>{$enrolment->amount}</td>
+                                <td>-</td>
+                                <td>Success</td>
+                            </tr>";
+                    }
+                }
+            }
+
+            $rowspan_num = count($bids);
+            $r2_bids = process_r2_bids();
+
+            if ($rowspan_num > 0) {
+                // display bids and their statuses for current round
+                echo "<tr><td rowspan='$rowspan_num'>$round_num</td>";
+                foreach ($bids as $bid) {                
+                    echo "<td>{$bid->code}</td>
+                            <td>{$bid->section}</td>
+                            <td>{$bid->amount}</td>";
+
+                    $status = "Pending"; // round 1 bid status
+
+                    if ($round_num == 2) {
+                        $minbid = $minbid_dao->retrieve($bid->code, $bid->section);
+                        echo "<td>$minbid</td>"; // round 2 min bid
+
+                        $course_section_str = $bid->code . ' ' . $bid->section;
+                        $successful_bids = $r2_bids[$course_section_str][0];
+                        $status = (in_arr($successful_bids, null)) ? "Success" : "Fail"; // round 2 bid status
+                    }
+                    echo "<td>$status</td></tr>";
+
+                    $section = $section_dao->retrieve($bid->code, $bid->section); // for timetable
+                    $all_sections[$section->day][] = ["[Bidded]", $status, $section];
+                }
             }
         }
-
-        // display bids and their statuses for this round
-        foreach ($bids as $bid) {
-            echo "<tr>
-                    <td>{$bid->code}</td>
-                    <td>{$bid->section}</td>
-                    <td>{$bid->amount}</td>";
-
-            if ($round_status == "ACTIVE") {
-                $status = "Pending"; // round 1 bid status
-
-                if ($round_num == 2) {
-                    $minbid = $minbid_dao->retrieve($bid->code, $bid->section);
-                    echo "<td>$minbid</td>"; // round 2 min bid
-
-                    $course_section_str = $bid->code . ' ' . $bid->section;
-                    $successful_bids = process_r2_bids()[$course_section_str][0];
-                    $status = (in_bid_arr($successful_bids)) ? "Success" : "Fail"; // round 2 bid status
-                }
-
-            // when bidding round is inactive
-            } else {
-                $enrolment = $enrolment_dao->retrieve($bid->userid, $bid->code, $bid->section);
-                $status = !is_null($enrolment) ? "Success" : "Fail";
-            }
-
-            echo "<td>$status</td></tr>";
+        // for timetable
+        foreach ($enrolments as $enrolment) {
+            $section = $section_dao->retrieve($enrolment->code, $enrolment->section);
+            $all_sections[$section->day][] = ["[Enrolled]", "Success", $section];
         }
     }
 ?>
-        </div>
-    
     </table>
+    </div>
+    <br/><br/>
+    
+    <div style="background-color:darkgrey; display:inline-block;">
+    <p style='margin-top:5px; margin-bottom:5px; text-align:center;'><b>Timetable</b></p>
+    <table>
+        <tr>
+            <th></th>
+            <th colspan=4 width='87'>0800 - 0900</th>
+            <th colspan=4 width='87'>0900 - 1000</th>
+            <th colspan=4 width='87'>1000 - 1100</th>
+            <th colspan=4 width='87'>1100 - 1200</th>
+            <th colspan=4 width='87'>1200 - 1300</th>
+            <th colspan=4 width='87'>1300 - 1400</th>
+            <th colspan=4 width='87'>1400 - 1500</th>
+            <th colspan=4 width='87'>1500 - 1600</th>
+            <th colspan=4 width='87'>1600 - 1700</th>
+            <th colspan=4 width='87'>1700 - 1800</th>
+            <th colspan=4 width='87'>1800 - 1900</th>
+        </tr>
+<?php
+    $sort_class = new Sort();
+    $day_arr = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+    for ($i = 1; $i <= 5; $i++) {
+        $day = $day_arr[$i - 1];
+        echo "<tr><th height='46'>$day</th>";
+        $time = convertToMinutes("8:00");
+        if (!empty($all_sections[$i])) {
+            $day_sections = $sort_class->sort_it($all_sections[$i], "timetable_time");
+            foreach ($day_sections as $day_section) {
+                $section = $day_section[2];
+                $section_time = convertToMinutes($section->start);
+                while ($time < $section_time) {
+                    echo "<td></td>";
+                    $time += 15;
+                }
+                // style='background-color:lightgrey !important;'>
+                $status = $day_section[0];
+                if ($day_section[1] == "Success") {
+                    $color_style = "style='background-color:yellowgreen;'";
+                } else if ($day_section[1] == "Fail") {
+                    $color_style = "style='background-color:indianred;'";
+                } else {
+                    $color_style = "style='background-color:#FFAF00;'";
+                }
+                $time += 15 * 13;
+                echo "<td colspan=13 $color_style align='center'><b>$section->course $section->section<br/>$status</b></td>";
+            }
+            while ($time < convertToMinutes("19:00")) {
+                echo "<td></td>";
+                $time += 15;
+            }
+            echo "</tr>";
+        } else {
+            for ($j = 0; $j < 44; $j++) {
+                echo "<td></td>";
+            }
+            echo "</tr>";
+        }
+    }
+
+?>
+    
+
 </body>
 </html>

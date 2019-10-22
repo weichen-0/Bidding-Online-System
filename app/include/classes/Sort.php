@@ -98,6 +98,12 @@ class Sort {
 		return $this->course_completed($a, $b);
 	}
 
+	function timetable_time ($a, $b) {
+		$time1 = str_replace(':', '', $a[2]->start);
+		$time2 = str_replace(':', '', $b[2]->start);
+		return $time1 - $time2;
+	}
+
 	function string ($a, $b) {
 		return strcmp($a, $b);
 	}
