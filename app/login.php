@@ -38,14 +38,13 @@ if (!isset($_SESSION['errors']) && isset($_POST['userid']) && isset($_POST['pass
     <link rel="stylesheet" type="text/css" href="include/style.css">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body style='background-color:black;
-            background-image:
-            radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-            radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-            radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-            radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
-            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;'>
+<body style='background:
+radial-gradient(black 15%, transparent 16%) 0 0,
+radial-gradient(black 15%, transparent 16%) 8px 8px,
+radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+background-color:slategray;
+background-size:16px 16px;'>
     
     <div style='text-align:center; border:3px solid black; width: 600px; height:500px; margin:0 auto; margin-top: 130px;'>
     
