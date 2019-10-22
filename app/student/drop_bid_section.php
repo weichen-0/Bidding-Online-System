@@ -13,11 +13,10 @@
     <link rel="stylesheet" type="text/css" href="../include/style.css">
 </head>
 <body>
-    <h1>BIOS Drop Bid</h1>
+    <h1>Bidding Online System (Drop Bid/Section)</h1>
     <p>
         <a href='index.php'>Home</a> |
         <a href='bid_section.php'>Bid Section</a> |
-        <a href='drop_section.php'>Drop Section</a> |  
         <a href='../logout.php'>Logout</a>
     </p>
     <p>
@@ -25,8 +24,9 @@
         Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
     </p>
 
-    <div style="overflow-y:auto; max-height:300px;">
-    <table width=248px>
+    <div style="overflow-y:auto; max-height:300px; background-color:darkgrey; display:inline-block;">
+    <p style='margin-top:5px; margin-bottom:5px; text-align:center;'><b>Bidded Courses</b></p>
+    <table width=246px>
             <tr>
                 <th>Course ID</td>
                 <th>Section</td>
@@ -43,15 +43,46 @@
             echo "<tr>
                     <td>{$bid->code}</td>
                     <td>{$bid->section}</td>
-                    <td>{$bid->amount}</td>";
-        }             
-    }       
+                    <td>{$bid->amount}</td>
+                </tr>";
+        }                  
+    }
 ?>
     </table>        
     </div>
-    <br/>
 
-    <form method='POST' action='drop_bid_process.php'>
+    <br/><br/>
+
+    <div style="overflow-y:auto; max-height:300px; background-color:darkgrey; display:inline-block;">
+    <p style='margin-top:5px; margin-bottom:5px; text-align:center;'><b>Enrolled Courses</b></p>
+    <table width=246px>
+            <tr>
+                <th>Course ID</td>
+                <th>Section</td>
+                <th>Amount</td>
+            </tr>
+<?php
+    $enrolment_dao = new EnrolmentDAO();
+    $enrolments = $enrolment_dao->retrieveByUser($student->userid);
+    
+    if (empty($enrolments)) {
+        echo "<tr><td colspan=3 style='text-align:center;'>No existing enrolments!</td></tr>";
+    } else {
+        foreach ($enrolments as $enrolment) {
+            echo "<tr>
+                    <td>{$enrolment->code}</td>
+                    <td>{$enrolment->section}</td>
+                    <td>{$enrolment->amount}</td>
+                </tr>";
+        }  
+    }    
+?>
+    </table>        
+    </div>
+
+    <br/><br/>
+
+    <form method='POST' action='drop_bid_section_process.php'>
     <table>
         <tr>
             <th>Course ID</th>
@@ -67,7 +98,7 @@
         </tr>
         <tr>
             <th colspan='2'>
-                <input name='Drop' type='submit' />
+                <input name='drop' type='submit' />
             </th>
         </tr>
     </table>
@@ -75,11 +106,8 @@
 
     <p>
 <?php
-    if (isset($_SESSION['msg'])) {
-        printMessages();
-    } else {
-        printErrors();
-    }
+    printMessages();
+    printErrors();
 ?>
     </p>
 </body>

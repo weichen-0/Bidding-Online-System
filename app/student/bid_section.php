@@ -1,86 +1,82 @@
 <?php
-    require_once '../include/common.php';
-    require_once '../include/protect_student.php';
+require_once '../include/common.php';
+require_once '../include/protect_student.php';
 
-    $student_dao = new StudentDAO();
-    $student = $student_dao->retrieve($_SESSION['userid']);
+$student_dao = new StudentDAO();
+$student = $student_dao->retrieve($_SESSION['userid']);
 
-    $round_dao = new RoundDAO();
-    $section_dao = new SectionDAO();
+$round_dao = new RoundDAO();
+$section_dao = new SectionDAO();
+$enrolment_dao = new EnrolmentDAO();
+
+function validateSection($section) {
+    global $section_dao, $student, $vacancy, $enrolment_dao, $round_dao;
+
     $course_dao = new CourseDAO();
+    $course = $course_dao->retrieve($section->course);
 
     $bid_dao = new BidDAO();
     $bids = $bid_dao->retrieveByUser($student->userid);
 
-    $enrolment_dao = new EnrolmentDAO();
     $enrolments = $enrolment_dao->retrieveByUser($student->userid);
 
-    // check if section have exam or class sections with list of bidded sections
-    function clashWithBids($section) {
-        global $section_dao;
-        global $course_dao;
-        global $bids;
-        $course = $course_dao->retrieve($section->course);
-
-        foreach ($bids as $bid) {
-            $bid_section = $section_dao->retrieve($bid->code, $bid->section);
-            $bid_course = $course_dao->retrieve($bid->code);
-            if ($bid_section->classClashWith($section) || $bid_course->examClashWith($course)) {
-                return true;
-            }
-        }
+    // check if student has already bidded for 5 sections
+    if (count($bids) + count($enrolments) >= 5) {
         return false;
     }
 
-    // check if section have exam or class sections with list of enrolled sections
-    function clashWithEnrolments($section) {
-        global $section_dao;
-        global $course_dao;
-        global $enrolments;
-        $course = $course_dao->retrieve($section->course);
-
-        foreach ($enrolments as $enrolment) {
-            $enrolled_section = $section_dao->retrieve($enrolment->code, $enrolment->section);
-            $enrolled_course = $course_dao->retrieve($enrolment->code);
-            if ($enrolled_section->classClashWith($section) || $enrolled_course->examClashWith($course)) {
-                return true;
-            }
+    // check for previous bids under same course
+    foreach ($bids as $bid) {
+        if ($section->course == $bid->code) {
+            return false;
         }
-        return false;
     }
-
-    function notOwnSchool($section) {
-        global $round_dao;
-        global $student;
-        $course_dao = new CourseDAO();
-        $course = $course_dao->retrieve($section->course);
-        return $round_dao->retrieveRound() == 1 && $student->school != $course->school;
-    }
-
-    function courseBidded($section) {
-        global $enrolments;
-        foreach ($enrolments as $enrolment) {
-            if ($enrolment->code == $section->course) {
-                return true;
-            }
+    // check for previous enrolment in same course
+    foreach ($enrolments as $enrolment) {
+        if ($section->course == $enrolment->code) {
+            return false;
         }
-        return false;
     }
-    
-    function prereqIncomplete($section) {
-        global $student;
-        $prereq_dao = new PrereqDAO();
-        $prereqs = $prereq_dao->retrieve($section->course);
-        $course_completed_dao = new CourseCompletedDAO();
-        $completed_courses = $course_completed_dao->retrieve($student->userid);
 
-        foreach ($prereqs as $prereq) {
-            if (!in_array($prereq, $completed_courses)) {
-                return true;
-            }
+    // check for clash with bids
+    foreach ($bids as $bid) {
+        $bid_section = $section_dao->retrieve($bid->code, $bid->section);
+        $bid_course = $course_dao->retrieve($bid->code);
+        if ($bid_section->classClashWith($section) || $bid_course->examClashWith($course)) {
+            return false;
         }
-        return false;
     }
+
+    // check for clash with enrolments
+    foreach ($enrolments as $enrolment) {
+        $enrolled_section = $section_dao->retrieve($enrolment->code, $enrolment->section);
+        $enrolled_course = $course_dao->retrieve($enrolment->code);
+        if ($enrolled_section->classClashWith($section) || $enrolled_course->examClashWith($course)) {
+            return false;
+        }
+    }
+
+    // check for remaining section vacancies
+    if ($vacancy <= 0) {
+        return true;
+    }
+
+    $prereq_dao = new PrereqDAO();
+    $prereqs = $prereq_dao->retrieve($section->course);
+
+    $course_completed_dao = new CourseCompletedDAO();
+    $completed_courses = $course_completed_dao->retrieve($student->userid);
+
+    // check if student has fulfilled pre-requisite courses
+    foreach ($prereqs as $prereq) {
+        if (!in_array($prereq, $completed_courses)) {
+            return false;
+        }
+    }
+
+    // check for course bids under own school
+    return $round_dao->retrieveRound() == 2 || $student->school == $course->school;
+}       
 ?>
 
 <html>
@@ -88,19 +84,19 @@
         <link rel="stylesheet" type="text/css" href="../include/style.css">
     </head>
     <body>
-        <h1>BIOS Bid Section</h1>
+        <h1>Bidding Online System (Bid Section)</h1>
         <p>
             <a href='index.php'>Home</a> |
-            <a href='drop_bid.php'>Drop Bid</a> |
-            <a href='drop_section.php'>Drop Section</a> |   
+            <a href='drop_bid_section.php'>Drop Bid/Section</a> |
             <a href='../logout.php'>Logout</a>
         </p>
         <p>
             Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big><br/>
             Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
         </p>
-
-        <div style="overflow-y:auto; max-height:300px;">
+    
+        <div style="overflow-y:auto; max-height:300px; background-color:darkgrey; display:inline-block;">
+        <p style='margin-top:5px; margin-bottom:5px; text-align:center; text'><b>Available Courses</b></p>
         <table>
                 <tr>
                     <th>Course ID</td>
@@ -129,31 +125,30 @@
             $num_of_sections = count($list);
             echo "<tr>
                     <td rowspan='$num_of_sections'>$key</td>";
-            foreach ($list as $section) {           
-                $num_enrolment = count($enrolment_dao->retrievebySection($section->course, $section->section));
-                $vacancy = $section->size - $num_enrolment;
+            foreach ($list as $section) {   
+                $section_enrolments = $enrolment_dao->retrieveBySection($section->course, $section->section);
+                $vacancy = $section->size - count($section_enrolments);
+                $isValid = validateSection($section);
 
-                $strike_start = "";
-                $strike_end = "";
-                if (clashWithBids($section) || clashWithEnrolments($section) || notOwnSchool($section) || courseBidded($section) || prereqIncomplete($section) || $vacancy === 0) {
-                    $strike_start = "<strike>";
-                    $strike_end = "</strike>";
+                $error_style = "";
+                if (!$isValid) {
+                    $error_style = "style='background-color:firebrick'";
                 }
 
-                echo "<td>$strike_start{$section->section}$strike_end</td>
-                <td>$strike_start{$days[$section->day - 1]}$strike_end</td>
-                <td>$strike_start{$section->start}$strike_end</td>
-                <td>$strike_start{$section->end}$strike_end</td>
-                <td>$strike_start{$section->instructor}$strike_end</td>
-                <td>$strike_start{$section->venue}$strike_end</td>
-                <td>$strike_start{$section->size}$strike_end</td>
-                <td>$strike_start{$vacancy}$strike_end</td></tr>";
+                echo "<td $error_style>{$section->section}</td>
+                <td>{$days[$section->day - 1]}</td>
+                <td>{$section->start}</td>
+                <td>{$section->end}</td>
+                <td>{$section->instructor}</td>
+                <td>{$section->venue}</td>
+                <td>{$section->size}</td>
+                <td>{$vacancy}</td></tr>";
             }                    
         }
 ?>
         </table>        
         </div>
-        <br/>
+        <br/><br/>
         
         <form method='POST' action='bid_section_process.php'>
         <table>
@@ -185,11 +180,8 @@
 
         <p>
 <?php
-            if (isset($_SESSION['msg'])) {
-                printMessages();
-            } else {
-                printErrors();
-            }
+    printMessages();
+    printErrors();
 ?>
         </p>
 

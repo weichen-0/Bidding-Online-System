@@ -7,7 +7,7 @@
     // if bidding round is inactive, students are not allowed to drop any bids
     if ($round_dao->retrieveStatus() == 'INACTIVE') {
         $_SESSION['errors'] = ['Bidding round not active'];
-        header("Location: drop_bid.php");
+        header("Location: drop_bid_section.php");
         exit;
     }
 
@@ -26,7 +26,7 @@
 
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
-        header("Location: drop_bid.php");
+        header("Location: drop_bid_section.php");
         exit;
     } 
 
@@ -35,6 +35,9 @@
 
     $bid_dao = new BidDAO();
     $bid = $bid_dao->retrieve($student->userid, $course, $section);
+
+    $enrolment_dao = new EnrolmentDAO();
+    $enrolment = $enrolment_dao->retrieve($student->userid, $course, $section);
 
     // checks if the student placed such a bid before
     if ($bid != null) {
@@ -45,12 +48,22 @@
         $student_dao->update($studentNew);
 
         $_SESSION['msg'] = ["Bid successfully dropped for {$course} {$section}!"];
+    
+    // checks if the student is enrolled in that section in the first place
+    } else if ($enrolment != null) {
+        $enrolment_dao->remove($enrolment);
 
+        $updatedBal = $student->edollar + $enrolment->amount;
+        $studentNew = new Student($student->userid, $student->password, $student->name, $student->school, $updatedBal);
+        $student_dao->update($studentNew);
+
+        $_SESSION['msg'] = ["Section successfully dropped for {$course} {$section}!"];
+    
     } else {
         $_SESSION['errors'] = ["Invalid course ID and section!"];
     }
 
-    header("Location: drop_bid.php");
+    header("Location: drop_bid_section.php");
     exit;
 
 ?>

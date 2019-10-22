@@ -63,14 +63,10 @@ if ($round_num == 1 && $student->school != $courseObj->school) {
 $minbid_dao = new MinBidDAO();
 
 if (is_numeric($amount)) {
-    // if it is round 2, check if bid amount is less than section min bid
+    // check if bid amount is less than section min bid
     $minbid = $minbid_dao->retrieve($course, $section);
-    if ($round_num == 2 && $amount < $minbid) {
-        $errors[] = "Round 2 minimum bid is e$" . $minbid . " for $course $section";
-
-    // if it is round 1, check if bid amount is more than e$10
-    } else if ($round_num == 1 && $amount < 10) {
-        $errors[] = "Round 1 minimum bid is e$10";
+    if ($amount < $minbid) {
+        $errors[] = "$course $section minimum bid is e$$minbid";
     }
 
     // check if amount is not more than 2dp
@@ -97,47 +93,63 @@ if (count($bids) + count($enrolments) >= 5) {
     $errors[] = "Only a maximum of 5 bidded/enrolled sections allowed";
 }
 
-// checks if student has bidded for another section under the same course
+$hasBidded = false;
+// checks if student has bidded for the course
 foreach ($bids as $bid) {
-    if ($course == $bid->code) {
+    if ($sectionObj->course == $bid->code) {
         $errors[] = "Only 1 bid per course allowed";
+        $hasBidded = true;
         break;
     }
 }
 
-// check for clash in class timetables with previously bidded sections
-foreach ($bids as $bid) {
-    $biddedSection = $section_dao->retrieve($bid->code, $bid->section);
-    if ($sectionObj->classClashWith($biddedSection)) {
-        $errors[] = "Class timetable clashes with $bid->code $bid->section";
-        break;
-    }
-}
-
-// check for clash in class timetables with previously enrolled sections
+$hasEnrolled = false;
+// checks if student is already enrolled in the course
 foreach ($enrolments as $enrolment) {
-    $enrolled_section = $section_dao->retrieve($enrolment->code, $enrolment->section);
-    if ($sectionObj->classClashWith($enrolled_section)) {
-        $errors[] = "Class timetable clashes with $enrolment->code $enrolment->section";
+    if ($sectionObj->course == $enrolment->code) {
+        $errors[] = "Already enrolled in $enrolment->code";
+        $hasEnrolled = true;
         break;
     }
 }
 
-// check for clash in exam timetables with previously bidded courses
-foreach($bids as $bid) {
-    $biddedCourse = $course_dao->retrieve($bid->code);
-    if ($courseObj->examClashWith($biddedCourse)) {
-        $errors[] = "Exam timetable clashes with $bid->code";
-        break;
+if (!$hasBidded) {
+    // check for clash in class timetables with previously bidded sections
+    foreach ($bids as $bid) {
+        $biddedSection = $section_dao->retrieve($bid->code, $bid->section);
+        if ($sectionObj->classClashWith($biddedSection)) {
+            $errors[] = "Class timetable clashes with $bid->code $bid->section";
+            break;
+        }
+    }
+
+    // check for clash in exam timetables with previously bidded courses
+    foreach($bids as $bid) {
+        $biddedCourse = $course_dao->retrieve($bid->code);
+        if ($courseObj->examClashWith($biddedCourse)) {
+            $errors[] = "Exam timetable clashes with $bid->code";
+            break;
+        }
     }
 }
 
-// check for clash in exam timetables with previously enrolled courses
-foreach($enrolments as $enrolment) {
-    $enrolled_course = $course_dao->retrieve($enrolment->code);
-    if ($courseObj->examClashWith($enrolled_course)) {
-        $errors[] = "Exam timetable clashes with $enrolment->code";
-        break;
+if (!$hasEnrolled) {
+    // check for clash in class timetables with previously enrolled sections
+    foreach ($enrolments as $enrolment) {
+        $enrolled_section = $section_dao->retrieve($enrolment->code, $enrolment->section);
+        if ($sectionObj->classClashWith($enrolled_section)) {
+            $errors[] = "Class timetable clashes with $enrolment->code $enrolment->section";
+            break;
+        }
+    }
+
+    // check for clash in exam timetables with previously enrolled courses
+    foreach($enrolments as $enrolment) {
+        $enrolled_course = $course_dao->retrieve($enrolment->code);
+        if ($courseObj->examClashWith($enrolled_course)) {
+            $errors[] = "Exam timetable clashes with $enrolment->code";
+            break;
+        }
     }
 }
 

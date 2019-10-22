@@ -38,7 +38,7 @@ if (!isset($_SESSION['errors']) && isset($_POST['userid']) && isset($_POST['pass
         <link rel="stylesheet" type="text/css" href="include/style.css">
     </head>
     <body>
-        <h1>BIOS Login</h1>
+        <h1>Bidding Online System Login</h1>
         <form method='POST' action='login.php'>
             <table>
                 <tr>
