@@ -12,37 +12,45 @@ $result = doBootstrap();
 ?>
 
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="../include/style.css">
-    </head>
-    <body>
-		<h1>BIOS Bootstrap Response</h1>
-        <p>
-            <a href='index.php'>Back</a>
-        </p>
-        <p>
-            Bootstrap Status: <big><b><u><?=$result['status'] == 'success' ? 'Success' : "Error"?></u></b></big>
-		</p>
+<head>
+    <link rel="stylesheet" type="text/css" href="../include/style.css">
+</head>
+<body>
+    <h1>BIOS Bootstrap Response</h1>
+    <p>
+        <a href='index.php'>Back</a>
+    </p>
+    <p>
+        Bootstrap Status: <big><b><u><?=$result['status'] == 'success' ? 'Success' : "Error"?></u></b></big>
+    </p>
 
 <?php
-    // table for num-record-loaded 
-    echo "<table>
-            <tr>
-                <th>File Name</th>
-                <th>Total Records Loaded</th>
+echo "<div style='background-color:darkgrey; display:inline-block;'>";
+// table for num-record-loaded 
+echo "<table>
+        <tr>
+            <th>File Name</th>
+            <th>Total Records Loaded</th>
+        </tr>";
+foreach ($result['num-record-loaded'] as $arr) {
+    foreach ($arr as $file_name => $row) {
+        echo "<tr>
+                <td>$file_name</td>
+                <td>$row</td>
             </tr>";
-    foreach ($result['num-record-loaded'] as $arr) {
-        foreach ($arr as $file_name => $row) {
-            echo "<tr>
-                    <td>$file_name</td>
-                    <td>$row</td>
-                </tr>";
-        }
     }
-    echo "</table>";
+}
+echo "</table></div><br/><br/>";
 
-    // table for errors
-    if (isset($result['error'])) {
+echo "<div style='background-color:darkgrey; display:inline-block;'";
+// table for errors
+if (isset($result['error'])) {
+    if (!isset($result['error']['file'])) {
+        echo "<br/><table width='318'>
+                    <tr><th>Error Message</th></tr>
+                    <tr><td align='center'>input files not found</td></tr>
+                    </table>";
+    } else {
         echo "<br/><table>
                     <tr>
                         <th width='142'>File Name</th>
@@ -73,8 +81,9 @@ $result = doBootstrap();
                 echo "</td></tr>";
             }
         }
-        echo "</table>";
+        echo "</table></div>";
     }
+}
 ?>
 
 	</body>
