@@ -85,7 +85,7 @@ class Sort {
 		}
 		return $this->section_dump($a, $b);
 	}
-
+	
 	function course_completed($a, $b) {
 		$course_cmp = $this->course($a, $b);
 		if ($course_cmp != 0) {

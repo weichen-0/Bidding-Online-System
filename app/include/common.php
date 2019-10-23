@@ -80,6 +80,17 @@ function isEmpty($var) {
         return TRUE;
 }
 
-
-
+// checks if enrolled section is in list of bidded sections
+// also checks if any of the successfully bidded sections is under the student (global variable)
+function in_arr($bids, $needle) {
+    global $student;
+    foreach ($bids as $bid) {
+        $studentHasSuccessfulBid = ($needle == null && $student->userid == $bid->userid);
+        $enrolmentInBid = ($needle != null && $needle->code == $bid->code && $needle->section == $bid->section);
+        if ($studentHasSuccessfulBid || $enrolmentInBid) {
+            return true;
+        }
+    }
+    return false;
+}
 ?>

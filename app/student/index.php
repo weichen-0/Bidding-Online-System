@@ -19,18 +19,6 @@ $round_status = $round_dao->retrieveStatus();
 $minbid_dao = new MinBidDAO();
 $section_dao = new SectionDAO();
 
-function in_arr($bids, $needle) {
-    global $student;
-    foreach ($bids as $bid) {
-        $studentHasSuccessfulBid = ($needle == null && $student->userid == $bid->userid);
-        $enrolmentInBid = ($needle != null && $needle->code == $bid->code && $needle->section == $bid->section);
-        if ($studentHasSuccessfulBid || $enrolmentInBid) {
-            return true;
-        }
-    }
-    return false;
-}
-
 // compares all student enrolments with processed round 2 bids to determine which enrolments were from Round 1
 function get_r1_enrolments() {
     global $enrolments, $bids;
@@ -131,8 +119,8 @@ function convertToMinutes($time) {
                     echo "<td>$status</td></tr>";
                 }
             }
-        } else { 
-            // if active round 2, display round 1 successful enrolments
+        } else { // active round
+            // display round 1 successful enrolments
             if ($round_num == 2) { 
                 $rowspan_num = count($enrolments);
 
