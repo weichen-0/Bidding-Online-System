@@ -209,42 +209,45 @@ function convertToMinutes($time) {
     $sort_class = new Sort();
     $day_arr = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
+    // display days of the week and their respective sections
     for ($i = 1; $i <= 5; $i++) {
         $day = $day_arr[$i - 1];
         echo "<tr><th height='46'>$day</th>";
-        $time = convertToMinutes("8:00");
-        if (!empty($all_sections[$i])) {
-            $day_sections = $sort_class->sort_it($all_sections[$i], "timetable_time");
-            foreach ($day_sections as $day_section) {
-                $section = $day_section[2];
-                $section_time = convertToMinutes($section->start);
-                while ($time < $section_time) {
-                    echo "<td></td>";
-                    $time += 15;
-                }
-                // style='background-color:lightgrey !important;'>
-                $status = $day_section[0];
-                if ($day_section[1] == "Success") {
-                    $color_style = "style='background-color:yellowgreen;'";
-                } else if ($day_section[1] == "Fail") {
-                    $color_style = "style='background-color:indianred;'";
-                } else {
-                    $color_style = "style='background-color:#FFAF00;'";
-                }
-                $time += 15 * 13;
-                echo "<td colspan=13 $color_style align='center'><b>$section->course $section->section<br/>$status</b></td>";
-            }
-            while ($time < convertToMinutes("19:00")) {
+        $time = convertToMinutes("8:00"); // to track the printing of table cells
+
+        $day_sections = $sort_class->sort_it($all_sections[$i], "timetable_time"); // sort sections of each day according to their start time
+        foreach ($day_sections as $day_section) {
+            $section = $day_section[2];
+            $start_time = convertToMinutes($section->start);
+
+            // print out empty cells until the start of first section of the day
+            while ($time < $start_time) {
                 echo "<td></td>";
                 $time += 15;
             }
-            echo "</tr>";
-        } else {
-            for ($j = 0; $j < 44; $j++) {
-                echo "<td></td>";
+            
+            // background color for the table cells depending on their bid status
+            $status = $day_section[0];
+            if ($day_section[1] == "Success") {
+                $color_style = "style='background-color:yellowgreen;'";
+            } else if ($day_section[1] == "Fail") {
+                $color_style = "style='background-color:indianred;'";
+            } else {
+                $color_style = "style='background-color:#FFAF00;'";
             }
-            echo "</tr>";
+
+            // calculation of how long the section lasts to print appropriate number of cells
+            $end_time = convertToMinutes($section->end);
+            $colspan_num = (int) ($end_time - $start_time) / 15;
+            $time = $end_time;
+            echo "<td colspan='$colspan_num' $color_style align='center'><b>$section->course $section->section<br/>$status</b></td>";
         }
+        // if sections dont last till to the end of the day, print out remaining empty cells
+        while ($time < convertToMinutes("19:00")) {
+            echo "<td></td>";
+            $time += 15;
+        }
+        echo "</tr>";
     }
 
 ?>
