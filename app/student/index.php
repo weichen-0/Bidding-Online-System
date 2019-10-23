@@ -82,11 +82,11 @@ function convertToMinutes($time) {
         </tr>
 
 <?php
+    $all_sections = ["1"=>[], "2"=>[], "3"=>[], "4"=>[], "5"=>[]]; // for timetable
     if (empty($bids) && empty($enrolments)) {
         echo "<tr><td colspan='$colspan_num' style='text-align:center;'>No existing bids/enrolments!</td></tr>";
 
     } else {
-        $all_sections = ["1"=>[], "2"=>[], "3"=>[], "4"=>[], "5"=>[]]; // for timetable
         
         if ($round_status == "INACTIVE") {
             // if inactive round 2, display round 1 successful enrolments 
