@@ -108,7 +108,7 @@ foreach ($enrolments as $enrolment) {
     $enrolment_result[] = ["userid" => $enrolment->userid, 
                             "course" => $enrolment->code, 
                             "section" => $enrolment->section, 
-                            "amount" => $enrolment->amount];
+                            "amount" => (float) $enrolment->amount];
 }
 $enrolment_result = $sort_class->sort_it($enrolment_result, "enrolment");
 

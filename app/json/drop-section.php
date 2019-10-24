@@ -64,13 +64,6 @@ if ($round_status == "INACTIVE") {
 }
 
 if (isEmpty($errors)) {
-    $enrolment = $enrolment_dao->retrieve($userid, $code, $section->section);
-    if ($enrolment == null) {
-        $errors[] = 'no such enrollment record';
-    }
-}
-
-if (isEmpty($errors)) {
     $result = ["status" => "success"];
     $student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $student->edollar + $enrolment->amount));
     $enrolment_dao->remove($enrolment);
