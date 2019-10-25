@@ -45,7 +45,7 @@ echo "</table></div><br/><br/>";
 echo "<div style='background-color:darkgrey; display:inline-block;'";
 // table for errors
 if (isset($result['error'])) {
-    if (!isset($result['error']['file'])) {
+    if (!is_array($result['error'][0])) {
         echo "<br/><table width='318'>
                     <tr><th>Error Message</th></tr>
                     <tr><td align='center'>input files not found</td></tr>
@@ -74,7 +74,7 @@ if (isset($result['error'])) {
             echo "<tr>
                     <td rowspan='$num_rows'>$name</td>";
             foreach ($arr as $row) {
-                echo "<td>{$row['line']}</td><td>";
+                echo "<td width='151'>{$row['line']}</td><td style='min-width:151px'>";
                 foreach ($row['message'] as $msg) {
                     echo "$msg<br/>";
                 }
