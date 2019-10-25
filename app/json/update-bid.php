@@ -83,7 +83,20 @@ if (!isEmpty($errors)) {
 }
 
 // ================== LOGICAL VALIDATION ===================
+$round_status = $round_dao->retrieveStatus();
+// check if there is an active round, output error immediately if yes
+if ($round_status == 'INACTIVE') {
+    $errors[] = 'round ended';
+    $result = ["status" => "error",
+               "message" => $errors];
+    header('Content-Type: application/json');
+    echo json_encode($result, JSON_PRETTY_PRINT);
+    exit;
+}
+
+$round_num = $round_dao->retrieveRound();
 $bids = $bid_dao->retrieveByUser($userid);
+$min_bid = $minbid_dao->retrieve($section->course, $section->section);
 
 // check if student has a previous bid for the same course (whether update is required)
 $prev_bid = null;
@@ -100,16 +113,8 @@ if (!is_null($prev_bid)) {
     $bids = $bid_dao->retrieveByUser($userid);
 }
 
-$round_status = $round_dao->retrieveStatus();
-$round_num = $round_dao->retrieveRound();
-$min_bid = $minbid_dao->retrieve($section->course, $section->section);
-
-// check if there is an active round
-if ($round_status == 'INACTIVE') {
-    $errors[] = 'round ended';
-
 // if active round 1, check if student is bidding for course under their school
-} else if ($round_num == 1 && $student->school != $course->school) {
+if ($round_num == 1 && $student->school != $course->school) {
     $errors[] = 'not own school course';
 
 // if active round 2, check if bid amount is less than minimum bid
