@@ -2,7 +2,7 @@
 
 Section: G5T7
 
-Group Members: Beh Wei Chen, Geralyn Goo Soo Chi, Wong Wei Ling, Lim Jia Yu, Tan Shermin
+Group Members: Beh Wei Chen, Geralyn Goo Soo Chi, Lim Jia Yu, Tan Shermin, Wong Wei Ling
 
 To start using BIOS, access the php files below:
 * `app/login.php` for browser UI
