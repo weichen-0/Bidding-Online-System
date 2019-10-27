@@ -1,8 +1,8 @@
-﻿
+
 --
 -- Dumping data for table `course`
 --
-
+TRUNCATE TABLE bios.course;
 INSERT INTO `bios`.`course` (`course`, `school`, `title`, `description`, `exam date`, `exam start`, `exam end`) VALUES
 ('IS100', 'SIS', 'Calculus', 'The basic objective of Calculus is to relate small-scale (differential) quantities to large-scale (integrated) quantities. This is accomplished by means of the Fundamental Theorem of Calculus. Students should demonstrate an understanding of the integral as a cumulative sum, of the derivative as a rate of change, and of the inverse relationship between integration and differentiation.', 20131119, '8:30', '11:45'),
 ('IS101', 'SIS', 'Advanced Calculus', 'This is a second course on calculus. It is more advanced definitely.', 20131118, '12:00', '15:15'),
@@ -16,7 +16,7 @@ INSERT INTO `bios`.`course` (`course`, `school`, `title`, `description`, `exam d
 ('IS109', 'SIS', 'Cloud Computing', 'Cloud computing is Internet-based computing, whereby shared resources, software and information are provided to computers and other devices on-demand, like the electricity grid.', 20131110, '8:30', '11:45'),
 ('IS200', 'SIS', 'Final Touch', 'Learn how eat, dress and talk.', 20131109, '12:00', '15:15'),
 ('IS201', 'SIS', 'Fun with Shell Programming', 'Shell scripts are a fundamental part of the UNIX and Linux programming environment.', 20131108, '15:30', '18:45'),
-('IS202', 'SIS', 'Enterprise integration', 'Enterprise integration is a technical field of Enterprise Architecture, which focused on the study of things like system interconnection, electronic data interchange, product data exchange and distributed computing environments, and it\'s possible other solutions.[1', 20131107, '8:30', '11:45'),
+('IS202', 'SIS', 'Enterprise integration', 'Enterprise integration is a technical field of Enterprise Architecture, which focused on the study of things like system interconnection, electronic data interchange, product data exchange and distributed computing environments, and it\'s possible other solutions.', 20131107, '8:30', '11:45'),
 ('IS203', 'SIS', 'Software Engineering', 'The Sleepless Era.', 20131106, '12:00', '15:15'),
 ('IS204', 'SIS', 'Database System Administration', 'Database administration is a complex, often thankless chore.', 20131105, '15:30', '18:45'),
 ('IS205', 'SIS', 'All Talk, No Action', 'The easiest course of all. We will sit around and talk.', 20131101, '8:30', '11:45'),
