@@ -1,0 +1,19 @@
+{
+    "status": "success",
+    "vacancy": 4,
+    "min-bid-amount": 14.0,
+    "students": [
+        {
+            "userid": "fred.ng.2009",
+            "amount": 15.0,
+            "balance": 185.0,
+            "status": "pending"
+        },
+        {
+            "userid": "eddy.ng.2009",
+            "amount": 14.0,
+            "balance": 186.0,
+            "status": "pending"
+        }
+    ]
+}

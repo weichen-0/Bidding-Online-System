@@ -11,13 +11,13 @@
             "course_completed.csv": 4
         },
         {
-            "prerequisite.csv": 8
+            "prerequisite.csv": 6
         },
         {
             "section.csv": 35
         },
         {
-            "student.csv": 15
+            "student.csv": 16
         }
     ]
 }

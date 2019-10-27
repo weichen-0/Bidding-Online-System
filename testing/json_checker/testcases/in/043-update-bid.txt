@@ -1,1 +1,1 @@
-r={"course":"","section":""}
+r={"userid":"calvin.ng.2009","amount":"10","course":"IS109","section":"S1"}

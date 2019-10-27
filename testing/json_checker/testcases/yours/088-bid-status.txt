@@ -1,0 +1,43 @@
+{
+    "status": "success",
+    "vacancy": 5,
+    "min-bid-amount": 12.0,
+    "students": [
+        {
+            "userid": "eddy.ng.2009",
+            "amount": 18.0,
+            "balance": 168.0,
+            "status": "pending"
+        },
+        {
+            "userid": "gary.ng.2009",
+            "amount": 17.0,
+            "balance": 183.0,
+            "status": "pending"
+        },
+        {
+            "userid": "fred.ng.2009",
+            "amount": 15.0,
+            "balance": 170.0,
+            "status": "pending"
+        },
+        {
+            "userid": "dawn.ng.2009",
+            "amount": 13.0,
+            "balance": 187.0,
+            "status": "pending"
+        },
+        {
+            "userid": "calvin.ng.2009",
+            "amount": 12.0,
+            "balance": 188.0,
+            "status": "pending"
+        },
+        {
+            "userid": "ben.ng.2009",
+            "amount": 11.0,
+            "balance": 189.0,
+            "status": "pending"
+        }
+    ]
+}

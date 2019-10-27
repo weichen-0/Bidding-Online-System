@@ -1,6 +1,3 @@
 {
-    "status": "error",
-    "message": [
-        "not own school course"
-    ]
+    "status": "success"
 }

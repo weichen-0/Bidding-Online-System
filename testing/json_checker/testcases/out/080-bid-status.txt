@@ -1,0 +1,25 @@
+{
+    "status": "success",
+    "vacancy": 5,
+    "min-bid-amount": 11.0,
+    "students": [
+        {
+            "userid": "dawn.ng.2009",
+            "amount": 13.0,
+            "balance": 187.0,
+            "status": "pending"
+        },
+        {
+            "userid": "calvin.ng.2009",
+            "amount": 12.0,
+            "balance": 188.0,
+            "status": "pending"
+        },
+        {
+            "userid": "ben.ng.2009",
+            "amount": 11.0,
+            "balance": 189.0,
+            "status": "pending"
+        }
+    ]
+}
