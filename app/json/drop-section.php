@@ -63,6 +63,8 @@ if ($round_status == "INACTIVE") {
     $errors[] = "round not active";
 }
 
+// can assume that student will be enrolled in the section
+$enrolment = $enrolment_dao->retrieve($userid, $code, $request['section']);
 if (isEmpty($errors)) {
     $result = ["status" => "success"];
     $student_dao->update(new Student($userid, $student->password, $student->name, $student->school, $student->edollar + $enrolment->amount));

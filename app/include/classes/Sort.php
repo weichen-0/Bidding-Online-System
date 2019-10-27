@@ -67,6 +67,15 @@ class Sort {
 		return $this->student($a, $b);
 	}
 
+	// sort bid_status student array by amount (highest to lowest), followed by userid (a to z)
+	function bid_status ($a, $b) {
+		$amt_cmp = $b['amount'] - $a['amount'];
+		if ($amt_cmp != 0) {
+			return $amt_cmp;
+		}
+		return $this->student($a, $b);
+	}
+
 	// sort bid objects by amount (highest to lowest)
 	function clear_round($a, $b) {
 		return $b->amount - $a->amount;

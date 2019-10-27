@@ -42,7 +42,7 @@ class PrereqDAO {
             if (isset($result[$course])) {
                 $result[$course][] = $prerequisite;
             } else {
-                $result[$course] = array();
+                $result[$course] = [$prerequisite];
             }
         }
 

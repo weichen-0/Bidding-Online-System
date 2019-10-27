@@ -90,7 +90,7 @@ if ($course == null) {
                 }
             }
             $course_section_str = $request['course'] . " " . $request['section'];
-            $successful_bids = $round_bids[$course_section_str][0];
+            $successful_bids = (isset($round_bids[$course_section_str])) ? $round_bids[$course_section_str][0] : array();
             $minbid = (empty($successful_bids)) ? 10.00 : $successful_bids[count($successful_bids) - 1]->amount; // minimum successful bid amount
 
         } else { // active round
@@ -125,6 +125,8 @@ if ($course == null) {
 }
 
 if (empty($err_msg)) {
+    // highest to lowest amount, followed by userid (a to z)
+    $student_arr = $sort_class->sort_it($student_arr, 'bid_status');
     $result = ["status" => "success",
                "vacancy" => (int) $vacancy,
                "min-bid-amount" => (float) $minbid,

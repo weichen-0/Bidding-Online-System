@@ -111,7 +111,7 @@ function validateSection($section) {
                     </tr>
             </table>
 
-            <div style='overflow-y:auto; max-height:450px;'>
+            <div style='overflow-y:auto; max-height:350px;'>
                 <table>
 <?php
                 $section_dict = array();

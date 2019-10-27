@@ -42,7 +42,7 @@ class CourseCompletedDAO {
             if (isset($result[$userid])) {
                 $result[$userid][] = $code;
             } else {
-                $result[$userid] = array();
+                $result[$userid] = [$code];
             }
         }
 

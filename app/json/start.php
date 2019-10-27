@@ -29,12 +29,12 @@ $round_num = $round_dao->retrieveRound();
 $round_status = $round_dao->retrieveStatus();
 
 $result = ["status" => "success",
-            "round" => $round_num];
+            "round" => (int) $round_num];
 
 if ($round_status == "INACTIVE") {
     if ($round_num == 1) {
         $round_dao->set(2, "ACTIVE");
-        $result["round"] = 2;
+        $result["round"] = (int) 2;
 
         $bid_dao = new BidDAO();
         $bid_dao->removeAll();            
@@ -43,6 +43,7 @@ if ($round_status == "INACTIVE") {
         $minbid_dao->resetAll(10);
     } else {
         unset($result["round"]);
+        $result["status"] = "error";
         $result["message"] = ["round 2 ended"];
     }
 }

@@ -78,6 +78,8 @@ function process_r2_bids() {
     $enrolment_dao = new EnrolmentDAO();
     $minbid_dao = new MinBidDAO();
     $section_dao = new SectionDAO();
+    $round_dao = new RoundDAO();
+    $round_status = $round_dao->retrieveStatus(); 
     $result = array();
     $placed_bids = getAllPlacedBids();
 
@@ -86,7 +88,8 @@ function process_r2_bids() {
         $section = $section_dao->retrieve($course_section_arr[0], $course_section_arr[1]);
         
         // get number of vacancies left in section
-        $enrolled = count($enrolment_dao->retrieveBySection($course_section_arr[0], $course_section_arr[1]));
+        $enrolments = $enrolment_dao->retrieveBySection($course_section_arr[0], $course_section_arr[1]);
+        $enrolled = count($enrolments);
         $vacancies = $section->size - $enrolled;
 
         // get min bid
@@ -94,6 +97,17 @@ function process_r2_bids() {
 
         $total_bids = count($bid_list);
         $unsuccessful_bids = array();
+
+        // account for newly added enrolments from recently concluded round  
+        if ($round_status == 'INACTIVE') {
+            foreach ($bid_list as $bid) {
+                foreach ($enrolments as $enrolment) {
+                    if ($bid->userid == $enrolment->userid) {
+                        $vacancies++;
+                    }
+                }
+            }
+        }
 
         if ($total_bids <= $vacancies) {
             $successful_bids = $bid_list;

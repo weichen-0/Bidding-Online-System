@@ -130,8 +130,9 @@ if (($vacancy - count($section_enrolments)) <= 0) {
 }
 
 // check if student has already enrolled into section in previous round
-foreach ($section_enrolments as $enrolment) {
-    if ($enrolment->userid == $userid) {
+$user_enrolments = $enrolment_dao->retrieveByUser($userid);
+foreach ($user_enrolments as $enrolment) {
+    if ($enrolment->code == $code) {
         $errors[] = 'course enrolled';
         break;
     }

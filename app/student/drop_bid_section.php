@@ -6,6 +6,7 @@
     $student = $dao->retrieve($_SESSION['userid']);
 
     $round_dao = new RoundDAO();
+    $round_status = $round_dao->retrieveStatus();
 ?>
 
 <html>
@@ -21,7 +22,7 @@
     </p>
     <p>
         Account Balance: <big><b><u>e$<?=$student->edollar?></u></b></big><br/>
-        Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big>
+        Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_status?></u></b></big>
     </p>
 
     <div style="overflow-y:auto; max-height:300px; background-color:darkgrey; display:inline-block;">
@@ -36,7 +37,7 @@
     $bid_dao = new BidDAO();
     $bids = $bid_dao->retrieveByUser($student->userid);
 
-    if (empty($bids)) {
+    if (empty($bids) || $round_status == 'INACTIVE') {
         echo "<tr><td colspan=3 style='text-align:center;'>No existing bids!</td></tr>";
     } else {
         foreach ($bids as $bid) {
