@@ -3,6 +3,7 @@
 -- Dumping data for table `section`
 --
 
+TRUNCATE TABLE bios.section;
 INSERT INTO `bios`.`section` (`course`, `section`, `day`, `start`, `end`, `instructor`, `venue`, `size`) VALUES
 ('IS100', 'S1', 1, '8:30', '11:45', 'Albert KHOO', 'Seminar Rm 2-1', 10),
 ('IS100', 'S2', 2, '12:00', '15:15', 'Billy KHOO', 'Seminar Rm 2-2', 10),
