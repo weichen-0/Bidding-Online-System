@@ -258,49 +258,26 @@ function bid_validate_row($row) {
         // if round 1, check if students are bidding courses under their school
         if ($round_dao->retrieveRound() == 1 && $student->school != $course->school) {
             $row_errors[] = "not own school course";
-        }
-
-        // check if class timing clashes with all previously bidded sections
-        $bids = $bid_dao->retrieveByUser($userid);
-        foreach ($bids as $bid) {
-            $prev_section = $section_dao->retrieve($bid->code, $bid->section);
-            if ($section->classClashWith($prev_section)) {
-                $row_errors[] = "class timetable clash";
-                break;
-            }
-        }
-
-        // check if exam timing clashes with all previously bidded courses
-        foreach ($bids as $bid) {
-            $prev_course = $course_dao->retrieve($bid->code);
-            if ($course->examClashWith($prev_course)) {
-                $row_errors[] = "exam timetable clash";
-                break;
-            }
-        }
-
-        // check if student has completed prerequisites for course
-        $prereqs = $prereq_dao->retrieve($code);
-        $courses_completed = $course_completed_dao->retrieve($userid);
+		}
+		
+		// check if student has completed prerequisites for course
+		$prereqs = $prereq_dao->retrieve($code);
+		$courses_completed = $course_completed_dao->retrieve($userid);
 		foreach ($prereqs as $prereq) {
 			if (!in_array($prereq, $courses_completed)) {
 				$row_errors[] = "incomplete prerequisites";
 				break;
 			}
-        }
+		}
 
-        // check if student has already completed this course
-        if (in_array($code, $courses_completed)) {
-            $row_errors[] = "course completed";
-        }
-
-        // check if student has already bidded for 5 sections
-        if (count($bids) >= 5) {
-            $row_errors[] = "section limit reached";
-        }
+		// check if student has already completed this course
+		if (in_array($code, $courses_completed)) {
+			$row_errors[] = "course completed";
+		}
 
 		// check if student has a previous bid for the same course (whether update is required)
 		$prev_bid = null;
+		$bids = $bid_dao->retrieveByUser($userid);
 		foreach ($bids as $bid) {
 			if ($bid->code == $code) {
 				$prev_bid = $bid;
@@ -308,8 +285,35 @@ function bid_validate_row($row) {
 			}
 		}
 
+		if (is_null($prev_bid)) {
+			// check if class timing clashes with all previously bidded sections
+			foreach ($bids as $bid) {
+				$prev_section = $section_dao->retrieve($bid->code, $bid->section);
+				if ($section->classClashWith($prev_section)) {
+					$row_errors[] = "class timetable clash";
+					break;
+				}
+			}
+
+			// check if exam timing clashes with all previously bidded courses
+			foreach ($bids as $bid) {
+				$prev_course = $course_dao->retrieve($bid->code);
+				if ($course->examClashWith($prev_course)) {
+					$row_errors[] = "exam timetable clash";
+					break;
+				}
+			}
+		}
+
+		// check if student has already bidded for 5 sections
+		$overlimit_with_bid_update = (!is_null($prev_bid) && count($bids) >= 6);
+		$overlimit_without_bid_update = (is_null($prev_bid) && count($bids) >= 5);
+        if ($overlimit_with_bid_update || $overlimit_without_bid_update) {
+            $row_errors[] = "section limit reached";
+        }
+
 		// check if student has enough edollars whether updating bid or not
-		$insuff_edollar_with_refund = (!is_null($prev_bid) && ($prev_bid->amount + $student->edollar) < $amt);
+		$insuff_edollar_with_refund = (!is_null($prev_bid) && $amt > ($prev_bid->amount + $student->edollar));
 		$insuff_edollar_without_refund = (is_null($prev_bid) && $amt > $student->edollar);
 		if ($insuff_edollar_with_refund || $insuff_edollar_without_refund) {
 			$row_errors[] = "not enough e-dollar";
