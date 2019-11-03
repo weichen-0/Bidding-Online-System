@@ -1,6 +1,9 @@
 {
     "status": "error",
     "message": [
-        "course enrolled"
+        "class timetable clash",
+        "course enrolled",
+        "exam timetable clash",
+        "no vacancy"
     ]
 }

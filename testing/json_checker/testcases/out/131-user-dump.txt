@@ -1,6 +1,6 @@
 {
     "status": "error",
     "message": [
-        "blank userid"
+        "missing userid"
     ]
 }
