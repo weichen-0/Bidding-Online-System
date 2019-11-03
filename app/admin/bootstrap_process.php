@@ -9,6 +9,7 @@ if (!isset($_POST['import'])) {
 } 
 
 $result = doBootstrap();
+$round_dao = new RoundDAO();
 ?>
 
 <html>
@@ -18,10 +19,12 @@ $result = doBootstrap();
 <body>
     <h1>BIOS Bootstrap Response</h1>
     <p>
-        <a href='index.php'>Back</a>
+        <a href='index.php'>Back</a> |
+        <a href='../logout.php'>Logout</a>
     </p>
     <p>
-        Bootstrap Status: <big><b><u><?=$result['status'] == 'success' ? 'Success' : "Error"?></u></b></big>
+        Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_dao->retrieveStatus()?></u></b></big><br/>
+        Bootstrap Status: <big><b><u><?=$result['status'] == 'success' ? 'SUCCESS' : "ERROR"?></u></b></big>
     </p>
 
 <?php

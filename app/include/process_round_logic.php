@@ -37,17 +37,30 @@ function process_r1_bids() {
         $total_bids = count($bid_list);
         $unsuccessful_bids = array();
 
-        if ($total_bids <= $section_size) {
+        if ($total_bids < $section_size) {
             $successful_bids = $bid_list;
-            // if section is full, clearing price is the last bid amount, else price is 10
-            $clearing_price = ($total_bids == $section_size) ? $bid_list[$section_size - 1]->amount : 10;
+            $clearing_price = 10;
         
-        } else {                
+        } else {         
             // find the nth bid amount, with n being the section size
             $clearing_price = $bid_list[$section_size - 1]->amount;
 
-            // check if (n-1)th and (n+1)th bid at clearing price
-            $multiple_clearing_price_bids = ($bid_list[$section_size - 2]->amount == $clearing_price) || ($bid_list[$section_size]->amount == $clearing_price); 
+            // no multiple clearing price bids if section size and bid size is 1
+            if ($total_bids == $section_size && $section_size == 1) {
+                $multiple_clearing_price_bids = false;
+
+            // check (n-1)th bid amt if bid size = section size
+            } else if ($total_bids == $section_size) {
+                $multiple_clearing_price_bids = $bid_list[$section_size - 2]->amount == $clearing_price;
+
+            // check (n+1)th bid amt if section size = 1
+            } else if ($section_size == 1) {
+                $multiple_clearing_price_bids = $bid_list[$section_size]->amount == $clearing_price;
+
+            // check both (n-1)th and (n+1)th bid amt
+            } else {
+                $multiple_clearing_price_bids = ($bid_list[$section_size - 2]->amount == $clearing_price) || ($bid_list[$section_size]->amount == $clearing_price); 
+            }          
             
             $successful_bids = array();
             // add placed bids to successful bid array
@@ -138,11 +151,12 @@ function process_r2_bids() {
                 $bid = $bid_list[$i];
                 $unsuccessful_bids[] = $bid;
             }
-
-            // increments clearing price by one and enforces the 'price never goes down' condition 
-            if ($min_bid > ++$clearing_price) {
-                $clearing_price = $min_bid;
-            }
+            $clearing_price++;
+        }
+        
+        // increments clearing price by one and enforces the 'price never goes down' condition 
+        if ($min_bid > $clearing_price) {
+            $clearing_price = $min_bid;
         }
         $result[$course_section_str] = [$successful_bids, $unsuccessful_bids, $clearing_price];
     }

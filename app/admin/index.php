@@ -46,7 +46,7 @@ $round_dao = new RoundDAO();
             <!-- <button type='submit' name='submit' value='Start Round!' class='start-round-button'></button> -->
         </form>
         <form action='clear_process.php' method='post'>
-            <input name='submit' value="Clear Round!" type='submit' style='width:168px; line-height:100px; background-color:indianred; font-weight:bold; border-radius:10px; font-size:15'/>
+            <input name='submit' value="Stop Round!" type='submit' style='width:168px; line-height:100px; background-color:indianred; font-weight:bold; border-radius:10px; font-size:15'/>
         </form>
 <?php
         // can just call both since each function checks whether errors and msg is set or not

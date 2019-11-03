@@ -25,6 +25,35 @@
         Bidding Round <?=$round_dao->retrieveRound()?>: <big><b><u><?=$round_status?></u></b></big>
     </p>
 
+    <form method='POST' action='drop_bid_section_process.php'>
+    <table>
+        <tr>
+            <th>Course ID</th>
+            <th>
+                <input name='course'/>
+            </th>
+        </tr>
+        <tr>
+            <th>Section</th>
+            <th>
+                <input name='section'/>
+            </th>
+        </tr>
+        <tr>
+            <th colspan='2'>
+                <input name='drop' type='submit' />
+            </th>
+        </tr>
+    </table>
+    </form>
+
+    <p>
+<?php
+    printMessages();
+    printErrors();
+?>
+    </p>
+
     <div style="overflow-y:auto; max-height:300px; background-color:darkgrey; display:inline-block;">
     <p style='margin-top:5px; margin-bottom:5px; text-align:center;'><b>Bidded Courses</b></p>
     <table width=246px>
@@ -80,36 +109,5 @@
 ?>
     </table>        
     </div>
-
-    <br/><br/>
-
-    <form method='POST' action='drop_bid_section_process.php'>
-    <table>
-        <tr>
-            <th>Course ID</th>
-            <th>
-                <input name='course'/>
-            </th>
-        </tr>
-        <tr>
-            <th>Section</th>
-            <th>
-                <input name='section'/>
-            </th>
-        </tr>
-        <tr>
-            <th colspan='2'>
-                <input name='drop' type='submit' />
-            </th>
-        </tr>
-    </table>
-    </form>
-
-    <p>
-<?php
-    printMessages();
-    printErrors();
-?>
-    </p>
 </body>
 </html>

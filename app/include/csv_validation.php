@@ -259,21 +259,6 @@ function bid_validate_row($row) {
         if ($round_dao->retrieveRound() == 1 && $student->school != $course->school) {
             $row_errors[] = "not own school course";
 		}
-		
-		// check if student has completed prerequisites for course
-		$prereqs = $prereq_dao->retrieve($code);
-		$courses_completed = $course_completed_dao->retrieve($userid);
-		foreach ($prereqs as $prereq) {
-			if (!in_array($prereq, $courses_completed)) {
-				$row_errors[] = "incomplete prerequisites";
-				break;
-			}
-		}
-
-		// check if student has already completed this course
-		if (in_array($code, $courses_completed)) {
-			$row_errors[] = "course completed";
-		}
 
 		// check if student has a previous bid for the same course (whether update is required)
 		$prev_bid = null;
@@ -284,7 +269,7 @@ function bid_validate_row($row) {
 				break;
 			}
 		}
-
+		
 		if (is_null($prev_bid)) {
 			// check if class timing clashes with all previously bidded sections
 			foreach ($bids as $bid) {
@@ -303,6 +288,21 @@ function bid_validate_row($row) {
 					break;
 				}
 			}
+		}
+		
+		// check if student has completed prerequisites for course
+		$prereqs = $prereq_dao->retrieve($code);
+		$courses_completed = $course_completed_dao->retrieve($userid);
+		foreach ($prereqs as $prereq) {
+			if (!in_array($prereq, $courses_completed)) {
+				$row_errors[] = "incomplete prerequisites";
+				break;
+			}
+		}
+
+		// check if student has already completed this course
+		if (in_array($code, $courses_completed)) {
+			$row_errors[] = "course completed";
 		}
 
 		// check if student has already bidded for 5 sections

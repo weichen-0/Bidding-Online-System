@@ -68,9 +68,10 @@ function convertToMinutes($time) {
             <th>Round</th>
             <th>Course ID</th>
             <th>Section</th>
+            <th>Vacancy</th>
             <th>Bid Amt</th>
 <?php
-    $colspan_num = 5;
+    $colspan_num = 6;
     // add min bid column if active round 2
     if ($round_num == 2 & $round_status == "ACTIVE") {
         echo "<th>Min Bid</th>";
@@ -82,7 +83,7 @@ function convertToMinutes($time) {
         </tr>
 
 <?php
-    $all_sections = ["1"=>[], "2"=>[], "3"=>[], "4"=>[], "5"=>[]]; // for timetable
+    $all_sections = ["1"=>[], "2"=>[], "3"=>[], "4"=>[], "5"=>[], "6"=>[], "7"=>[]]; // for timetable
     if (empty($bids) && empty($enrolments)) {
         echo "<tr><td colspan='$colspan_num' style='text-align:center;'>No existing bids/enrolments!</td></tr>";
 
@@ -97,8 +98,10 @@ function convertToMinutes($time) {
                 if ($rowspan_num > 0) {
                     echo "<tr><td rowspan='$rowspan_num'>1</td>";
                     foreach ($r1_enrolments as $r1_enrolment) {
+                        $vacancy = $section_dao->retrieve($r1_enrolment->code, $r1_enrolment->section)->size - count($enrolment_dao->retrieveBySection($r1_enrolment->code, $r1_enrolment->section));
                         echo "<td>{$r1_enrolment->code}</td>
                                 <td>{$r1_enrolment->section}</td>
+                                <td>$vacancy</td>
                                 <td>{$r1_enrolment->amount}</td>
                                 <td>Success</td>";
                     }
@@ -110,8 +113,10 @@ function convertToMinutes($time) {
                 // display bid status for most recently concluded round
                 echo "<tr><td rowspan='$rowspan_num'>$round_num</td>";
                 foreach ($bids as $bid) {
+                    $vacancy = $section_dao->retrieve($bid->code, $bid->section)->size - count($enrolment_dao->retrieveBySection($bid->code, $bid->section));
                     echo "<td>{$bid->code}</td>
                             <td>{$bid->section}</td>
+                            <td>$vacancy</td>
                             <td>{$bid->amount}</td>";
 
                     $enrolment = $enrolment_dao->retrieve($bid->userid, $bid->code, $bid->section);
@@ -127,8 +132,10 @@ function convertToMinutes($time) {
                 if ($rowspan_num > 0) {
                     echo "<tr><td rowspan='$rowspan_num'>1</td>";
                     foreach ($enrolments as $enrolment) {
+                        $vacancy = $section_dao->retrieve($enrolment->code, $enrolment->section)->size - count($enrolment_dao->retrieveBySection($enrolment->code, $enrolment->section));
                         echo "  <td>{$enrolment->code}</td>
                                 <td>{$enrolment->section}</td>
+                                <td>$vacancy</td>
                                 <td>{$enrolment->amount}</td>
                                 <td>-</td>
                                 <td>Success</td>
@@ -143,9 +150,11 @@ function convertToMinutes($time) {
             if ($rowspan_num > 0) {
                 // display bids and their statuses for current round
                 echo "<tr><td rowspan='$rowspan_num'>$round_num</td>";
-                foreach ($bids as $bid) {                
+                foreach ($bids as $bid) {        
+                    $vacancy = $section_dao->retrieve($bid->code, $bid->section)->size - count($enrolment_dao->retrieveBySection($bid->code, $bid->section));        
                     echo "<td>{$bid->code}</td>
                             <td>{$bid->section}</td>
+                            <td>$vacancy</td>
                             <td>{$bid->amount}</td>";
 
                     $status = "Pending"; // round 1 bid status
@@ -195,10 +204,10 @@ function convertToMinutes($time) {
         </tr>
 <?php
     $sort_class = new Sort();
-    $day_arr = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    $day_arr = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
     // display days of the week and their respective sections
-    for ($i = 1; $i <= 5; $i++) {
+    for ($i = 1; $i <= 7; $i++) {
         $day = $day_arr[$i - 1];
         echo "<tr><th height='46'>$day</th>";
         $time = convertToMinutes("8:00"); // to track the printing of table cells
