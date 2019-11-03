@@ -25,9 +25,9 @@
             "file": "bid.csv",
             "line": 4,
             "message": [
-                "incomplete prerequisites",
                 "class timetable clash",
                 "exam timetable clash",
+                "incomplete prerequisites",
                 "not enough e-dollar"
             ]
         },

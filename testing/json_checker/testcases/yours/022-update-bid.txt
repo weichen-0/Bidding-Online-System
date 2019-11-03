@@ -1,6 +1,6 @@
 {
     "status": "error",
     "message": [
-        "not enough e-dollar"
+        "insufficient e$"
     ]
 }

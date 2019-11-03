@@ -2,7 +2,7 @@
     "status": "error",
     "num-record-loaded": [
         {
-            "bid.csv": 7
+            "bid.csv": 8
         },
         {
             "course.csv": 27
@@ -37,15 +37,6 @@
             "message": [
                 "not own school course",
                 "course completed",
-                "section limit reached"
-            ]
-        },
-        {
-            "file": "bid.csv",
-            "line": 11,
-            "message": [
-                "class timetable clash",
-                "exam timetable clash",
                 "section limit reached"
             ]
         }
