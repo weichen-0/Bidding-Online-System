@@ -296,13 +296,10 @@ function doBootstrap() {
 	];
 
 	if (!empty($errors)) {
-		// $sortclass = new Sort();
-		// if (is_array($errors[0])) {
-		// 	$errors = $sortclass->sort_it($errors, "array");
-		// } else {
-		// 	$errors = $sortclass->sort_it($errors, "string");
-		// }
-		
+		$sortclass = new Sort();
+		if (is_array($errors[0])) {
+			$errors = $sortclass->sort_it($errors, "bootstrap");
+		} 
 		$result["status"] = "error";
 		$result["error"] = $errors;
 	}

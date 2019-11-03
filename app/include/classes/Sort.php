@@ -1,18 +1,6 @@
 <?php
 class Sort {
 
-	// function array($a, $b) {
-	// 	$file_cmp = strcmp($a['file'], $b['file']);
-	// 	if ($file_cmp == 0) {
-	// 		return $a['line'] - $b['line'];
-	// 	}
-	// 	return $file_cmp;
-	// }
-
-	// function string($a, $b) {
-	// 	return strcmp($a, $b);
-	// }
-
 	function course($a, $b) {
 		$a_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$a['course']);  
 		$b_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$b['course']);
@@ -55,13 +43,14 @@ class Sort {
 		return $course_cmp;
 	}
 
+	// sort by order of course code, followed by highest to lowest bid, then username (a-z)
 	function bid($a, $b) {
 		$course_section_cmp = $this->section($a, $b);
 		if ($course_section_cmp != 0) {
 			return $course_section_cmp;
 		}
-		$bid_cmp = $a['amount'] - $b['amount'];
-		if ($bid_cmp != 0) {
+		$bid_cmp = ($b['amount'] > $a['amount']) ? 1 : -1;
+		if ($b['amount'] != $a['amount']) {
 			return $bid_cmp;
 		}
 		return $this->student($a, $b);
@@ -69,8 +58,8 @@ class Sort {
 
 	// sort bid_status student array by amount (highest to lowest), followed by userid (a to z)
 	function bid_status ($a, $b) {
-		$amt_cmp = $b['amount'] - $a['amount'];
-		if ($amt_cmp != 0) {
+		$amt_cmp = ($b['amount'] > $a['amount']) ? 1 : -1;
+		if ($b['amount'] != $a['amount']) {
 			return $amt_cmp;
 		}
 		return $this->student($a, $b);
@@ -78,7 +67,7 @@ class Sort {
 
 	// sort bid objects by amount (highest to lowest)
 	function clear_round($a, $b) {
-		return $b->amount - $a->amount;
+		return ($b->amount > $a->amount) ? 1 : -1;
 	}
 
 	// sort bid objects by userid (a to z)
@@ -111,6 +100,14 @@ class Sort {
 		$time1 = str_replace(':', '', $a[2]->start);
 		$time2 = str_replace(':', '', $b[2]->start);
 		return $time1 - $time2;
+	}
+
+	function bootstrap($a, $b) {
+		$file_cmp = strcmp($a['file'], $b['file']);
+		if ($file_cmp == 0) {
+			return $a['line'] - $b['line'];
+		}
+		return $file_cmp;
 	}
 
 	function string ($a, $b) {
