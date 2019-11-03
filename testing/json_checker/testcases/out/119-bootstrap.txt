@@ -21,6 +21,20 @@
         }
     ],
     "error": [
+	{
+            "file": "bid.csv",
+            "line": 2,
+            "message": [
+                "invalid userid"
+            ]
+        },
+        {
+            "file": "bid.csv",
+            "line": 3,
+            "message": [
+                "not own school course"
+            ]
+        },
         {
             "file": "course_completed.csv",
             "line": 3,
@@ -33,20 +47,6 @@
             "line": 4,
             "message": [
                 "invalid userid"
-            ]
-        },
-        {
-            "file": "bid.csv",
-            "line": 2,
-            "message": [
-                "invalid userid"
-            ]
-        },
-        {
-            "file": "bid.csv",
-            "line": 3,
-            "message": [
-                "not own school course"
             ]
         }
     ]

@@ -173,8 +173,8 @@
     ],
     "bid": [
         {
-            "userid": "ben.ng.2009",
-            "amount": 11.0,
+            "userid": "dawn.ng.2009",
+            "amount": 13.0,
             "course": "IS100",
             "section": "S1"
         },
@@ -185,20 +185,20 @@
             "section": "S1"
         },
         {
-            "userid": "dawn.ng.2009",
-            "amount": 13.0,
+            "userid": "ben.ng.2009",
+            "amount": 11.0,
             "course": "IS100",
-            "section": "S1"
-        },
-        {
-            "userid": "eddy.ng.2009",
-            "amount": 14.0,
-            "course": "IS101",
             "section": "S1"
         },
         {
             "userid": "fred.ng.2009",
             "amount": 15.0,
+            "course": "IS101",
+            "section": "S1"
+        },
+        {
+            "userid": "eddy.ng.2009",
+            "amount": 14.0,
             "course": "IS101",
             "section": "S1"
         }

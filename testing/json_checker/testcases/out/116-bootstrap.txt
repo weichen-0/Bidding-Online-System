@@ -21,6 +21,21 @@
         }
     ],
     "error": [
+
+        {
+            "file": "bid.csv",
+            "line": 6,
+            "message": [
+                "invalid userid"
+            ]
+        },
+        {
+            "file": "bid.csv",
+            "line": 9,
+            "message": [
+                "invalid userid"
+            ]
+        },
         {
             "file": "student.csv",
             "line": 7,
@@ -40,20 +55,6 @@
             "line": 13,
             "message": [
                 "invalid e-dollar"
-            ]
-        },
-        {
-            "file": "bid.csv",
-            "line": 6,
-            "message": [
-                "invalid userid"
-            ]
-        },
-        {
-            "file": "bid.csv",
-            "line": 9,
-            "message": [
-                "invalid userid"
             ]
         }
     ]

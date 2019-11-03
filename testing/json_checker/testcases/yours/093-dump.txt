@@ -173,26 +173,8 @@
     ],
     "bid": [
         {
-            "userid": "ben.ng.2009",
-            "amount": 11.0,
-            "course": "IS100",
-            "section": "S1"
-        },
-        {
-            "userid": "calvin.ng.2009",
-            "amount": 12.0,
-            "course": "IS100",
-            "section": "S1"
-        },
-        {
-            "userid": "dawn.ng.2009",
-            "amount": 13.0,
-            "course": "IS100",
-            "section": "S1"
-        },
-        {
-            "userid": "fred.ng.2009",
-            "amount": 15.0,
+            "userid": "eddy.ng.2009",
+            "amount": 18.0,
             "course": "IS100",
             "section": "S1"
         },
@@ -203,8 +185,26 @@
             "section": "S1"
         },
         {
-            "userid": "eddy.ng.2009",
-            "amount": 18.0,
+            "userid": "fred.ng.2009",
+            "amount": 15.0,
+            "course": "IS100",
+            "section": "S1"
+        },
+        {
+            "userid": "dawn.ng.2009",
+            "amount": 13.0,
+            "course": "IS100",
+            "section": "S1"
+        },
+        {
+            "userid": "calvin.ng.2009",
+            "amount": 12.0,
+            "course": "IS100",
+            "section": "S1"
+        },
+        {
+            "userid": "ben.ng.2009",
+            "amount": 11.0,
             "course": "IS100",
             "section": "S1"
         }
