@@ -1,0 +1,4 @@
+r={
+         "course": "T1234EZ",
+         "section": "S4"
+}
