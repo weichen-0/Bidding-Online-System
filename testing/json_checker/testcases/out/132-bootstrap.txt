@@ -1,0 +1,26 @@
+{
+    "status": "error",
+    "num-record-loaded": [
+        {
+            "bid.csv": 0
+        },
+        {
+            "course.csv": 0
+        },
+        {
+            "course_completed.csv": 0
+        },
+        {
+            "prerequisite.csv": 0
+        },
+        {
+            "section.csv": 0
+        },
+        {
+            "student.csv": 0
+        }
+    ],
+    "error": [
+        "input files not found"
+    ]
+}

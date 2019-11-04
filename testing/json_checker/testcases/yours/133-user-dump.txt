@@ -1,0 +1,8 @@
+{
+    "status": "success",
+    "userid": "amy.ng.2009",
+    "password": "qwerty128",
+    "name": "Amy NG",
+    "school": "SIS",
+    "edollar": 200.0
+}
