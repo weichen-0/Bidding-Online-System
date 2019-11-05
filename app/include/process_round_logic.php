@@ -177,8 +177,9 @@ function process_round($isEndOfRound) {
         $clearing_price = $arr[2];
 
         // update min bid for each section
-        $course = $successful_bids[0]->code;
-        $section = $successful_bids[0]->section;
+        $course_section_arr = explode(' ', $course_section_str);
+        $course = $course_section_arr[0];
+        $section = $course_section_arr[1];
         $minbid_dao->set($course, $section, $clearing_price);
 
         if ($isEndOfRound) {
