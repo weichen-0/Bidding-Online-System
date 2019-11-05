@@ -1,0 +1,127 @@
+{
+  "status" : "success",
+  "course" : [ {
+    "course" : "EC001",
+    "school" : "SOE",
+    "title" : "Econs",
+    "description" : "Supply and demand",
+    "exam date" : "20131120",
+    "exam start" : "830",
+    "exam end" : "900"
+  }, {
+    "course" : "EC002",
+    "school" : "SOE",
+    "title" : "Econs, #2",
+    "description" : "more econs",
+    "exam date" : "20131120",
+    "exam start" : "900",
+    "exam end" : "1000"
+  }, {
+    "course" : "EC003",
+    "school" : "SOE",
+    "title" : "Econs 3",
+    "description" : "more more econs",
+    "exam date" : "20131120",
+    "exam start" : "1000",
+    "exam end" : "1100"
+  }, {
+    "course" : "EC004",
+    "school" : "SOE",
+    "title" : "Econs 4",
+    "description" : "4 more",
+    "exam date" : "20131120",
+    "exam start" : "1100",
+    "exam end" : "1200"
+  }, {
+    "course" : "EC005",
+    "school" : "SOE",
+    "title" : "Econs 5",
+    "description" : "5 more",
+    "exam date" : "20131120",
+    "exam start" : "1200",
+    "exam end" : "1215"
+  }, {
+    "course" : "EC006",
+    "school" : "SOE",
+    "title" : "Econs 6",
+    "description" : "6 more",
+    "exam date" : "20131120",
+    "exam start" : "1215",
+    "exam end" : "1230"
+  } ],
+  "section" : [ {
+    "course" : "EC001",
+    "section" : "S1",
+    "day" : "Monday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Ana TEO",
+    "venue" : "Seminar Rm 2-1",
+    "size" : 3
+  }, {
+    "course" : "EC001",
+    "section" : "S2",
+    "day" : "Monday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Bliss TEO",
+    "venue" : "Seminar Rm 2-2",
+    "size" : 3
+  }, {
+    "course" : "EC001",
+    "section" : "S3",
+    "day" : "Monday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Camelia TEO",
+    "venue" : "Seminar Rm 2-3",
+    "size" : 3
+  }, {
+    "course" : "EC001",
+    "section" : "S6",
+    "day" : "Monday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Finch TEO",
+    "venue" : "Seminar Rm 2-6",
+    "size" : 3
+  } ],
+  "student" : [ {
+    "userid" : "alpha",
+    "password" : "abc123",
+    "name" : "Alpha Wee",
+    "school" : "SOE",
+    "edollar" : 88.0
+  }, {
+    "userid" : "beta",
+    "password" : "abc124",
+    "name" : "Beta WEE",
+    "school" : "SOE",
+    "edollar" : 89.0
+  }, {
+    "userid" : "charlie",
+    "password" : "abc125",
+    "name" : "Charlie WEE",
+    "school" : "SOE",
+    "edollar" : 89.0
+  } ],
+  "prerequisite" : [ ],
+  "bid" : [ {
+    "userid" : "alpha",
+    "amount" : 12.0,
+    "course" : "EC001",
+    "section" : "S1"
+  }, {
+    "userid" : "beta",
+    "amount" : 11.0,
+    "course" : "EC001",
+    "section" : "S1"
+  }, {
+    "userid" : "charlie",
+    "amount" : 11.0,
+    "course" : "EC001",
+    "section" : "S1"
+  } ],
+  "completed-course" : [ ],
+  "section-student" : [ ]
+}

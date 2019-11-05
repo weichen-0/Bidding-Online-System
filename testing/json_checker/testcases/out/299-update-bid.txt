@@ -1,0 +1,8 @@
+{
+  "status" : "error",
+  "message" : [ 
+    "class timetable clash",
+    "course enrolled",
+    "exam timetable clash"
+  ]
+}

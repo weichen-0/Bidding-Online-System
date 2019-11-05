@@ -1,0 +1,1 @@
+r={   "userid": "duke",   "amount": 9.99,   "course": "EE001",   "section": "S99"}

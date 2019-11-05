@@ -1,0 +1,46 @@
+{
+  "status": "error",
+  "num-record-loaded": [
+    {
+      "bid.csv": 1
+    },
+    {
+      "course.csv": 5
+    },
+    {
+      "course_completed.csv": 0
+    },
+    {
+      "prerequisite.csv": 0
+    },
+    {
+      "section.csv": 4
+    },
+    {
+      "student.csv": 3
+    }
+  ],
+  "error": [
+    {
+      "file": "course.csv",
+      "line": 7,
+      "message": [
+        "invalid exam end"
+      ]
+    },
+    {
+      "file": "section.csv",
+      "line": 6,
+      "message": [
+        "invalid end"
+      ]
+    },
+    {
+      "file": "section.csv",
+      "line": 7,
+      "message": [
+        "invalid course"
+      ]
+    }
+  ]
+}

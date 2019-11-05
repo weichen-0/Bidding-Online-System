@@ -1,0 +1,4 @@
+{
+  "status" : "error",
+  "message" : [ "class timetable clash", "section limit reached" ]
+}

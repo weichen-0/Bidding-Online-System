@@ -1,0 +1,15 @@
+{
+  "status" : "success",
+  "bids" : [ {
+    "row" : 1,
+    "userid" : "charlie",
+    "amount" : 350.0,
+    "result" : "in"
+  }, {
+    "row" : 2,
+    "userid" : "beta",
+    "amount" : 12.0,
+    "result" : "out"
+  }
+ ]
+}

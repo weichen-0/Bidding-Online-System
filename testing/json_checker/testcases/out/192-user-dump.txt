@@ -1,0 +1,8 @@
+{
+  "status" : "success",
+  "userid" : "duke",
+  "password" : "345abc",
+  "name" : "Duke Java",
+  "school" : "SCE",
+  "edollar" : 0.0
+}

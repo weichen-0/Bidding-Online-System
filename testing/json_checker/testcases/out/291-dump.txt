@@ -1,0 +1,105 @@
+{
+  "status" : "success",
+  "course" : [ {
+    "course" : "EE001",
+    "school" : "SCE",
+    "title" : "Engineering",
+    "description" : "Engines' Engine ...",
+    "exam date" : "20141120",
+    "exam start" : "830",
+    "exam end" : "900"
+  } ],
+  "section" : [ {
+    "course" : "EE001",
+    "section" : "S95",
+    "day" : "Friday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Ana TEO",
+    "venue" : "Seminar Rm 2-1",
+    "size" : 3
+  }, {
+    "course" : "EE001",
+    "section" : "S96",
+    "day" : "Thursday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Ana TEO",
+    "venue" : "Seminar Rm 2-1",
+    "size" : 3
+  }, {
+    "course" : "EE001",
+    "section" : "S97",
+    "day" : "Wednesday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Ana TEO",
+    "venue" : "Seminar Rm 2-1",
+    "size" : 3
+  }, {
+    "course" : "EE001",
+    "section" : "S98",
+    "day" : "Tuesday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Ana TEO",
+    "venue" : "Seminar Rm 2-1",
+    "size" : 3
+  }, {
+    "course" : "EE001",
+    "section" : "S99",
+    "day" : "Monday",
+    "start" : "830",
+    "end" : "1145",
+    "instructor" : "Ana TEO",
+    "venue" : "Seminar Rm 2-1",
+    "size" : 3
+  } ],
+  "student" : [ {
+    "userid" : "apple",
+    "password" : "123ccd",
+    "name" : "Apple",
+    "school" : "SCE",
+    "edollar" : 99.0
+  }, {
+    "userid" : "banana",
+    "password" : "123ccd",
+    "name" : "Banana",
+    "school" : "SCE",
+    "edollar" : 99.0
+  }, {
+    "userid" : "beet",
+    "password" : "123ccd",
+    "name" : "Beet",
+    "school" : "SCE",
+    "edollar" : 99.0
+  }, {
+    "userid" : "durian",
+    "password" : "123ccd",
+    "name" : "Durian",
+    "school" : "SCE",
+    "edollar" : 99.0
+  }, {
+    "userid" : "kiwi",
+    "password" : "123ccd",
+    "name" : "Kiwi",
+    "school" : "SCE",
+    "edollar" : 99.0
+  }, {
+    "userid" : "orange",
+    "password" : "123ccd",
+    "name" : "Orange",
+    "school" : "SCE",
+    "edollar" : 99.0
+  }, {
+    "userid" : "pear",
+    "password" : "123ccd",
+    "name" : "Pear",
+    "school" : "SCE",
+    "edollar" : 99.0
+  } ],
+  "prerequisite" : [ ],
+  "bid" : [ ],
+  "completed-course" : [ ],
+  "section-student" : [ ]
+}

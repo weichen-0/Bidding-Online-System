@@ -1,0 +1,9 @@
+{
+  "status" : "success",
+  "bids" : [ {
+    "row" : 1,
+    "userid" : "beta",
+    "amount" : 12.0,
+    "result" : "-"
+  } ]
+}

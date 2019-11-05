@@ -1,0 +1,21 @@
+{
+  "status" : "error",
+  "num-record-loaded" : [ {
+    "bid.csv" : 1
+  }, {
+    "course.csv" : 1
+  }, {
+    "course_completed.csv" : 0
+  }, {
+    "prerequisite.csv" : 0
+  }, {
+    "section.csv" : 4
+  }, {
+    "student.csv" : 7
+  } ],
+  "error" : [ {
+    "file" : "section.csv",
+    "line" : 3,
+    "message" : [ "invalid section" ]
+  } ]
+}

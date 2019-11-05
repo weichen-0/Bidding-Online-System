@@ -1,0 +1,109 @@
+{
+  "status" : "error",
+  "num-record-loaded" : [ {
+    "bid.csv" : 0
+  }, {
+    "course.csv" : 1
+  }, {
+    "course_completed.csv" : 0
+  }, {
+    "prerequisite.csv" : 0
+  }, {
+    "section.csv" : 5
+  }, {
+    "student.csv" : 4
+  } ],
+  "error" : [ {
+    "file" : "bid.csv",
+    "line" : 2,
+    "message" : [ "blank userid" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 3,
+    "message" : [ "blank amount" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 4,
+    "message" : [ "blank code" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 5,
+    "message" : [ "blank section" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 6,
+    "message" : [ "blank code" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 7,
+    "message" : [ "blank amount" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 8,
+    "message" : [ "blank userid" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 9,
+    "message" : [ "blank amount" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 10,
+    "message" : [ "blank code" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 11,
+    "message" : [ "blank section" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 12,
+    "message" : [ "blank code" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 13,
+    "message" : [ "blank amount" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 14,
+    "message" : [ "blank userid" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 15,
+    "message" : [ "blank amount" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 16,
+    "message" : [ "blank code" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 17,
+    "message" : [ "blank section" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 18,
+    "message" : [ "blank code" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 19,
+    "message" : [ "blank userid", "blank amount", "blank code", "blank section" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 20,
+    "message" : [ "blank userid" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 21,
+    "message" : [ "blank amount" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 22,
+    "message" : [ "blank amount", "blank code", "blank section" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 23,
+    "message" : [ "blank code", "blank section" ]
+  }, {
+    "file" : "bid.csv",
+    "line" : 24,
+    "message" : [ "blank code" ]
+  } ]
+}

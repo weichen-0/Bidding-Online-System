@@ -1,0 +1,1 @@
+r={         "course": "EC001",         "section": "S1"}

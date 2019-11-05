@@ -1,0 +1,14 @@
+{
+  "status" : "success",
+  "bids" : [ {
+    "row" : 1,
+    "userid" : "anaconda",
+    "amount" : 99.0,
+    "result" : "-"
+  }, {
+    "row" : 2,
+    "userid" : "geeko",
+    "amount" : 99.0,
+    "result" : "-"
+  } ]
+}
