@@ -1,1 +1,2 @@
-r={"username":"admins","password":"hello"}
+username=admins
+password=hello
