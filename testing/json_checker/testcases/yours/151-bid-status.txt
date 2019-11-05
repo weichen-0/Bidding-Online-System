@@ -6,7 +6,7 @@
         {
             "userid": "benny",
             "amount": 10.01,
-            "balance": 4.95, 
+            "balance": 4.95,
             "status": "pending"
         }
     ]

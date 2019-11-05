@@ -1,4 +1,1 @@
-r={
-         "course": "IS100",
-         "section": "S99"
-}
+r={"course": "IS100","section": "S99"}
