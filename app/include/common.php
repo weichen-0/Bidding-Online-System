@@ -39,7 +39,7 @@ function printMessages() {
 
 function isMissingOrEmpty($name) {
     $request = $_REQUEST;
-    if ($name != 'token') {
+    if (!in_array($name, ['token','password','username'])) {
         $request = json_decode($_REQUEST['r'], true);
     }
     

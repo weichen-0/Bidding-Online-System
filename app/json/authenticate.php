@@ -17,9 +17,8 @@ if (!isEmpty($errors)) {
         ];
 }
 else{
-    $request = json_decode($_REQUEST['r'], true);
-    $userid = $request['username'];
-    $password = $request['password'];
+    $userid = $_REQUEST['username'];
+    $password = $_REQUEST['password'];
 
     if ($userid == 'admin' && $password == 'skulked4154]campsite') {
         $result = [
