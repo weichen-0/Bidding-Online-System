@@ -23,7 +23,7 @@ if (!isEmpty($errors)) {
     echo json_encode($result, JSON_PRETTY_PRINT);
     exit;
 }
-
+ob_start();
 $bid_dao = new BidDAO();
 $course_dao = new CourseDAO();
 $enrolment_dao = new EnrolmentDAO();
@@ -121,6 +121,7 @@ $result = ["status" => "success",
             "completed-course" => $course_completed_result,
             "section-student" => $enrolment_result];
 
+ob_flush();
 header('Content-Type: application/json');
 echo json_encode($result, JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION);
 exit;
