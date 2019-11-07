@@ -1,4 +1,4 @@
 {
     "status": "success",
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZGF0ZXRpbWUiOiIyMDE5LTExLTA1IDA3OjUyOjAyIn0.jx6AmKtjPKEzV66r-sCjdTJPy6K51vAAZenprFbrxmI"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZGF0ZXRpbWUiOiIyMDE5LTExLTA3IDEwOjMxOjMzIn0.EY8z5GTclkGBQ3sUv5UZPOioyuTAkkRxfMPbYrFTQSM"
 }

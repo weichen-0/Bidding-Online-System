@@ -1,0 +1,11 @@
+{
+    "status": "success",
+    "bids": [
+        {
+            "row": 1,
+            "userid": "apple",
+            "amount": 10.0,
+            "result": "in"
+        }
+    ]
+}
