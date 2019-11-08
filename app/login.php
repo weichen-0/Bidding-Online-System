@@ -49,7 +49,7 @@ background-size:16px 16px;'>
     <div style='text-align:center; border:3px solid black; width: 600px; height:500px; margin:0 auto; margin-top: 130px;'>
     
         <div style='width: 50%; height:500px; float:left; overflow:hidden'>
-        <img src='https://cdn3.vectorstock.com/i/1000x1000/54/27/merlion-statue-on-blue-vector-21355427.jpg' style='float:center; height:550px; margin: -9px 0 0 -47px;'>
+        <img src='resources/merlion.jpg' style='float:center; height:550px; margin: -9px 0 0 -47px;'>
         </div>
 
     
