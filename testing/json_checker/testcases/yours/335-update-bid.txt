@@ -1,6 +1,6 @@
 {
     "status": "error",
     "message": [
-        "invalid course"
+        "bid too low"
     ]
 }

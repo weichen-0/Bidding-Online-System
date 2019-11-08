@@ -1,6 +1,6 @@
 {
     "status": "error",
     "message": [
-        "blank section"
+        "missing section"
     ]
 }

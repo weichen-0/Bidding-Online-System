@@ -1,13 +1,19 @@
 {
     "status": "success",
-    "vacancy": 5,
-    "min-bid-amount": 10.01,
+    "vacancy": 3,
+    "min-bid-amount": 10.0,
     "students": [
         {
-            "userid": "benny",
-            "amount": 10.01,
-            "balance": 4.95,
-            "status": "pending"
+            "userid": "funny",
+            "amount": 39.99,
+            "balance": 10.01,
+            "status": "success"
+        },
+        {
+            "userid": "amy",
+            "amount": 10.0,
+            "balance": 40.0,
+            "status": "success"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "status": "error",
     "message": [
-        "missing section"
+        "invalid course"
     ]
 }
