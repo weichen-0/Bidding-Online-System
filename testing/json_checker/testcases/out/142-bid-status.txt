@@ -1,4 +1,6 @@
 {
     "status": "error",
-    "message": [ "invalid section" ]
+    "message": [
+        "missing section"
+    ]
 }

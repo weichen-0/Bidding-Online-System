@@ -1,19 +1,6 @@
 {
-    "status": "fail",
-    "vacancy": 2,
-    "min-bid-amount": 11.0,
-    "students": [
-        {
-            "userid": "chloe",
-            "amount": 11.0,
-            "balance": 50.0, 
-            "status": "fail"
-        },
-        {
-            "userid": "danny",
-            "amount": 11.0,
-            "balance": 50.0, 
-            "status": "fail"
-        }
+    "status": "error",
+    "message": [
+        "blank course"
     ]
 }
