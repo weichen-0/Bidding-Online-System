@@ -1,3 +1,6 @@
 {
-"status": "success"
+    "status": "error",
+    "message": [
+        "bid too low"
+    ]
 }
