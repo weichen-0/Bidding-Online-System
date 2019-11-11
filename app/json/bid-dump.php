@@ -1,16 +1,6 @@
 <?php
 require_once '../include/common.php';
 require_once '../include/token.php';
-require_once '../include/process_round_logic.php';
-
-function in_bid_arr($bid, $successful_bids) {
-    foreach ($successful_bids as $successful_bid) {
-        if ($bid->userid == $successful_bid->userid) {
-            return true;
-        }
-    }
-    return false;
-}
 
 // isMissingOrEmpty(...) is in common.php
 // can assume that bootstrap-file is present/can be unzipped
@@ -70,19 +60,13 @@ if ($course == null) {
             $bid = $bids[$i];
             $enrolment = $enrolment_dao->retrieve($bid->userid, $bid->code, $bid->section);
             
-            // determining the bid status for 'result' key below
-            if ($round_num == 1) {
-                if ($round_status == "ACTIVE") {
-                    $bid_status = '-';
-                } else {
-                    $bid_status = ($enrolment == null) ? 'out' : 'in';
-                }
+            // pending status if active round
+            if ($round_status == "ACTIVE") {
+                $bid_status = '-';
 
-            // for round 2, bids should only have 'in' and 'out' status due to the real-time bids
+            // in/out status if inactive round
             } else {
-                $course_section_str = $bid->code . ' ' . $bid->section;
-                $successful_bids = process_r2_bids()[$course_section_str][0];
-                $bid_status = (in_bid_arr($bid, $successful_bids)) ? "in" : "out";
+                $bid_status = ($enrolment == null) ? 'out' : 'in';
             }
 
             $bid_result[] = ["row" => $i + 1,

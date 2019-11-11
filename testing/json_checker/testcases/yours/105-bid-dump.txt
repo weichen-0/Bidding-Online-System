@@ -5,13 +5,13 @@
             "row": 1,
             "userid": "harry.ng.2009",
             "amount": 19.0,
-            "result": "in"
+            "result": "-"
         },
         {
             "row": 2,
             "userid": "eddy.ng.2009",
             "amount": 18.0,
-            "result": "out"
+            "result": "-"
         }
     ]
 }

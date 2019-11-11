@@ -5,7 +5,7 @@
             "row": 1,
             "userid": "beta",
             "amount": 12.0,
-            "result": "in"
+            "result": "-"
         }
     ]
 }
