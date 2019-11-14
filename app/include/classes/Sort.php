@@ -2,25 +2,27 @@
 class Sort {
 
 	function course($a, $b) {
-		$a_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$a['course']);  
-		$b_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$b['course']);
+		// $a_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$a['course']);  
+		// $b_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$b['course']);
 		
-		$letter_cmp = strcmp($a_arr[0], $b_arr[0]);
-		if ($letter_cmp == 0) {
-			return $a_arr[1] - $b_arr[1];
-		}
-		return $letter_cmp;
+		// $letter_cmp = strcmp($a_arr[0], $b_arr[0]);
+		// if ($letter_cmp == 0) {
+		// 	return strcmp($a_arr[1],$b_arr[1]);
+		// }
+		// return $letter_cmp;
+		return strcmp($a['course'], $b['course']);
 	}
 
 	function prereq_course ($a, $b) {
-		$a_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$a['prerequisite']);  
-		$b_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$b['prerequisite']);
-		
-		$letter_cmp = strcmp($a_arr[0], $b_arr[0]);
-		if ($letter_cmp == 0) {
-			return $a_arr[1] - $b_arr[1];
-		}
-		return $letter_cmp;
+		// 	$a_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$a['prerequisite']);  
+		// 	$b_arr = preg_split('/(?<=[a-zA-Z])(?=[0-9]+)/i',$b['prerequisite']);
+			
+		// 	$letter_cmp = strcmp($a_arr[0], $b_arr[0]);
+		// 	if ($letter_cmp == 0) {
+		// 		return $a_arr[1] - $b_arr[1];
+		// 	}
+		// 	return $letter_cmp;
+		return strcmp($a['prerequisite'], $b['prerequisite']);
 	}
 
 	function section($a, $b) {

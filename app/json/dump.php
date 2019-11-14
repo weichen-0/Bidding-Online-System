@@ -20,7 +20,7 @@ if (!isEmpty($errors)) {
         ];
         
     header('Content-Type: application/json');
-    echo json_encode($result, JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION);
+    echo json_encode($result, JSON_PRETTY_PRINT);
     exit;
 } 
 
@@ -48,7 +48,7 @@ $course_result = $sort_class->sort_it($course_result, "course");
 
 $section_result = array();
 $sections = $section_dao->retrieveAll();
-$days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+$days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 foreach ($sections as $section) {
     $section_result[] = ["course" => $section->course, 
                             "section" => $section->section, 
